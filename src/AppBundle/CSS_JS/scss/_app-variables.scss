@@ -1,0 +1,62 @@
+$cl-signals: 7rem;
+$cl-date: 8rem;
+$cl-time: 10rem;
+$cl-summary: 6rem;
+$cl-feature: 8rem;
+$cl-dimension: 4rem;
+$cl-lackers: 10rem;
+$cl-nr: 3rem;
+
+$tab-columns:  (
+    "actions" : 64px, 
+    "area" : $cl-summary, 
+    "areaLack" : $cl-summary, 
+    "approved" : $cl-time,
+    "generated" : $cl-time,
+    "created" : $cl-time,
+    "auto": auto,
+    "client": 25rem,
+    "color" : $cl-signals, 
+    "color.n" : $cl-feature, 
+    "comm" : $cl-dimension, 
+    "comments" : $cl-signals, 
+    "cutter" : $cl-feature, 
+    "double" : $cl-signals, 
+    "doubleSide" : $cl-dimension, 
+    "handle" : $cl-feature, 
+    "id": $cl-nr,
+    "lackers" : 10rem, 
+    "length" : $cl-dimension,
+    "lengthcm" : $cl-dimension,
+    "lp": $cl-nr,
+    "model" : $cl-signals, 
+    "package" : $cl-signals, 
+    "nr": $cl-nr,
+    "number": 20rem,
+    "options" : $cl-signals,
+    "order": 25rem,
+    "name": 25rem,
+    "symbol": 10rem,
+    "osummary": $cl-nr + $cl-dimension + $cl-dimension,
+    "positionLackers" : $cl-signals, 
+    "poslackers" : $cl-signals, 
+    "select": 24px,
+    "signals" : $cl-signals, 
+    "size" : $cl-signals, 
+    "summary" : $cl-summary,
+    "sq": $cl-nr,
+    "title" : auto,
+    "trims": $cl-signals,
+    "width" : $cl-dimension,
+    "widthcm" : $cl-dimension,
+    "value" : $cl-summary,
+    "price" : $cl-summary,
+    "quantity" : $cl-dimension
+);
+
+
+$disp-bg: (
+    express: ( $gray-300,  darkorange, orangered),
+    type: ( $gray-300, gray, gold, darkturquoise, darkorchid, teal,  gray,  gray,  gray,  teal),
+    status: ( $gray-300, aquamarine,forestgreen, deepskyblue, darkgrey)
+);

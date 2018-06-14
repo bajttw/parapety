@@ -1,0 +1,132 @@
+AppBundle\Entity\Positions:
+    type: entity
+    repositoryClass: AppBundle\Repository\PositionsRepository
+    table: Positions
+    indexes:
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            options:
+                unsigned: true
+    fields:
+        nr:
+            type: smallint
+            nullable: true
+            options:
+                unsigned: true
+                default: 0
+        width:
+            type: smallint
+            column: width_mm
+            options:
+                unsigned: true
+                default: 0
+        length:
+            type: smallint
+            column: length_mm
+            options:
+                unsigned: true
+                default: 0
+        quantity:
+            type: smallint
+            options:
+                unsigned: true
+                default: 0
+        area:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            column: area
+            options:
+                default: 0
+        value:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            options:
+                default: 0
+        progress:
+            type: smallint
+            nullable: true
+            options:
+                unsigned: true
+                default: 0
+        trims: 
+            type: string
+            nullable: true
+            length: 20
+        clientComment:
+            type: string
+            nullable: true
+            length: 250
+            fixed: false
+            comment: 'Komentarz do użytku klienta'
+            column: my_comment    
+        positionComment:
+            type: string
+            nullable: true
+            length: 250
+            fixed: false
+            comment: 'Komentarz wspólny dla klienta i producenta'
+            column: position_comment    
+        prodComment:
+            type: string
+            nullable: true
+            length: 250
+            fixed: false
+            comment: 'Komentarz do użytku Drako'
+            column: drako_comment
+        clientInfo:
+            type: text
+            nullable: true
+            comment: 'Dodatkowe informacje zamawiającego w foramcie JSON'
+            column: client_info
+
+    oneToMany:
+        products:
+            targetEntity: Products
+            mappedBy: position              
+    manyToOne:
+        order:
+            targetEntity: Orders
+            inversedBy: positions
+            joinColumn:
+                name: orders_id
+                referencedColumnName: id
+                onDelete: CASCADE
+        model:
+            targetEntity: Models
+            joinColumn:
+                name: models_id
+                referencedColumnName: id
+        size:
+            targetEntity: Sizes
+            joinColumn:
+                name: sizes_id
+                referencedColumnName: id
+        color:
+            targetEntity: Colors
+            joinColumn:
+                name: colors_id
+                referencedColumnName: id
+    manyToMany:
+        uploads:
+            targetEntity: Uploads
+            joinTable:
+                name: Positions_Uploads
+                joinColumns:
+                    positions_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    uploads_id:
+                        referencedColumnName: id                
+            cascade: [ "persist" ]    
+    
+    lifecycleCallbacks:
+        prePersist: [ prePersistPosition ]
+        preUpdate: [ preUpdatePosition ]

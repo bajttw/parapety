@@ -1,0 +1,53 @@
+AppBundle\Entity\PriceListItems:
+    type: entity
+    table: PriceListItems
+    repositoryClass: AppBundle\Repository\PriceListItemsRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            options:
+                unsigned: true
+    fields:        
+        name:
+            type: string
+            nullable: false
+            length: 50
+            fixed: false
+        symbol:
+            type: string
+            nullable: true
+            length: 20
+            fixed: false
+            default: ''    
+        price:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            options:
+                default: 0
+        active:
+            type: boolean
+            options:
+                default: true
+            
+    manyToOne:
+        size:
+            targetEntity: Sizes
+            # inversedBy: priceListItems
+            joinColumn:
+                name: sizes_id
+                referencedColumnName: id
+        color:
+            targetEntity: Colors
+            # inversedBy: priceListItems
+            joinColumn:
+                name: colors_id
+                referencedColumnName: id        
+    lifecycleCallbacks: 
+        prePersist: [ prePersistPriceListItem ]
+        preUpdate: [ preUpdatePriceListItem ]
+    

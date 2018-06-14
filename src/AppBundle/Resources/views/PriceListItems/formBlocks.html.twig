@@ -1,0 +1,74 @@
+{% use "blocks.html.twig" %}
+{% use "Form/blocks.html.twig" %}
+
+{% block btn_generate_positions %}
+    {% set btn = { d: {generate: 1 } }|gen_btn('generate', 'dehaze', ['btn-generate', 'btn-primary'], 'pricelistitems') %}
+    {{ block('button') }}
+
+
+{% endblock btn_generate_positions %}
+
+{% block form_pricelistitems_parameters %}
+    {% set rowOpt={ defClass: 'row-blocks' } %}
+    {% set tabRow= {
+            cellOpt: { defClass: 'col' },
+            cells: [
+                { name: 'size', form: 'field', options: null },
+                { name: 'color', form: 'row', options: null },
+                { content: block('btn_generate_positions'), addClass: 'col d-flex justify-content-center align-items-center' }
+            ]
+        }
+    %}
+    {{ block('div_table_row') }}
+{% endblock form_pricelistitems_parameters %}
+                {# { content: block('btn_generate_positions') } #}
+
+{%- block _appbundle_pricelistitemsgenerate_items_row -%}
+    {% set en= 'pricelistitems' %}
+    {% set divTab={ attr: { class: 'table-bordered table-form'} } %}
+    {{ block("begin_div_table") }}
+        {% set cellOpt={ ownClass: true } %}
+        {% set tabHeader={
+            cells: [ 'size', 'color', 'symbol', 'name', 'price',  'actions' ]
+        }%}
+        {{ block("div_table_header") }}
+        {% set attr = attr|add_class('table-body') %}
+        {% if prototype is defined %}
+            {%- set attr = attr|merge({'data-prototype': form_row(prototype, { hidden: 1}) }) -%}        
+        {% endif %}
+
+        {% set attr = attr|set_array_value('data-templates', {
+            remove: block('btn_delete')
+        }|json_encode ) %}
+       
+        {% set attr = attr|set_array_value('data-form', 'positions' ) %}
+        {{- block('form_widget') -}}
+    {{ block("close_div") }}
+{%- endblock _appbundle_pricelistitemsgenerate_items_row -%}
+
+{%- block _appbundle_pricelistitemsgenerate_items_entry_row -%}
+    {% if hidden is defined %}
+        {% set attr = attr|merge({style: (attr.style|default('') ~ ' display:none;')|trim}) -%}
+    {% endif %}
+    {% set attr = attr|add_class( ['row-pos'] ) %}
+    <div  {{ block('widget_container_attributes') }}>
+        {% set rows=[
+            {
+                attr: { class: 'row-data' },
+                cellOpt: { ownClass: true },
+                cells: [ 
+                    { name: 'size', form: 'field', options: null },
+                    { name: 'color', form: 'field', options: null },
+                    { name: 'symbol', form: 'row', options: null },
+                    { name: 'name', form: 'row', options: null },
+                    { name: 'price', form: 'row', options: null },
+                    'actions' 
+                ]
+            }
+        ] %}
+        {{ block("div_table_rows") }}
+         <div style="display:none;">
+            {{form_widget(form)}}
+        </div>
+    </div>         
+{%- endblock _appbundle_pricelistitemsgenerate_items_entry_row -%}

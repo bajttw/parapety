@@ -1,0 +1,191 @@
+AppBundle\Entity\Orders:
+    type: entity
+    table: Orders
+    repositoryClass: AppBundle\Repository\OrdersRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            options:
+                unsigned: true
+    fields:
+        created:
+            type: datetime
+            comment: 'data utworzenia zamówienia'
+        approved:
+            type: datetime
+            nullable: true
+            comment: 'data zatwierdzenia zamówienia do relizacji'
+        term:
+            type: datetime
+            nullable: true
+#        dateStart:
+#            type: datetime
+#            nullable: true
+            comment: 'czas przekazania do produkcji'
+        intNr:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+                default: 1
+        number: 
+            type: string
+            length: 20
+        clientNumber: 
+            type: string
+            length: 20
+            nullable: true
+        quantity:
+            type: smallint
+            nullable: true
+            options:
+                unsigned: true
+                default: 1
+        area:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            options:
+                unsigned: true
+                default: 0
+        value:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            options:
+                unsigned: true
+                default: '0'
+        status:
+            type: smallint
+            options:
+                unsigned: true
+                default: 1
+        progress:
+            type: smallint
+            nullable: true
+            comment: '0-100'
+            options:
+                unsigned: true
+                default: 0
+        trims: 
+            type: string
+            nullable: true
+            length: 20
+        express:
+            type: smallint
+            options:
+                unsigned: true
+                default: 1
+        clientComment:
+            type: string
+            nullable: true
+            length: 250
+            fixed: false
+            comment: 'Komentarz do użytku klienta'
+            column: my_comment    
+        orderComment:
+            type: string
+            nullable: true
+            length: 250
+            fixed: false
+            comment: 'Komentarz wspólny dla klienta i producenta'
+            column: position_comment    
+        prodComment:
+            type: string
+            nullable: true
+            length: 250
+            fixed: false
+            comment: 'Komentarz do użytku Drako'
+            column: drako_comment
+        clientOrderId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+        clientInfo:
+            type: text
+            nullable: true
+            fixed: false
+            comment: 'Dodatkowe informacje zamawiającego w foramcie JSON'
+            column: client_info
+
+    oneToMany:
+        positions:
+            targetEntity: Positions
+            mappedBy: order
+            cascade: [ "persist" ]
+    manyToOne:
+        client:
+            targetEntity: Clients
+            inversedBy: orders
+            joinColumn:
+                name: clients_id
+                referencedColumnName: id    
+        model:
+            targetEntity: Models
+            joinColumn:
+                name: models_id
+                referencedColumnName: id
+        size:
+            targetEntity: Sizes
+            joinColumn:
+                name: sizes_id
+                referencedColumnName: id
+        color:
+            targetEntity: Colors
+            joinColumn:
+                name: colors_id
+                referencedColumnName: id
+        production:
+            targetEntity: Productions
+            inversedBy: orders
+            joinColumn:
+                name: productions_id
+                referencedColumnName: id
+                onDelete: SET NULL
+        delivery:
+            targetEntity: Deliveries
+            inversedBy: orders
+            joinColumn:
+                name: deliveries_id
+                referencedColumnName: id
+                onDelete: SET NULL
+        invoice:
+            targetEntity: Invoices
+            inversedBy: orders
+            joinColumn:
+                name: invoices_id
+                referencedColumnName: id
+                onDelete: SET NULL
+    manyToMany:
+        uploads:
+            targetEntity: Uploads
+            joinTable:
+                name: Orders_Uploads
+                joinColumns:
+                    orders_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    uploads_id:
+                        referencedColumnName: id                
+            cascade: [ "persist" ]    
+        notes:
+            targetEntity: Notes
+            joinTable:
+                name: Orders_Notes
+                joinColumns:
+                    orders_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    notes_id:
+                        referencedColumnName: id 
+            cascade: [ "persist" ]
+    lifecycleCallbacks: 
+        prePersist: [ prePersistOrders ]
+        postPersist: [ postPersistOrders ]
+        preUpdate: [ preUpdateOrders ]

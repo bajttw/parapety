@@ -1,0 +1,82 @@
+AppBundle\Entity\Products:
+    type: entity
+    table: Products
+    repositoryClass: AppBundle\Repository\ProductsRepository
+    indexes:
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            options:
+                unsigned: true
+    fields:
+        number: 
+            type: string
+            length: 20
+        label:
+            type: string
+            nullable: true
+            length: 25
+            fixed: false
+            comment: 'oznaczenie Drako'
+        clientLabel:
+            type: string
+            nullable: true
+            length: 25
+            fixed: false
+            comment: 'oznaczenie klienta'
+        barcode:
+            type: string
+            nullable: true
+            length: 20
+            fixed: false
+        info:
+            type: text
+            nullable: true
+            comment: 'dodatkowe inforamcje'
+        comment:
+            type: string
+            nullable: true
+            length: 250
+            fixed: false
+            comment: 'jakie uwagi'
+        cutTime:
+            type: datetime
+            nullable: true
+            comment: 'czas zakończenia etapu ciecia'
+        packingTime:
+            type: datetime
+            nullable: true
+            comment: 'czas pakowania'
+            column: 'packing_time'
+    manyToOne:
+        position:
+            targetEntity: Positions
+            inversedBy: products
+            joinColumn:
+                name: positions_id
+                referencedColumnName: id
+                onDelete: CASCADE
+        production:
+            targetEntity: Productions
+            inversedBy: products
+            joinColumn:
+                name: productions_id
+                referencedColumnName: id
+                onDelete: CASCADE
+        delivery:
+            targetEntity: Deliveries
+            inversedBy: products
+            joinColumn:
+                name: deliveries_id
+                referencedColumnName: id
+                onDelete:  SET NULL                
+        packager:
+            targetEntity: Users
+            joinColumn:
+                name: packager_id
+                referencedColumnName: id
+    lifecycleCallbacks: 
+        prePersist: [ prePersistProducts ]

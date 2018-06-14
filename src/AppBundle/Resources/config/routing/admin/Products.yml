@@ -1,0 +1,63 @@
+app_admin_products:
+    path:     /
+    defaults: { _controller: AppBundle\Controller\ProductsController::indexAction }
+
+app_admin_products_client:
+    path:     /{cid}/client
+    defaults: { _controller: AppBundle\Controller\ProductsController::clientIndexAction }
+
+app_admin_products_ajax:
+    path:     /ajax
+    defaults: { _controller: AppBundle\Controller\ProductsController::ajaxListAction }    
+
+app_admin_products_client_ajax:
+    path:     /{cid}/client/ajax
+    defaults: { _controller: AppBundle\Controller\ProductsController::clientAjaxListAction }    
+
+app_admin_products_dic:
+    path:     /dic
+    defaults: { _controller: AppBundle\Controller\ProductsController::ajaxDicAction }
+
+app_admin_products_ajax_details:
+    path:     /ajax/details
+    defaults: { _controller: AppBundle\Controller\ProductsController::ajaxListDetailsAction }    
+
+app_admin_products_create:
+    path:     /create
+    defaults: { _controller: AppBundle\Controller\ProductsController::createAction }
+    methods:  POST
+
+app_admin_products_data:
+    path:     /{id}/data
+    defaults: { _controller: AppBundle\Controller\ProductsController::ajaxDataAction }    
+
+app_admin_products_delete:
+    path:     /{id}/delete
+    defaults: { _controller: AppBundle\Controller\ProductsController::deleteAction }
+
+app_admin_products_edit:
+    path:     /{id}/edit
+    defaults: { _controller: AppBundle\Controller\ProductsController::editAction }
+
+app_admin_products_new:
+    path:     /new
+    defaults: { _controller: AppBundle\Controller\ProductsController::newAction }
+
+app_admin_products_remove:
+    path:     /{id}/remove
+    defaults: { _controller: AppBundle\Controller\ProductsController::removeAction }
+    methods:  [POST, DELETE]
+
+app_admin_products_service:
+    path:     /service
+    defaults: { _controller: AppBundle\Controller\ProductsController::serviceAction }
+    
+app_admin_products_show:
+    path:     /{id}/show
+    defaults: { _controller: AppBundle\Controller\ProductsController::showAction }
+
+app_admin_products_update:
+    path:     /{id}/update
+    defaults: { _controller: AppBundle\Controller\ProductsController::updateAction }
+    methods:  [POST, PUT]
+

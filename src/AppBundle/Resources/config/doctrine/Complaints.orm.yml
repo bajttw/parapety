@@ -1,0 +1,91 @@
+AppBundle\Entity\Complaints:
+    type: entity
+    repositoryClass: AppBundle\Repository\ComplaintsRepository
+    table: Complaints
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            options:
+                unsigned: true
+    fields:
+        created:
+            type: datetime
+            commetn: 'data utworzenia reklamacji'
+        dateStart:
+            type: datetime
+            nullable: true
+            comment: 'czas rozpoczecia realizacji'
+        number: 
+            type: string
+            length: 20
+        quantity:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+                default: 1
+        area:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            options:
+                unsigned: true
+                default: 0
+        status:
+            type: smallint
+            options:
+                unsigned: true
+                default: 1
+        comment:
+            type: string
+            nullable: true
+            length: 250
+            fixed: false
+            comment: 'Komentarz wspólny dla klienta i producenta'
+            column: position_comment    
+        drakoComment:
+            type: string
+            nullable: true
+            length: 250
+            fixed: false
+            comment: 'Komentarz do użytku Drako'
+            column: drako_comment
+        clientInfo:
+            type: text
+            nullable: true
+            length: 250
+            fixed: false
+            comment: 'Dodatkowe informacje zamawiającego w foramcie JSON'
+            column: client_info
+    oneToMany:
+        defectives:
+            targetEntity: Defectives
+            mappedBy: complaint
+            cascade: [ "persist" ]
+    manyToOne:
+        client:
+            targetEntity: Clients
+            inversedBy: complaints
+            joinColumn:
+                name: clients_id
+                referencedColumnName: id    
+    manyToMany:
+        notes:
+            targetEntity: Notes
+            joinTable:
+                name: Complaints_Notes
+                joinColumns:
+                    orders_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    notes_id:
+                        referencedColumnName: id 
+            cascade: [ "persist" ]
+    lifecycleCallbacks: 
+        prePersist: [ prePersistComplaints ]
+        postPersist: [ postPersistComplaints ]
+        preUpdate: [ preUpdateComplaints ]

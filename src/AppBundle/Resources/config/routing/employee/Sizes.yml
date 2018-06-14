@@ -1,0 +1,46 @@
+sizes:
+    path:     /
+    defaults: { _controller: "AppBundle:Sizes:index" }
+
+sizes_ajax:
+    path:     /ajax
+    defaults: { _controller: "AppBundle:Sizes:ajaxList" }
+
+sizes_dic:
+    path:     /dic
+    defaults: { _controller: "AppBundle:Sizes:ajaxDic" }
+
+sizes_data:
+    path:     /{id}/data
+    defaults: { _controller: "AppBundle:Sizes:ajaxData" }
+
+sizes_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:Sizes:show" }
+
+sizes_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Sizes:new" }
+
+sizes_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:Sizes:create" }
+    methods:  POST
+
+sizes_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:Sizes:edit" }
+
+sizes_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:Sizes:update" }
+    methods:  [POST, PUT]
+
+sizes_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:Sizes:delete" }
+
+sizes_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "AppBundle:Sizes:remove" }
+    methods:  [POST, DELETE]

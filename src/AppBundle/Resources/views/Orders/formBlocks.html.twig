@@ -1,0 +1,185 @@
+{% use "blocks.html.twig" %}
+{% use "Form/blocks.html.twig" %}
+{% use "@App/Orders/blocks.html.twig" %}
+
+
+
+{% block form_positions_comments_signals %}
+    {% set btn={
+        attr: {
+            title: "positions.title.addAttach"
+        }
+    }%}
+    {% set btns={ 
+        fields: ['clientComment', 'positionComment', 'prodComment', 'uploads']
+    } %}
+        {# additional: block('btn_upload') #}
+    {{ block("form_btns") }}
+{% endblock form_positions_comments_signals %}
+
+{% block form_orders_comments_signals %}
+    <div class="form-group">
+        <label class="control-label">{{ 'orders.label.comments'|trans }}</label>
+        <div>   
+            {%  set btn={d: { showinfo: 'card-block'} }%}
+            {% set btns={ 
+                fields: ['clientComment', 'orderComment', 'prodComment']
+            } %}
+            {{ block("form_btns") }}
+        </div>   
+    </div>   
+{% endblock form_orders_comments_signals %}
+
+{% block form_orders_basic %}
+    {% set rowOpt={ defClass: 'row-blocks' } %}
+    {% set cellOpt= { defClass: 'col', form: 'field' } %}
+    {% set rows=[
+        {         
+            cells: [
+                { attr: { class: 'col-4'}, name: 'client', form: form.client.vars.attr.readonly is defined and form.client.vars.attr.readonly ? 'field' : 'row' },
+                { name: 'number', options:{ disp: true} },
+                'clientNumber', 
+                'express',
+                'status'
+            ]
+        },
+        { 
+            cells: [
+                { name: 'created', options:{ disp: true} },
+                'term', 
+                { name: 'approved', options:{ disp: true} },
+                { content: block('form_orders_comments_signals'), attr: { class: 'col-2'} }
+            ]
+        },
+        {
+            attr: { class: 'row-info', style:"display: none;"}, 
+            cellOpt: { form: 'row' },
+            cells: [
+                'clietnComment',
+                'orderComment', 
+                'prodComment'
+            ]
+        }
+    ]%}
+    {{ block("div_table_rows") }}
+{% endblock form_orders_basic %}
+
+{% block form_orders_parameters %}
+    {% set rowOpt={ defClass: 'row-blocks' } %}
+    {% set cellOpt= { defClass: 'col', form: 'fbtn', options:{ icon: 'library_books' } } %}
+    {% set rows=[
+        { 
+            cells: [
+                { name: 'model' },
+                { name: 'size' },
+                { name: 'color' },
+                { name: 'trims', options: { disp: true } }
+            ]
+        }
+    ]%}
+    {{ block("div_table_rows") }}
+{% endblock form_orders_parameters %}
+
+{% block form_orders_summary %}
+    {% set cellOpt= { defClass: 'col', form: 'field', options: { disp: true } } %}
+    {% set tabRow={ 
+        attr: { 
+            class: 'row-blocks' 
+        },
+        cells: [
+            'quantity',
+            'area'
+        ]
+    }%}
+    {{ block("div_table_row") }}
+{% endblock form_orders_summary%}
+
+{% block form_orders_positions_buttons %}
+    {% set btn = {
+        size: 'sm',
+        d: {
+            'positions-import' : 'Positions'
+        }
+    } %}
+    {{ block('btn_import')}}
+    {% set btn = {
+        attr: {
+            class: 'btn-primary',
+            title: 'btn.addPosition'|gen_title(en)
+        },
+        d: {
+            'positions-add' : 'Positions'
+        },
+        label: 'btn.addPosition'|gen_label(en)
+    } %}
+    {{ block('btn_add') }}
+{% endblock form_orders_positions_buttons %}
+
+{%- block _appbundle_orders_positions_row -%}
+    {% set en= 'positions' %}
+    {% set divTab={ attr: { class: 'table-bordered table-form'} } %}
+    {{ block("begin_div_table") }}
+        {% set cellOpt={ ownClass: true } %}
+        {% set tabHeader={
+            cells: [ 'nr', 'lengthcm', 'widthcm', 'quantity', 'area', 'model', 'size', 'color', 'trims', 'comments', 'actions' ]
+        }%}
+        {{ block("div_table_header") }}
+        {% set attr = attr|add_class('table-body') %}
+        {% if prototype is defined %}
+            {%- set attr = attr|merge({'data-prototype': form_row(prototype, { hidden: 1}) }) -%}        
+        {% endif %}
+
+        {% set attr = attr|set_array_value('data-templates', {
+            details: block('btn_more'),
+            remove: block('btn_delete'),
+        }|json_encode ) %}
+        {% set attr = attr|set_array_value('data-form', 'positions' ) %}
+        {{- block('form_widget') -}}
+    {{ block("close_div") }}
+{%- endblock _appbundle_orders_positions_row -%}
+
+{%- block _appbundle_orders_positions_entry_row -%}
+    {% if hidden is defined %}
+        {% set attr = attr|merge({style: (attr.style|default('') ~ ' display:none;')|trim}) -%}
+    {% endif %}
+    {% set attr = attr|add_class( ['row-pos'] ) %}
+    <div  {{ block('widget_container_attributes') }}>
+        {% set rows=[
+            {
+                attr: { class: 'row-data' },
+                cellOpt: { form: 'btn', ownClass: true, options:{field: 1, navi: 1} },
+                cells: [ 
+                    { name: 'nr', form: 'div', options: null },
+                    { name: 'lengthcm', form: 'row', options: null },
+                    { name: 'widthcm', form: 'row', options: null },
+                    { name: 'quantity', form: 'row', options: null },
+                    { name: 'area', form: 'div', options: null }, 
+                    { name: 'model' },
+                    { name: 'size' },
+                    { name: 'color' },
+                    { name: 'trims' },
+                    { name: 'comments', content: block('form_positions_comments_signals') },
+                    'actions' 
+                ]
+            },
+            {
+                attr: { class: 'row-info', style: 'display: none;' },
+                cellOpt: { class: 'col', form: 'row' },
+                cells : [ 
+                    'clientComment',
+                    'positionComment', 
+                    'prodComment',
+                    'uploads'
+                ]
+            }
+        ] %}
+        {{ block("div_table_rows") }}
+         <div style="display:none;">
+            {{form_widget(form)}}
+        </div>
+    </div>         
+{%- endblock _appbundle_orders_positions_entry_row -%}
+
+
+
+

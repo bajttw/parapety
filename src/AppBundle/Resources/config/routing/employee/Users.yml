@@ -1,0 +1,59 @@
+app_admin_users:
+    path:     /
+    defaults: { _controller: "AppBundle:Users:index" }
+
+app_admin_users_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:Users:show" }
+
+app_admin_users_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Users:new" }
+
+app_admin_users_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:Users:create" }
+    methods:  POST
+
+app_admin_users_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:Users:edit" }
+
+app_admin_users_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:Users:update" }
+    methods:  [POST, PUT]
+
+app_admin_users_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:Users:delete" }
+    methods:  [POST, DELETE]
+
+app_admin_users_ajax:
+    path:     /ajax
+    defaults: { _controller: "AppBundle:Users:ajaxList" }
+
+app_admin_users_dic:
+    path:     /dic
+    defaults: { _controller: "AppBundle:Users:ajaxDic" }
+
+app_admin_users_data:
+    path:     /{id}/data
+    defaults: { _controller: "AppBundle:Users:ajaxData" }
+
+app_admin_users_client:
+    path:     /{cid}/index
+    defaults: { _controller: "AppBundle:Users:panelIndex" }
+
+app_admin_users_client_ajax:
+    path:     /{cid}/ajax
+    defaults: { _controller: "AppBundle:Users:ajaxData" }
+
+app_admin_users_client_new:
+    path:     /{cid}/new
+    defaults: { _controller: "AppBundle:Users:new" }
+
+app_admin_users_client_create:
+    path:     /{cid}/create
+    defaults: { _controller: "AppBundle:Users:create" }
+    methods:  POST

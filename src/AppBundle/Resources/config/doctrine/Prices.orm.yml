@@ -1,0 +1,36 @@
+AppBundle\Entity\Prices:
+    type: entity
+    repositoryClass: AppBundle\Repository\PricesRepository
+    table: Prices
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            options:
+                unsigned: true
+    fields:        
+        value:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            options:
+                default: 0
+    manyToOne:
+        priceList:
+            targetEntity: PriceLists
+            inversedBy: prices
+            joinColumn:
+                name: PriceLists_id
+                referencedColumnName: id
+                onDelete: CASCADE    
+        priceListItem:
+            targetEntity: PriceListItems
+            joinColumn:
+                name: priceListItems_id
+                referencedColumnName: id
+                onDelete: CASCADE    
+            
+    lifecycleCallbacks: {  }

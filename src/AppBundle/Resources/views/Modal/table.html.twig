@@ -1,0 +1,10 @@
+{% extends 'Modal/content.html.twig' %}
+{%- block modal_body -%}
+    {% set toolbars=modal.toolbars|default(null) %}
+    {{ block("toolbars") }}
+    {% set table = modal.table %}
+    {{ block('datatable') }} 
+{%- endblock -%}
+
+
+

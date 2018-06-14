@@ -1,0 +1,34 @@
+orders:
+    path:     /
+    defaults: { _controller: "App\Controller\OrdersController::clientIndex" }
+
+orders_ajax:
+    path:     /ajax
+    defaults: { _controller: "App\Controller\OrdersController::clientAjaxList" }    
+
+orders_new:
+    path:     /new
+    defaults: { _controller: "App\Controller\OrdersController::new" }
+
+orders_create:
+    path:     /create
+    defaults: { _controller: "App\Controller\OrdersController::create" }
+    methods:  POST
+
+orders_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "App\Controller\OrdersController::edit" }
+
+orders_update:
+    path:     /{id}/update
+    defaults: { _controller: "App\Controller\OrdersController::update" }
+    methods:  [POST, PUT]
+
+orders_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "App\Controller\OrdersController::delete" }
+
+orders_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "App\Controller\OrdersController::remove" }
+    methods:  [POST, DELETE]

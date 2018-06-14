@@ -1,0 +1,24 @@
+<div class="row-blocks">
+    <div class="col-6">
+        {{form_row(form.name)}}
+    </div>
+    <div class="col-3">
+        {{form_row(form.sequence)}}
+    </div>
+    <div class="col-3">
+        {{form_row(form.active)}}
+    </div>
+</div>
+<div class="row-blocks">
+    <div class="col-3">
+        {{form_row(form.symbol)}}
+    </div>
+    <div class="col-9">
+        {{form_row(form.description)}}
+    </div>
+</div>
+<div class="row-blocks">
+    <div class="col-12">
+        {{ form_row(form.upload, { en: en}) }}
+    </div>
+</div>

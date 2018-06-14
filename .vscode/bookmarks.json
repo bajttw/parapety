@@ -1,0 +1,57 @@
+{
+	"onDidClearBookmarkEmitter": {},
+	"onDidClearAllBookmarksEmitter": {},
+	"onDidAddBookmarkEmitter": {},
+	"onDidRemoveBookmarkEmitter": {},
+	"onDidUpdateBookmarkEmitter": {},
+	"bookmarks": [
+		{
+			"fsPath": "$ROOTPATH$\\src\\AppBundle\\CSS_JS\\js\\entities.js",
+			"bookmarks": [
+				175,
+				281
+			]
+		},
+		{
+			"fsPath": "$ROOTPATH$\\src\\AppBundle\\Controller\\AppController.php",
+			"bookmarks": [
+				447,
+				622,
+				884,
+				892,
+				1224
+			]
+		},
+		{
+			"fsPath": "$ROOTPATH$\\src\\AppBundle\\Repository\\AppRepository.php",
+			"bookmarks": [
+				536
+			]
+		},
+		{
+			"fsPath": "$ROOTPATH$\\src\\AppBundle\\Controller\\SettingsController.php",
+			"bookmarks": [
+				129
+			]
+		},
+		{
+			"fsPath": "$ROOTPATH$\\app\\Resources\\views\\blocks.html.twig",
+			"bookmarks": [
+				914,
+				1129
+			]
+		},
+		{
+			"fsPath": "$ROOTPATH$\\src\\AppBundle\\Twig\\AppExtension.php",
+			"bookmarks": [
+				103
+			]
+		},
+		{
+			"fsPath": "$ROOTPATH$\\src\\AppBundle\\Resources\\translations\\messages.pl.yml",
+			"bookmarks": [
+				23
+			]
+		}
+	]
+}

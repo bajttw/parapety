@@ -1,0 +1,46 @@
+models:
+    path:     /
+    defaults: { _controller: "AppBundle:Models:index" }
+
+models_ajax:
+    path:     /ajax
+    defaults: { _controller: "AppBundle:Models:ajaxList" }
+
+models_dic:
+    path:     /dic
+    defaults: { _controller: "AppBundle:Models:ajaxDic" }
+
+models_data:
+    path:     /{id}/data
+    defaults: { _controller: "AppBundle:Models:ajaxData" }
+
+models_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:Models:show" }
+
+models_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Models:new" }
+
+models_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:Models:create" }
+    methods:  POST
+
+models_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:Models:edit" }
+
+models_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:Models:update" }
+    methods:  [POST, PUT]
+
+models_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:Models:delete" }
+
+models_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "AppBundle:Models:remove" }
+    methods:  [POST, DELETE]

@@ -1,0 +1,38 @@
+notes:
+    path:     /
+    defaults: { _controller: "AppBundle:Notes:index" }
+
+notes_ajax:
+    path:     /ajax
+    defaults: { _controller: "AppBundle:Notes:ajaxList" }
+
+notes_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:Notes:create" }
+    methods:  POST
+
+notes_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:Notes:delete" }
+
+notes_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:Notes:edit" }
+
+notes_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Notes:new" }
+
+notes_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "AppBundle:Notes:remove" }
+    methods:  [POST, DELETE]
+
+notes_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:Notes:show" }
+
+notes_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:Notes:update" }
+    methods:  [POST, PUT]

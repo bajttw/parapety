@@ -1,0 +1,139 @@
+{% extends 'Modal/content.html.twig' %}
+{% use "blocks.html.twig" %}
+{%- block import_position -%}
+    <div class="row-data field" style="display:none">
+        <div class="col-2 cell-v">__0__</div>
+        <div class="col-4 cell-v">__1__</div>
+        <div class="col-4 cell-v">__2__</div>
+        <div class="col-2 cell-v">__3__</div>
+    </div>
+{%- endblock -%}
+
+{%- block import_table -%}
+    {% set divTab={ 
+        en: 'positions',
+        attr: { 
+            class: 'table-form table-scroll' 
+        },
+        cellOpt: { class: 'cell-v' },
+        head: {
+            cells: [
+                { name: 'nr', attr: { class: 'col-2'} },
+                { name: 'height', attr: { class: 'col-4'} },
+                { name: 'width', attr: { class: 'col-4'} },
+                { name: 'quantity', attr: { class: 'col-2'} }
+            ]
+        },
+        body: { 
+            attr: { 
+                id: 'view-import' 
+            }, 
+            d: {
+                tmpl: block('import_position')
+
+            },
+        }
+
+    }%}
+    {{ block("div_table") }}
+
+{#    <div class="table table-form table-scroll">
+                        <div class="row-head">
+                            <div class="col-2 cell-v">{{ 'import.label.line'|trans }}</div>
+                            <div class="col-4 cell-v">{{ 'positions.label.height'|trans }}</div>
+                            <div class="col-4 cell-v">{{ 'positions.label.width'|trans }}</div>
+                            <div class="col-2 cell-v">{{ 'positions.label.quantity'|trans }}</div>
+                        </div>
+                        <div id="view-import" class="table-body" data-tmpl="{{ block('import_position')|e }}" >
+                        </div>
+                    </div>
+#}
+
+{%- endblock import_table -%}
+
+{%- block modal_body -%}
+    <div class="panels" >
+        <div class="col-6">
+            {% set card={ 
+                attr: {
+                    class: 'h-100'
+                },
+                header: { 
+                    title: 'positions.label.import_area'
+                }
+            } %}
+            {{ block("begin_card") }}
+                <textarea id="field-import" class="lined" name="import" ></textarea>     
+            {{ block("close_card") }}
+            
+{#            <div class="card h-100">
+                <div class="card-header">
+                   {{ 'positions.label.import_area'|trans }}
+                </div>
+                <div class="card-block" >
+                    <textarea id="field-import" class="lined" name="import" ></textarea>     
+                </div>
+            </div>
+#}        </div>
+       {{ block("import_btn") }}
+        <div class="col">
+            {% set card={ 
+                attr: {
+                    class: 'h-100'
+                },
+                header: { 
+                    title: 'positions.label.import_view'
+                }
+            } %}
+            {{ block("begin_card") }}
+                {% set divTab={ 
+                    en: 'positions',
+                    attr: { 
+                        class: 'table-form table-scroll' 
+                    },
+                    cellOpt: { class: 'cell-v' },
+                    header: {
+                        cells: [
+                            { name: 'nr', attr: { class: 'col-2'} },
+                            { name: 'height', attr: { class: 'col-4'} },
+                            { name: 'width', attr: { class: 'col-4'} },
+                            { name: 'quantity', attr: { class: 'col-2'} }
+                        ]
+                    },
+                    body: { 
+                        attr: { 
+                            id: 'view-import' 
+                        }, 
+                        d: {
+                            tmpl: block('import_position')
+
+                        },
+                    }
+
+                }%}
+                {{ block("div_table") }}
+
+            {{ block("close_card") }}
+            
+            
+            
+            
+{#            <div class="card h-100">
+                <div class="card-header" >
+                   {{ 'positions.label.import_view'|trans }}
+                </div>
+                <div class="card-block" >
+#}
+               
+{#        </div>
+            </div>
+        </div>
+#}    
+        </div>
+    </div>
+{%- endblock -%}
+{%- block modal_form_submit -%}
+    {{ block("btn_save") }}
+{%- endblock modal_form_submit -%}
+
+

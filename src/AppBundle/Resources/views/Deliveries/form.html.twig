@@ -1,0 +1,61 @@
+{% use "@App/Deliveries/formBlocks.html.twig" %}
+
+{% set admin = form.vars.attr['data-admin']|default(false) %}
+
+{% set en = 'deliveries' %}
+
+<div class="row-blocks">
+    <div class="col-12">
+        {% set card={ 
+            attr: {
+                class: 'card-sm'
+            },
+            header: { 
+                title: 'deliveries.label.basic_data'
+            },
+            content: block('form_deliveries_basic')
+        } %}
+        {{ block("card") }}
+    </div>
+</div>
+<div class="row-blocks">
+    <div class="col-12">
+        {% set card={ 
+            attr: {
+                class: 'card-sm'
+            },
+            header: { 
+                title: 'deliveries.label.orders',
+                right_content: block('orders_buttons')
+            },
+            block:{
+                attr: {
+                    class: 'scroll'
+                }
+            },
+            content: form_row(form.orders, { entities_settings: entities_settings }) 
+        } %}
+        {{ block("card") }}
+    </div>
+</div>
+<div class="row-blocks">
+    <div class="col-12">
+        {% set card={ 
+            attr: {
+                class: 'card-sm'
+            },
+            header: { 
+                title: 'deliveries.label.products',
+            },
+
+            content: block('form_deliveries_products') 
+        } %}
+        {{ block("card") }}
+
+    </div>
+
+</div>
+
+<div style="display:none;">
+    {{form_widget(form)}}
+</div>

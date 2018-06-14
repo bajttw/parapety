@@ -1,0 +1,190 @@
+{% macro orderpositionsItem(position, modals, index) %}
+            {% import '@App/macros.html.twig' as macros %}
+            {% set nrrow  = index|default('__index__') %} 
+            {% set nrpos  = nrrow == '__index__' ? '__name__' : index - 1 %}
+            {% set objprefix= '_torders_orderpositions_' %}
+            <div id="pos_{{ nrpos }}" data-nr="{{ nrpos }}" class="col-12 position" {% if nrrow == '__index__' %} style="display: none" {% endif %} >
+                <div class="row">
+                    <div class="pos-nr col-1 "><span id="span{{ objprefix }}{{ nrpos }}_nr">{{ nrrow }}</span>{{ macros.show_field(position.nr)}}</div>
+                    <div class="pos-length col-2">{{ macros.show_field(position.length)}}</div>
+                    <div class="pos-width col-2">{{ macros.show_field(position.width)}}</div>
+                    <div class="pos-quantity col-2">{{ macros.show_field(position.quantity)}}</div>
+                    <div class="pos-area col-2">{{ macros.show_field(position.area) }}</div>
+                    <div class="pos-foil col-2">
+{#                        <button type="button" id="btn{{ objprefix }}{{ nrpos }}_foil" class="btn btn" btn-field="1" data-modal-id="#{{ modals.foil.id }}Modal"  data-modal-title="Kolor parapetu" data-source="torders_foil" title="Wybór koloru parapetu">K</button>#}
+                    </div>
+                    <div class="pos-thickness col-2">
+{#                        <button type="button" id="btn{{ objprefix }}{{ nrpos }}_thickness" class="btn btn" btn-field="1"  data-modal-id="#{{ modals.thickness.id }}Modal"  data-modal-title="Grubość parapetu" data-source="torders_thickness" title="Wybór grubości parapetu">G</button>#}
+                    </div>
+                    <div class="pos-finish col-2">
+{#                        <button type="button" id="btn{{ objprefix }}{{ nrpos }}_finish" class="btn btn" btn-field="finish" data-modal-id="#{{ modals.finishOptions.id }}Modal" title="Wybór typu wykończenia prapetu">F</button>#}
+                    </div>
+                    <div class="pos-options col-3">
+{#                        <button type="button" id="btn{{ objprefix }}{{ nrpos }}_options" class="btn btn" btn-field="options" data-modal-id="#{{ modals.thickness.id }}Modal" title="Wybór opcji wykonania parapetu">O</button>#}
+                    </div>
+                    <div class="pos-comment col-3">
+{#                        <button type="button" id="btn{{ objprefix }}{{ nrpos }}_clientComment" class="btn btn" btn-field="1" data-modal-id="#{{ modals.comment.id }}Modal" data-modal-title="Komentarz własny" title="Komentarz własny">M</button>#}
+{#                        <button type="button" id="btn{{ objprefix }}{{ nrpos }}_positionComment" class="btn btn" btn-field="1" data-modal-id="#{{ modals.comment.id }}Modal" data-modal-title="Komentarz do pozycji" title="Komentarz do pozycji">P</button>#}
+{#                        <button type="button" id="btn{{ objprefix }}{{ nrpos }}_prodComment" class="btn btn" btn-field="1" data-modal-id="#{{ modals.comment.id }}Modal" data-modal-title="Komentarz Drako" title="Komentarz Drako">D</button>#}
+{#                        <button type="button" id="btn{{ objprefix }}{{ nrpos }}_annex" class="btn btn" title="Załącznik"><span class="fa fa-paperclip" titile="Szczegóły pozycji"></span> </button>#}
+                    </div>
+                    <div class="pos-action col-2">
+                        <button type="button" id="btn_pos_info_{{ nrpos }}" class="inf-pos btn btn-info btn"><span class="fa fa-info-sign" ></span></button>
+                    </div>
+                </div>         
+                <div id="pos_info_{{ nrpos }}" class="pos-info row" style="display:none;">
+                    <div class="col-8">
+                        {{ macros.show_field(position.clientComment)}}
+                    </div>
+                    <div class="col-8">
+                        {{ macros.show_field(position.positionComment)}}
+                    </div>
+                    <div class="col-8">
+                        {{ macros.show_field(position.prodComment)}}
+                    </div>
+                </div>   
+            </div>
+{% endmacro %}
+{#  
+<div class="row form_error">
+       
+</div>
+    {{ form(form) }}
+
+#}
+{% import '@App/macros.html.twig' as macros %}
+<div class="row">
+    <div class="col-8">
+        <div class="panel panel-default">   
+            <div class="panel-heading"> Klient</div>
+                <div class="panel-body">
+                    <div class="col-24">    
+                        {% if form.client is defined %}
+                            {{form_row(form.client)}} 
+                        {% else %}
+                            {{ macros.show_field({'label' :'Nazwa klienta', 'value' : entity.client.name })}}
+                        {%endif%}
+                    </div>
+                </div>
+            </div>    
+    </div>  
+    <div class="col-16">    
+        <div class="panel panel-default">   
+            <div class="panel-heading"> Podsumowanie zamówienia</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-5">
+                        {{ macros.show_field(entity.number) }}
+                    </div>   
+                    <div class="col-6">
+                        {{ macros.show_field(entity.generated) }}
+                    </div>   
+                    <div class="col-4">
+                        {{ macros.show_field(entity.state, order_parameters.order_states|default('')) }}
+                    </div>   
+                    <div class="col-3">
+                        {{ macros.show_field(entity.quantity) }}
+                    </div>   
+                    <div class="col-3">
+                        {{ macros.show_field(entity.area)}}
+                    </div>   
+                    <div class="col-3">
+                        {{ macros.show_field(entity.value)}}
+                    </div>   
+                </div> 
+            </div>
+        </div>    
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-24">    
+        <div class="panel panel-default">   
+            <div class="panel-heading"> Podstawowe parametry zamówienia</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-6">
+                        {{macros.show_field(entity.finish)}} 
+                    </div>   
+                    <div class="col-6">
+                        {{macros.show_field(entity.thickness)}} 
+                    </div>   
+                    <div class="col-6">
+                        {{macros.show_field(entity.foil)}} 
+                    </div>   
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label class="control-label">Uwagi:</label>
+                            <div >
+                      {#          <button type="button" id="btn_torders_clientComment" class="btn" btn-field="1" data-modal-id="#{{ modals.comment.id }}Modal" data-modal-title="Uwagi własne do zamówienia" title="Komentarz własny do zamówienia">Własne</button>
+                                <button type="button" id="btn_torders_orderComment" class="btn" btn-field="1" data-modal-id="#{{ modals.comment.id }}Modal" data-modal-title="Uwagi do zamówienia" title="Uwagi do zamówienia">Do zamówienia</button>
+                                <button type="button" id="btn_torders_prodComment" class="btn" btn-field="1" data-modal-id="#{{ modals.comment.id }}Modal" data-modal-title="Uwagi Drako do zamówienia" title="Uwagi Drako do zamówienia">Drako</button>
+                                <button type="button" class="inf-order btn btn-info"><span class="fa fa-info-sign"  title="Szczegóły zamówienia"></span></button>
+                      #}      </div>                    
+                        </div>   
+                    </div>   
+                </div>
+                <div id="order_info" class="order-info row" style="display:none;">
+                    <div class="col-8">
+                        {{macros.show_field(entity.clientComment)}}
+                    </div>
+                    <div class="col-8">
+                        {{macros.show_field(entity.orderComment)}}
+                    </div>
+                    <div class="col-8">
+                        {{macros.show_field(entity.prodComment)}}
+                    </div>
+                </div>   
+            </div>
+        </div>    
+    </div>
+</div>
+<div class="row">
+    <div class="col-24">
+        <div class="panel panel-default">   
+            <div class="panel-heading">
+                Pozycje zamówienia
+            </div>
+            <div id="orderpos" class="panel-body"  
+                 
+                 {% if position_parameters is defined %} data-position-parameters={{ position_parameters }} {% endif %}
+                 {% if order_states is defined %} data-order_states={{ order_states }} {% endif %}
+
+                >
+                <div id="pos-head" class="col-24">
+                    <div class="row">
+                        <div class="pos-nr col-1"><strong>Lp.</strong></div>
+                        <div class="pos-length col-2"><strong>Dług.</br>[cm]</strong></div>
+                        <div class="pos-width col-2"><strong>Szer.</br>[cm]</strong></div>
+                        <div class="pos-quantity col-2"><strong>Ilość</strong></div>
+                        <div class="pos-area col-2"><strong>Pow.</br>[m2]</strong></div>
+                        <div class="pos-color col-2"><strong>Kolor</strong></div>
+                        <div class="pos-thick col-2"><strong>Grubość</strong></div>
+                        <div class="pos-finish col-2" title="Sposób wykonania"><strong>Wyk.</strong></div>
+                        <div class="pos-options col-3" title="Opcje wykonania"><strong>Opcje</strong></div>
+                        <div class="pos-comment col-3"><strong>Uwagi</strong></div>
+                        <div class="pos-action col-2"><strong>Akcje</strong></div>
+                    </div>         
+                </div>
+                {% for position in entity.orderpositions %}
+                    {{ _self.orderpositionsItem(position, modals, loop.index) }}
+                {% endfor %}
+            </div>   
+            <div class="panel-footer" >
+                <div class="row">
+                    <div class="col-24">
+                        <div class="order-messages alert alert-success" style="display: none;"></div>
+                    </div>                
+                </div>
+                <div class="row">
+                    <div class="col-8 text-left" >    
+                        <a id="return" href="{{ return_url|default('#') }}"><button id='btn_close' type="button" class="btn btn-md" title="Koniec edycji">Zakończ</button></a>
+                    </div>
+                </div> 
+            </div>
+     
+        </div>
+    </div>
+</div>
+
+

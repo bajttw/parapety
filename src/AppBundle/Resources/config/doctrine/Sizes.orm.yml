@@ -1,0 +1,39 @@
+AppBundle\Entity\Sizes:
+    type: entity
+    repositoryClass: AppBundle\Repository\SizesRepository
+    table: Sizes
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+            options:
+                unsigned: true
+    fields:        
+        name:
+            type: string
+            length: 20
+        symbol:
+            type: string
+            length: 5
+        description:
+            type: string
+            nullable: true
+            length: 100
+        sequence:
+            type: smallint
+            nullable: true
+            options:
+                unsigned: true
+        active:
+            type: boolean
+            options:
+                default: true
+    # oneToMany:
+    #     priceListItems:
+    #         targetEntity: PriceListItems
+    #         mappedBy: size
+    #         cascade: [ "persist", "merge", "refresh" ]
+    # lifecycleCallbacks: 
+    #     preUpdate: [ preUpdateSize ]

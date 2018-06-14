@@ -1,0 +1,63 @@
+AppBundle\Entity\Deliveries:
+    type: entity
+    table: Deliveries
+    repositoryClass: AppBundle\Repository\DeliveriesRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            options:
+                unsigned: true
+    fields:
+        generated:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        number:
+            type: string
+            nullable: true
+        progress:
+            type: integer
+            options:
+                unsigned: true
+                default: 0
+            comment: '0-100'
+        shipment:
+            type: datetime
+            nullable: true
+    oneToMany:
+        orders:
+            targetEntity: Orders
+            mappedBy: delivery  
+            cascade: [ "persist" , "merge"]
+        products:
+            targetEntity: Products
+            mappedBy: delivery            
+
+    manyToOne:
+        client:
+            targetEntity: Clients
+            inversedBy: deliveries
+            joinColumn:
+                name: clients_id
+                referencedColumnName: id
+    manyToMany:
+        notes:
+            targetEntity: Notes
+            joinTable:
+                name: Deliveries_Notes
+                joinColumns:
+                    deliveries_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    notes_id:
+                        referencedColumnName: id 
+            cascade: [ "persist" ]
+                
+    lifecycleCallbacks:
+        prePersist: [ prePersistDeliveries ]
+        postPersist: [ postPersistDeliveries ]
+        preUpdate: [ preUpdateDeliveries ]       
+        preRemove: [ preRemoveDeliveries ]

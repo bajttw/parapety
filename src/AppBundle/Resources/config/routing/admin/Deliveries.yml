@@ -1,0 +1,94 @@
+app_admin_deliveries:
+    path:     /
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::indexAction }
+
+app_admin_deliveries_client:
+    path:     /{cid}/client
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::clientIndexAction }
+
+app_admin_deliveries_ajax:
+    path:     /ajax
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::ajaxListAction }    
+
+app_admin_deliveries_client_ajax:
+    path:     /{cid}/client/ajax
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::clientAjaxListAction }    
+
+app_admin_deliveries_dic:
+    path:     /dic
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::ajaxDicAction }
+
+app_admin_deliveries_ajax_details:
+    path:     /ajax/details
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::ajaxListDetailsAction }    
+
+app_admin_deliveries_create:
+    path:     /create
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::createAction }
+    methods:  POST
+
+app_admin_deliveries_generate:
+    path:     /generate
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::generateAction }
+    methods:  POST
+
+app_admin_deliveries_data:
+    path:     /{id}/data
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::ajaxDataAction }    
+
+app_admin_deliveries_delete:
+    path:     /{id}/delete
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::deleteAction }
+
+app_admin_deliveries_edit:
+    path:     /{id}/edit
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::editAction }
+
+app_admin_deliveries_new:
+    path:     /new
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::newAction }
+
+app_admin_deliveries_remove:
+    path:     /{id}/remove
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::removeAction }
+    methods:  [POST, DELETE]
+
+app_admin_deliveries_service:
+    path:     /service
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::serviceAction }
+    
+app_admin_deliveries_show:
+    path:     /{id}/show
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::showAction }
+
+app_admin_deliveries_update:
+    path:     /{id}/update
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::updateAction }
+    methods:  [POST, PUT]
+
+app_admin_deliveries_client_new:
+    path:     /{cid}/client/new
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::newAction }
+
+app_admin_deliveries_client_create:
+    path:     /{cid}/client/create
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::createAction }
+    methods:  POST
+
+app_admin_deliveries_client_edit:
+    path:     /{cid}/client/{id}/edit
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::editAction }
+
+app_admin_deliveries_client_update:
+    path:     /{cid}/client/{id}/update
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::updateAction }
+    methods:  [POST, PUT]
+
+app_admin_deliveries_client_delete:
+    path:     /{cid}/client/{id}/delete
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::deleteAction }
+
+app_admin_deliveries_client_remove:
+    path:     /{cid}/client/{id}/remove
+    defaults: { _controller: AppBundle\Controller\DeliveriesController::removeAction }
+    methods:  [POST, DELETE]

@@ -1,0 +1,23 @@
+{% extends 'edit.html.twig' %}
+{% block form_buttons %}
+	{%	set buttons=[
+		{
+			attr: {
+				class: 'btn-info',
+				id: 'btn_status_prev'
+			},
+			label: '',
+			icon: 'reply'
+		},
+		{
+			attr: {
+				class: 'btn-primary',
+				id: 'btn_status_next'
+			},
+			label: '',
+			icon: 'done_all'
+		} 
+	]%}
+	{{ block('buttons') }}
+
+{% endblock form_buttons %}

@@ -1,0 +1,47 @@
+AppBundle\Entity\Colors:
+    type: entity
+    repositoryClass: AppBundle\Repository\ColorsRepository
+    table: Colors
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            options:
+                unsigned: true
+    fields:        
+        name:
+            type: string
+            length: 20
+        symbol:
+            type: string
+            length: 5
+        description:
+            type: string
+            nullable: true
+            length: 100
+        sequence:
+            type: smallint
+            nullable: true
+            options:
+                unsigned: true
+        active:
+            type: boolean
+            options:
+                default: true
+
+    oneToOne:
+        upload:
+            targetEntity: Uploads
+            joinColumn:
+                name: uploads_id
+                referencedColumnName: id   
+            cascade: [ "persist" ]
+    # oneToMany:
+    #     priceListItems:
+    #         targetEntity: PriceListItems
+    #         mappedBy: color
+    #         cascade: [ "persist", "merge", "refresh" ]
+    # lifecycleCallbacks:
+    #     preUpdate: [ preUpdateColor ]

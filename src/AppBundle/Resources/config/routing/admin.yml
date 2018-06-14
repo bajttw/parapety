@@ -1,0 +1,81 @@
+app_admin:
+    path:     /
+    defaults: { _controller: AppBundle:Clients:service }
+
+app_admin_query:
+    path:     /query
+    defaults: { _controller: AppBundle:App:ajaxTest }
+
+
+app_admin_clients:
+    resource: "@AppBundle/Resources/config/routing/admin/Clients.yml"
+    prefix:   /clients
+
+app_admin_clientsgroups:
+    resource: "@AppBundle/Resources/config/routing/admin/ClientsGroups.yml"
+    prefix:   /clientsgroups
+
+app_admin_colors:
+    resource: "@AppBundle/Resources/config/routing/admin/Colors.yml"
+    prefix:   /colors
+
+app_admin_models:
+    resource: "@AppBundle/Resources/config/routing/admin/Models.yml"
+    prefix:   /models
+
+app_admin_notes:
+    resource: "@AppBundle/Resources/config/routing/admin/Notes.yml"
+    prefix:   /notes
+
+app_admin_orders:
+    resource: "@AppBundle/Resources/config/routing/admin/Orders.yml"
+    prefix:   /orders
+
+app_admin_invoices:
+    resource: "@AppBundle/Resources/config/routing/admin/Invoices.yml"
+    prefix:   /invoices
+
+app_admin_sizes:
+    resource: "@AppBundle/Resources/config/routing/admin/Sizes.yml"
+    prefix:   /sizes
+
+app_admin_trims:
+    resource: "@AppBundle/Resources/config/routing/admin/Trims.yml"
+    prefix:   /trims
+
+app_admin_settings:
+    resource: "@AppBundle/Resources/config/routing/admin/Settings.yml"
+    prefix:   /settings
+
+# app_admin_uploads:
+#     resource: "@AppBundle/Resources/config/routing/admin/Uploads.yml"
+#     prefix:   /uploads
+
+app_admin_users:
+    resource: "@AppBundle/Resources/config/routing/admin/Users.yml"
+    prefix:   /users
+
+app_admin_usersgroups:
+    resource: "@AppBundle/Resources/config/routing/admin/UsersGroups.yml"
+    prefix:   /usersgroups
+
+app_admin_pricelists:
+    resource: "@AppBundle/Resources/config/routing/admin/PriceLists.yml"
+    prefix:   /pricelists
+
+app_admin_pricelistitems:
+    resource: "@AppBundle/Resources/config/routing/admin/PriceListItems.yml"
+    prefix:   /pricelistitems
+
+app_admin_productions:
+    resource: "@AppBundle/Resources/config/routing/admin/Productions.yml"
+    prefix:   /productions
+
+app_admin_products:
+    resource: "@AppBundle/Resources/config/routing/admin/Products.yml"
+    prefix:   /products
+
+app_admin_deliveries:
+    resource: "@AppBundle/Resources/config/routing/admin/Deliveries.yml"
+    prefix:   /deliveries
+

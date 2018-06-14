@@ -1,0 +1,452 @@
+{% use "blocks.html.twig" %}
+
+
+
+{%- block order_comm_signals -%}
+    {% set signals=[
+            { en: 'orders', name: 'clientComment', value: order.clientComment|default('') },
+            { en: 'orders', name: 'orderComment', value: order.orderComment|default('') },
+            { en: 'orders', name: 'prodComment', value: order.prodComment|default('') }
+        ]
+    %}
+    {{ block('btn_signals') }}
+{%- endblock order_comm_signals -%}
+
+{%- block show_pos_comm_signals -%}
+    {% set cell={
+        name: 'comments',
+        signals:[
+            { en: 'positions', name: 'clientComment', value: position.clientComment|default('') },
+            { en: 'positions', name: 'positionComment', value: position.positionComment|default('') },
+            { en: 'positions', name: 'prodComment', value: position.prodComment|default('') }
+        ]
+    }%}
+    {{ block("cell_signals") }}
+{%- endblock show_pos_comm_signals -%}
+
+{%- block show_position_values -%}
+    {% set cells=posTab.fields.values is not defined ? ['nr', 'length', 'width', 'quantity', 'area'] : posTab.fields.values %}
+    {{ block('cells') }}
+{%- endblock show_position_values -%}
+
+{%- block show_position_additionals -%}
+    {% set cells=posTab.fields.additionals|default([]) %}
+    {{ block('cells') }}
+{%- endblock show_position_additionals -%}
+
+{%- block show_position_options -%}
+    {% set fields= posTab.fields.options is not defined ? ['model', 'size', 'color', 'trims'] : posTab.fields.options %}
+    {% for name in fields %}
+        {% set cell={
+            name: name,
+            options: {
+                disp: 'name'
+            }
+        }%}
+        {% set cell=cell|set_array_value('diff', position[cell.name]|default(null)|diff(order[cell.name]|default(null)) ) %}
+        {{ block('cell_data') }}
+    {% endfor %}
+{%- endblock show_position_options -%}
+
+{%- block show_position_info -%}
+    <div class="row-info" style="display:none;">
+        {% for name in ['clientComment', 'positionComment', 'prodComment'] %}
+            {% set cell={
+                en: 'positions',
+                name: name,
+                attr: {
+                    title: 'positions.title.'~name
+                }
+            } %}
+            <div class="col-4">
+                {{ block("show_field") }}
+            </div>  
+        {% endfor %}
+    </div>
+{%- endblock show_position_info -%}
+
+{%- block show_position -%}
+    {% import 'macros.html.twig' as mbajt %}
+    {% set cellOpt=cellOpt|default({ ownClass: true, cellData: true }) %}
+    {% set values=position|default({}) %}
+    {% set div={
+        attr: posTab.pos.attr|default({})|add_class('row-pos'),
+        d: posTab.pos.d|default({})|set_array_value('values', [ { name: 'position', key: 'id' } ] ) 
+    }%}
+    {{ block("begin_div") }}
+        <div class="row-data">
+            {{ block("show_position_values") }}
+            {{ block("show_position_options") }}
+            {{ block("show_position_additionals") }}
+            {% if posTab.showComments|default(false) %}
+                {{ block("show_pos_comm_signals") }}
+            {% endif %}
+            {% if posTab.showActions|default(false) %}
+                <div class="c-actions">{{ mbajt.span_btn_info() }}</div>
+            {% endif %}
+        </div>
+        {% if posTab.showInfo|default(false) %}
+            {{ block("show_position_info") }}
+        {% endif %}
+    {{ block("close_div") }}
+{%- endblock show_position -%}
+
+{%- block show_positions_summary -%}
+    {% set tabRow={
+        attr: { class: "row-data row-foot" },
+        cellOpt: { ownClass: true, cellData: true, class: 'cell-h'  },
+        values: order|default(null),
+        cells: [
+            { name: 'osummary', content: 'orders.label.total'|trans, cellData: false, attr: { class: "cell-head" } },
+            { name: 'quantity' },
+            { name: 'area' }
+        ]
+
+    }%}
+    {{ block("div_table_row") }}
+{#    <div class="row-data row-foot">   
+        <div class="c-osummary cell-h cell-head">{{ 'orders.label.total'|trans }}</div>
+        <div class="c-quantity cell-h" data-name="quantity">{{ order.quantity|default('-') }}</div>
+        <div class="c-area cell-h" data-name="area">{{ order.area|default('-') }}</div>
+    </div>
+#}{%- endblock show_positions_summary -%}
+
+{%- block positions_rows -%}
+    {% for position in positions|default( order.positions|default([]) ) %}
+        {{ block(posTab.posBlock|default('show_position')) }}
+    {% endfor %}
+{%- endblock positions_rows -%}
+
+{%- block show_positions -%}
+    {% set posTab= posTab|default({})
+        |set_array_value('showComments', true) 
+        |set_array_value('showInfo', true) 
+        |set_array_value('showActions', true) 
+        |set_array_value('actions', ['info'])
+        |set_array_value('posBLock', 'show_position' )
+    %}
+    {% set posTab= posTab
+        |set_array_value( 'fields.values', [ "nr", "length", "width", "quantity", "area" ])
+        |set_array_value( 'fields.options', [ "model", "size", "color", "trims" ])
+        |set_array_value( 'fields.additionals', [])
+        |set_array_value( 'fields.comm', posTab.showComments ? ['comments'] : [] )
+        |set_array_value( 'fields.actions', posTab.actions is not empty ? ['actions'] : [])
+    %}
+    {% set posTab=posTab|set_array_value('fields.all', posTab.fields|array_merge(['values', 'options', 'additionals', 'comm', 'actions'])) %}
+    {% set en='positions' %}
+    {% set divTab={ 
+        attr: posTab.table.attr|default({})|add_class(['table-view', 'table-bordered']),
+        d: posTab.table.d|default({}),
+    } %}
+    {% if posTab.templates is defined %}
+        {% for pname, bname in posTab.templates %}
+            {% set divTab=divTab|set_array_value(['d', 'templates', pname], block(bname)|trim() ) %}
+        {% endfor %}
+    {% endif %}
+    {{ block("begin_div_table") }}
+        {% set cellOpt={ ownClass: true, cellData: true } %}
+        {% set tabHeader={ cells: posTab.fields|array_merge(['values', 'options', 'additionals', 'comm', 'actions']) } %}
+        {{ block("div_table_header") }}
+        {% set tabBody= { d: { name: 'positions' } } %}
+        {{ block("begin_div_table_body") }}
+            {{ block('positions_rows') }}
+        {{ block("close_div") }}
+        {% if posTab.showSummary|default(false) %}
+            {{ block("show_positions_summary") }}
+            {% set tabFooter= {  content: block("show_positions_summary") }  %}
+{#            {{ block("div_table_footer") }}#}
+        {% endif %}
+    {{ block("close_div") }}
+{%- endblock show_positions -%}
+
+{%- block show_order_info -%}
+    <div class='col-4 collection'>
+        {# {{ block('show_order_lackers_field')}} #}
+    </div>  
+    {% for name in [ 'clientComment', 'orderComment', 'prodComment'] %}
+        {% set cell={
+            en: 'orders',
+            emptyVal: '',
+            name: name,
+            attr: {
+                title: 'orders.title.'~name
+            }
+        } %}
+        <div class="col-4">
+            {{ block("show_field") }}
+        </div>  
+    {% endfor %}
+{%- endblock show_order_info -%}
+
+
+
+{%- block show_order -%}
+    <div class="row-blocks">
+        <div class="col-3">
+            {% set card={ 
+                attr: { class: 'card-sm' }, 
+                header: { title: 'orders.label.client' }
+            } %}
+            {{ block("begin_card") }}
+                {% set divTab={
+                    en: 'clients',
+                    attr: { class: 'table-view' },
+                    cellOpt: { defClass: 'col', cellData: true }, 
+                    header: { 
+                        cells:[ 'code', 'name' ] 
+                    },
+                    data: { 
+                        values: order.client|default(null), 
+                        cells:[ 
+                            { name: 'code', d: { name: 'client.code' } },
+                            { name: 'name', d: { name: 'client.name' } } 
+                        ] 
+                    } 
+                } %}
+                {{ block("div_table") }}
+            {{ block("close_card") }}
+        </div>
+        <div class="col-9">
+            {% set card={ 
+                attr: { class: 'card-sm' }, 
+                header: { title: 'orders.label.basic_data', inf: 'all' }
+            } %}
+            {{ block("begin_card") }}
+                {% set divTab={
+                    en: 'orders',
+                    attr: { class: 'table-view' },
+                    cellOpt: { addClass: false, defClass: 'col-2', cellData: true }, 
+                    header: { cells:['number', 'clientNumber', 'generated', 'approved', 'term', 'express'] },
+                    data: { values: order|default(null), cells:['number', 'clientNumber', 'created', { name: 'approved', options: { empty: '-' } }, { name: 'term', options: { empty: '-' } }, { name: 'express', dic: true } ] }
+                } %}
+                {{ block("div_table") }}
+            {{ block("close_card") }}
+        </div>
+    </div>
+    <div class="row-blocks">
+        <div class="col-12">
+            {% set card={ 
+                attr: { class: 'card-sm' }, 
+                header: { title: 'orders.label.parameters', inf: 'card' },
+                block: { attr: { class: 'overflow-x' } }
+            } %}
+            {{ block("begin_card") }}
+                {% set divTab={
+                    en: 'orders',
+                    attr: { class: 'table-view' },
+                    cellOpt: { cellData: true, ownClass: true },
+                    header: { 
+                        cells:[ "model", "size", "color", "trims", "comments", "quantity", "area"] 
+                    },
+                    data: { 
+                        cellOpt: { cellData: true },
+                        values: order|default(null),
+                        cells:[ 
+                            { name: "model", options: { disp: 'name' } }, 
+                            { name: "size", options: { disp: 'name' } },
+                            { name: "color", options: { disp: 'name' } },
+                            { name: "trims", options: { disp: 'name' } },
+                            { name: "comments", cellData: false, content: block("order_comm_signals")|trim },
+                            'quantity',
+                            'area'
+                        ]
+                    },
+                    info: {
+                        content: block('show_order_info')|trim
+                    }
+                } %}
+                {{ block("div_table") }}
+            {{ block("close_card") }}
+        </div>
+    </div>
+    <div class="row-blocks">
+        <div class="col-12">
+            {% set card={ 
+                attr: { class: 'card-sm' }, 
+                header: { title: 'orders.label.positions', inf: 'card' },
+                block: { attr: { class: 'overflow-x' } }
+            } %}
+            {{ block("begin_card") }}
+                {% set posTab=posTab|set_array_value( 'showSummary', true) %}
+                {{ block("show_positions") }}
+            {{ block("close_card") }}
+        </div>
+    </div>                        
+{%- endblock show_order -%}
+
+{%- block view_order -%}
+    {% set posTab= posTab|default({})
+        |set_array_value('showComments', true) 
+        |set_array_value('showInfo', true) 
+        |set_array_value('showSummary', true) 
+        |set_array_value('showActions', true) 
+        |set_array_value('actions', ['info'])
+        |set_array_value('setPrototype', false )
+    %}
+    {% set posTab= posTab
+        |set_array_value( 'fields.values', [ "nr", "length", "width", "quantity", "area" ])
+        |set_array_value( 'fields.options', [ "model", "size", "color", "trims" ])
+        |set_array_value( 'fields.additionals', [])
+        |set_array_value( 'fields.comm', posTab.showComments ? ['comments'] : [] )
+        |set_array_value( 'fields.actions', posTab.actions is not empty ? ['actions'] : [])
+    %}
+    {% set order=entity %}
+    {% set show={
+        d: {
+            templates: {
+                positions: block('show_position')|trim,
+                diff: block('show_diff' )|trim
+            }
+        }
+    }%}
+    {{ block('begin_show_container')}}
+        {{ block('show_order') }}
+    {{ block("close_div") }}
+{%- endblock view_order -%}
+
+{%- block dt_details_package_position -%}
+    {% set posTab=posTab|set_array_value('pos.d.values', [{'name' : 'position', 'key' : 'id'}, { 'name' : 'size', 'key' : 'size.Value.id'}, { 'name' : 'package', 'key' : 'package.nr'}]) %}
+    {{ block("show_position") }}
+{%- endblock dt_details_package_position -%}
+
+{%- block dt_details_package_positions -%}
+    {% set posTab={ 
+        table: {
+            attr: {
+                class: 'table-detail'
+            }
+        },
+        fields: { values: ["select", "length", "width", "quantity", "area" ], options: [ 'size' ], additionals: [{ name: 'package', d: {disp: 'number'} }]  }, 
+        posBlock: 'dt_details_package_position',  
+        templates: { 
+            positions: 'dt_details_package_position',
+            lackers: 'show_lacker'
+        }
+    } %}
+    {{ block("show_positions") }}
+    {# {   #}
+{%- endblock dt_details_package_positions -%}
+
+
+{%- block sizes_summary -%}
+{% set fields = summary.fields|default(['quantity', 'area']) %}
+{% set dic = summary.dic|default([]) %}
+{% set en = summary.en|default('orders') %}
+{% set name = summary.name|default('') %}
+{% set id= summary.id|default( (name ? name~'_' : '')~'summary') %}
+{% set label= summary.label|default( en~'.label.'~id ) %}
+<div class="card card-sm">
+    <div class="card-header">
+        {{ label|trans }}
+    </div>
+    <div class="card-block">
+        <div class="table table-view table-columns" id="{{id}}">
+            <div class="col-head">
+                <div>&nbsp</div>
+                {% for field in fields %}
+                    <div>{{ ("orders.label."~field)|trans }}</div>
+                {% endfor %}
+            </div>
+            {% for record in dic %}
+                <div class="col-data" data-value="{{record.v}}">
+                    <div class="cell-head">{{ record.n }}</div>
+                    {% for field in fields %}
+                        <div data-name="{{ field }}">&nbsp</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="col-data font-weight-bold" data-value="all">
+                <div class="cell-head">{{ "label.sumAll"|trans }}</div>
+                {% for field in fields %}
+                    <div data-name="{{ field }}">&nbsp</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{%- endblock sizes_summary -%}
+
+
+{%- block order_details -%}
+    <div class="show col-12">
+        <div class="table table-view table-show">
+            <div class="row-head">
+                <div class="col-2">{{ "orders.label.model"|trans }}</div>
+                <div class="col-2">{{ "orders.label.size"|trans }}</div>
+                <div class="col-2">{{ "orders.label.color"|trans }}</div>
+                <div class="col-2">{{ "orders.label.trims"|trans }}</div>
+            </div>
+            <div class="row-data">
+                <div class="col-2" data-name="model"></div>
+                <div class="col-2" data-name="size"></div>
+                <div class="col-2" data-name="color"></div>
+                <div class="col-2" data-name="trims"></div>
+            </div>
+        </div>
+        {{ block("order_details_positions") }}
+    </div>
+{%- endblock order_details -%}
+
+{%- block order_details_positions -%}
+    <div class="table table-view table-show">
+        <div class="table-header">
+            <div class="row-head">
+                <div class="c-lp">{{ "label.lp"|trans }}</div>
+                <div class="c-length">{{ "positions.label.length"|trans }}</div>
+                <div class="c-width">{{ "positions.label.width"|trans }}</div>
+                <div class="c-quantity">{{ "positions.label.quantity"|trans }}</div>
+                <div class="c-area">{{ "positions.label.area"|trans }}</div>
+                <div class="c-model">{{ "positions.label.model"|trans }}</div>
+                <div class="c-cutter">{{ "positions.label.size"|trans }}</div>
+                <div class="c-size">{{ "positions.label.color"|trans }}</div>
+                <div class="c-handle">{{ "positions.label.trims"|trans }}</div>
+                <div class="c-comments">{{ "positions.label.comments"|trans }}</div>
+                <div class="c-actions">{{ "positions.label.actions"|trans }}</div>
+            </div>
+        </div>
+        <div class="table-body" data-name="positions">  
+        </div>   
+    </div>   
+{%- endblock order_details_positions -%}
+
+{%- block order_details_position -%}
+    <div class='row-pos position'>
+        <div class='row-data'>
+            <div class='c-lp' data-name='nr'></div>
+            <div class='c-length' data-name='l'></div>
+            <div class='c-width' data-name='w'></div>
+            <div class='c-quantity' data-name='q'></div>
+            <div class='c-area' data-name='a'  data-trans='{'fn':'floatToStr','par':3}'></div>
+            <div class='c-model' data-name='m'></div>
+            <div class='c-size' data-name='s'></div>
+            <div class='c-color' data-name='c'></div>
+            <div class='c-trims' data-name='ts'></div>
+            <div class='c-comments'></div>
+            <div class='c-actions'>{{ block('btn_info') }}</div>
+        </div>
+        <div class='row-info' style='display:none;'>
+            <div class='col-3'>
+                <p><strong>{{ 'positions.label.clientComment'|trans }}</strong></p>
+                <p data-name='positonComment'></p>
+            </div>
+            <div class='col-3'>
+                <p><strong>{{ 'positions.label.positionComment'|trans }}</strong></p>
+                <p data-name='positonComment'></p>
+            </div>
+            <div class='col-3'>
+                <p><strong>{{ 'positions.label.prodComment'|trans }}</strong></p>
+                <p data-name='prodComment'></p>
+            </div>
+            <div class='col-3'>
+                <p><strong>{{ 'positions.label.uploads'|trans }}</strong></p>
+                <p ></p>
+            </div>
+        </div>   
+    </div>   
+{%- endblock order_details_position -%}
+
+{% block order_details_lackers %}
+    <div class="table" data-tmpl="{{ block('show_lacker')|trim}}" data-container="1" >
+    </div>
+{% endblock order_details_lackers %}

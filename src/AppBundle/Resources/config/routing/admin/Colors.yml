@@ -1,0 +1,46 @@
+app_admin_colors:
+    path:     /
+    defaults: { _controller: AppBundle\Controller\ColorsController::indexAction }
+
+app_admin_colors_ajax:
+    path:     /ajax
+    defaults: { _controller: AppBundle\Controller\ColorsController::ajaxListAction }
+
+app_admin_colors_dic:
+    path:     /dic
+    defaults: { _controller: AppBundle\Controller\ColorsController::ajaxDicAction }
+
+app_admin_colors_data:
+    path:     /{id}/data
+    defaults: { _controller: AppBundle\Controller\ColorsController::ajaxDataAction }
+
+app_admin_colors_show:
+    path:     /{id}/show
+    defaults: { _controller: AppBundle\Controller\ColorsController::showAction }
+
+app_admin_colors_new:
+    path:     /new
+    defaults: { _controller: AppBundle\Controller\ColorsController::newAction }
+
+app_admin_colors_create:
+    path:     /create
+    defaults: { _controller: AppBundle\Controller\ColorsController::createAction }
+    methods:  POST
+
+app_admin_colors_edit:
+    path:     /{id}/edit
+    defaults: { _controller: AppBundle\Controller\ColorsController::editAction }
+
+app_admin_colors_update:
+    path:     /{id}/update
+    defaults: { _controller: AppBundle\Controller\ColorsController::updateAction }
+    methods:  [POST, PUT]
+
+app_admin_colors_delete:
+    path:     /{id}/delete
+    defaults: { _controller: AppBundle\Controller\ColorsController::deleteAction }
+
+app_admin_colors_remove:
+    path:     /{id}/remove
+    defaults: { _controller: AppBundle\Controller\ColorsController::removeAction }
+    methods:  [POST, DELETE]

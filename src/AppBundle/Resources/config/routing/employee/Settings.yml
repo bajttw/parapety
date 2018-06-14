@@ -1,0 +1,85 @@
+settings:
+    path:     /
+    defaults: { _controller: "AppBundle:Settings:index" }
+
+settings_ajax:
+    path:     /ajax
+    defaults: { _controller: "AppBundle:Settings:ajaxList" }
+
+settings_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:Settings:create" }
+    methods:  POST
+
+settings_data:
+    path:     /{id}/data
+    defaults: { _controller: "AppBundle:Settings:ajaxData" }
+
+settings_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:Settings:delete" }
+
+settings_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:Settings:edit" }
+
+settings_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Settings:new" }
+
+settings_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "AppBundle:Settings:remove" }
+    methods:  [POST, DELETE]
+
+settings_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:Settings:show" }
+
+settings_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:Settings:update" }
+    methods:  [POST, PUT]
+
+settings_client:
+    path:     /{cid}/client
+    defaults: { _controller: "AppBundle:Settings:clientIndex" }
+
+settings_client_ajax:
+    path:     /{cid}/client/ajax
+    defaults: { _controller: "AppBundle:Settings:clientAjaxList" }
+
+settings_client_create:
+    path:     /{cid}/client/create
+    defaults: { _controller: "AppBundle:Settings:create" }
+    methods:  POST
+
+settings_client_data:
+    path:     /{cid}/client/{id}/data
+    defaults: { _controller: "AppBundle:Settings:clientAjaxData" }
+
+settings_client_delete:
+    path:     /{cid}/client/{id}/delete
+    defaults: { _controller: "AppBundle:Settings:delete" }
+
+settings_client_edit:
+    path:     /{cid}/client/{id}/edit
+    defaults: { _controller: "AppBundle:Settings:edit" }
+
+settings_client_new:
+    path:     /{cid}/client/new
+    defaults: { _controller: "AppBundle:Settings:clientNew" }
+
+settings_client_remove:
+    path:     /{cid}/client/{id}/remove
+    defaults: { _controller: "AppBundle:Settings:remove" }
+    methods:  [POST, DELETE]
+
+settings_client_show:
+    path:     /{cid}/client/{id}/show
+    defaults: { _controller: "AppBundle:Settings:show" }
+
+settings_client_update:
+    path:     /{cid}/client/{id}/update
+    defaults: { _controller: "AppBundle:Settings:update" }
+    methods:  [POST, PUT]

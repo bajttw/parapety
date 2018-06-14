@@ -1,0 +1,57 @@
+AppBundle\Entity\Productions:
+    type: entity
+    repositoryClass: AppBundle\Repository\ProductionsRepository
+    table: Productions
+    indexes:
+
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            options:
+                unsigned: true
+    fields:
+        generated:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        number:
+            type: string
+            nullable: true
+        progress:
+            type: integer
+            options:
+                unsigned: true
+                default: 0
+            comment: '0-100'
+    oneToMany:
+        orders:
+            targetEntity: Orders
+            mappedBy: production  
+            cascade: [ "persist" , "merge"]
+        products:
+            targetEntity: Products
+            mappedBy: production  
+            cascade: [ "persist", "merge" ]
+
+    manyToMany:
+        notes:
+            targetEntity: Notes
+            joinTable:
+                name: Productions_Notes
+                joinColumns:
+                    productions_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE                        
+                inverseJoinColumns:
+                    notes_id:
+                        referencedColumnName: id 
+            cascade: [ "persist" ]
+
+    lifecycleCallbacks:
+        prePersist: [ prePersistProductions ] 
+        postPersist: [ postPersistProductions ]
+        preUpdate: [ preUpdateProductions ]        
+        preRemove: [ preRemoveProductions ]

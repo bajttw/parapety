@@ -1,0 +1,57 @@
+{% extends 'Modal/content.html.twig' %}
+
+
+{%- block modal_actionsRow -%}
+    {% set btn= { size: 'sm'} %}
+    {{ block('btn_delete') }}
+{%- endblock modal_actionsRow -%}
+
+{%- block modal_addedRow -%}
+    <div class="field row-pos"  data-values="{{ rowValues|default({ key: 'id', name: 'id'}|json_encode) }}" >
+        {% set tabRow = {
+            cellOpt: {
+                ownClass: true,
+                cellData: true
+            },
+            attr: {
+                class: 'row-data'
+            },
+            cells: modal.columns|default(['id'])|merge([{ name: 'actions', content: block('modal_actionsRow'), cellData: false }] )
+        } %}
+        
+        {{ block("div_table_row") }}
+    </div>
+{%- endblock modal_addedRow -%}
+
+
+{%- block modal_body -%}
+    {% set en= modal.en|default(modal.name) %}
+    {% set divTab={
+        cellOpt: { ownClass: true },
+        en: en,
+        header: {
+            cells: modal.columns|default(['id'])|merge(['actions'] )
+        }, 
+        attr: { 
+            class: 'table-bordered'
+
+        },
+        body: {
+            attr: {
+                class: 'fields-container'
+            },
+            d: {
+                tmpl: block("modal_addedRow")
+            }
+        }
+    } %}
+    {{ block("div_table") }}
+
+{%- endblock -%}
+
+{%- block modal_form_submit -%}
+    {% set btn = modal.addBtn|default({}) %}
+    {{ block('btn_save') }}
+{%- endblock modal_form_submit -%}
+
+

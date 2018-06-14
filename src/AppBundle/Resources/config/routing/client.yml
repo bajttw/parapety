@@ -1,0 +1,20 @@
+# home:
+#     path:     /
+#     defaults: { _controller: AppBundle\Controller\OrdersController:index }
+
+settings:
+    resource: "@AppBundle/Resources/config/routing/client/Settings.yml"
+    prefix:   /settings
+
+users:
+    resource: "@AppBundle/Resources/config/routing/client/Users.yml"
+    prefix:   /users
+
+clients:
+    resource: "@AppBundle/Resources/config/routing/client/Clients.yml"
+    prefix:   /clients
+
+# orders:
+#     resource: "@AppBundle/Resources/config/routing/client/Orders.yml"
+#     prefix:   /orders
+

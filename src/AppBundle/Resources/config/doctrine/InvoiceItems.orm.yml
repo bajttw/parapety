@@ -1,0 +1,52 @@
+AppBundle\Entity\InvoiceItems:
+    type: entity
+    table: InvoiceItems
+    repositoryClass: AppBundle\Repository\InvoiceItemsRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            options:
+                unsigned: true
+    fields:        
+        nr:
+            type: smallint
+            nullable: true
+            options:
+                unsigned: true
+                default: 0
+        name:
+            type: string
+            nullable: true
+            length: 50
+            fixed: false
+        value:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            options:
+                default: 0        
+        quantity:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            options:
+                default: 0        
+    manyToOne:
+        invoice:
+            targetEntity: Invoices
+            inversedBy: invoiceItems
+            joinColumn:
+                name: invoice_id
+                referencedColumnName: id
+                onDelete: CASCADE    
+        price:
+            targetEntity: Prices
+            joinColumn:
+                name: prices_id
+                referencedColumnName: id                
+    lifecycleCallbacks: {  }

@@ -1,0 +1,68 @@
+{#{% use "blocks.html.twig" %}#}
+{#{% use "Form/blocks.html.twig" %}#}
+{% use "@App/Orders/blocks.html.twig" %}
+{% use "@App/Orders/formBlocks.html.twig" %}
+{% set admin = form.vars.attr['data-admin']|default(false) %}
+
+<div class="row-blocks">
+    <div class="col-12"> 
+        {% set card={ 
+            attr: {
+                class: 'card-sm'
+            },
+            header: { 
+                title: 'orders.label.basic_data',
+                right_content: block('btn_more_card')                               
+            },
+            content: block('form_orders_basic')
+        } %}
+        {{ block("card") }}
+    </div>
+</div>
+    
+<div class="row-blocks">
+    <div class="col-12">   
+        {% set card={ 
+            attr: {
+                class: 'card-sm'
+            },
+            header: { 
+                title: 'orders.label.parameters'
+            },
+            content: block('form_orders_parameters')
+        } %}
+        {{ block("card") }}
+    </div>
+</div>
+<div class="row-blocks">
+    <div class="col-4">    
+        {% set card={ 
+            attr: {
+                class: 'card-sm'
+            },
+            header: { 
+                title: 'orders.label.summary'
+            },
+            content: block('form_orders_summary')
+        } %}
+        {{ block("card") }}
+    </div>
+</div>
+<div class="row-blocks">
+    <div class="col-12">
+        {% set card={ 
+            attr: {
+                class: 'card-sm'
+            },
+            header: { 
+                title: 'orders.label.positions',
+                right_content: block('form_orders_positions_buttons')
+            },
+            content: form_row(form.positions, { entities_settings: entities_settings }) 
+        } %}
+        {{ block("card") }}
+    </div>
+</div>
+<div style="display:none;">
+    {{form_widget(form)}}
+</div>

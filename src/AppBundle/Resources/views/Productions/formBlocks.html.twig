@@ -1,0 +1,122 @@
+{% use "blocks.html.twig" %}
+{% use "Form/blocks.html.twig" %}
+
+    
+{% block form_productions_order_actions %}
+    {% set en = 'orders' %}
+    {{ block('btn_more') }}
+    {% set btn = {
+        d: {
+            toggle: 'confirmation'
+        }
+    } %}
+    {{ block('btn_delete') }}
+{% endblock form_productions_order_actions %}
+
+{% block orders_buttons %}
+    {%	set buttons = [
+        {
+            attr: {
+                class: 'btn-outline-success',
+                id: 'orders_import_btn'
+            },
+            label: 'productions.label.addOrders'|trans,
+            icon: 'add_circle_outline'
+        } 
+    ] %}
+    {{ block('buttons') }}
+{% endblock orders_buttons %}
+
+{% block form_productions_basic %}
+    {% set rowOpt={ defClass: 'row-blocks' } %}
+    {% set cellOpt= { defClass: 'col', form: 'field' } %}
+    {% set rows=[
+        {         
+            cells: [
+                { name: 'generated', options:{ disp: true} },
+                { name: 'number', options:{ disp: true} },
+                { name: 'progress', options:{ disp: true} }
+            ]
+        }
+    ]%}
+    {{ block("div_table_rows") }}
+{% endblock form_productions_basic %}
+
+{% block form_productions_products %}
+    {% include products_panel.template|default('Panel/layout.html.twig') with { panel : products_panel } %}
+{% endblock form_productions_products %}
+
+{% block form_orders_summary %}
+    {% set cellOpt= { defClass: 'col', form: 'field', options: { disp: true } } %}
+    {% set tabRow={ 
+        attr: { 
+            class: 'row-blocks' 
+        },
+        cells: [
+            'quantity',
+            'area'
+        ]
+    }%}
+    {{ block("div_table_row") }}
+{% endblock form_orders_summary %}
+
+
+{%- block _appbundle_productions_orders_row -%}
+    {% set en= 'orders' %}
+    {% set divTab={ attr: { class: 'table-bordered table-form'} } %}
+    {{ block("begin_div_table") }}
+        {% set cellOpt={ ownClass: true } %}
+        {% set tabHeader={
+            cells: [ 'client', 'number', 'created', 'approved', 'area', 'comments', 'actions' ]
+        }%}
+        {{ block("div_table_header") }}
+        {% set attr = attr|add_class('table-body') %}
+        {% if prototype is defined %}
+            {%- set attr = attr|merge({'data-prototype': form_row(prototype, { hidden: 1}) }) -%}        
+        {% endif %}
+        {% set attr = attr|set_array_value('data-form', 'positions' ) %}
+        {{- block('form_widget') -}}
+    {{ block("close_div") }}
+{%- endblock _appbundle_productions_orders_row -%}
+
+{%- block _appbundle_productions_orders_entry_row -%}
+    {% import 'macros.html.twig' as mbajt %}
+    {% if hidden is defined %}
+        {% set attr = attr|merge({style: (attr.style|default('') ~ ' display:none;')|trim}) -%}
+    {% endif %}
+    {% set attr = attr|add_class( ['row-pos'] ) %}
+    <div  {{ block('widget_container_attributes') }}>
+        {% set rows=[
+            {
+                attr: { class: 'row-data' },
+                cellOpt: { cellData: true, ownClass: true },
+                cells: [ 
+                    { name: 'client' , d: { disp: 'name' } },
+                    { name: 'number' },
+                    { name: 'created'},
+                    { name: 'approved'},
+                    { name: 'area'},
+                    { name: 'comments' },
+                    { name: 'actions', cellData: false, content: block('form_productions_order_actions') }
+                ]
+            },
+            {
+                attr: { class: 'row-info', style: 'display: none;' },
+                cellOpt: { class: 'col', cellData: true},
+                cells : [ 
+                    'clientComment',
+                    'orderComment', 
+                    'prodComment'
+                ]
+            }
+        ] %}
+        {{ block("div_table_rows") }}
+         <div style="display:none;">
+            {{form_widget(form)}}
+        </div>
+    </div>         
+{%- endblock _appbundle_productions_orders_entry_row -%}
+
+
+
+

@@ -1,0 +1,76 @@
+{% extends 'Modal/content.html.twig' %}
+{%- block modal_lacker -%}
+    <div class="field row-pos" style="display:none" >
+        <div class="row-data">
+            <div class="col-1 cell-v" data-name="sq">
+            </div>
+            <div class="col-5 cell-v" data-name="color.n">
+            </div>
+            <div class="col-4 cell-v" >
+                <div class="form-group">
+                    <select class="form-control" data-name="opt">
+                        {% for option in modal.settings.dictionaries.options %}
+                            <option value="{{option.v }}" title="{{ option.d }}">{{ option.n }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-2 cell-v">
+                <button type="button" class="btn btn-info pos-inf" title="{{ 'lackers.title.options'|trans }}"><span class="fa fa-info-circle" ></span></button>
+                <button type="button" class="btn btn-danger pos-rm" title="{{ 'lackers.title.del'|trans }}"><span class="fa fa-remove"></span></button>
+            </div>
+        </div>
+        <div class="row-info" style="display:none;">
+            <div class="col-12">
+                <div class="form-group">
+                    <textarea class="form-control" data-name="com" title="{{ 'lackers.title.comment'|trans }}" ></textarea>                
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endblock modal_lacker -%}
+{%- block modal_body -%}
+    {% set fieldtype= modal.fieldtype|default('') %}
+    {% set fieldname= 'field-'~modal.attr.id %}
+    <div class="panels" >
+        <div class="col-5 flex-box">   
+            <div class="card flex-box flex-auto">   
+                <div class="card-header">
+                    {{ 'lackers.label.lackers'|trans }}
+                </div>
+                <div class="card-block flex-auto flex-box" >
+                    {% set toolbars=modal.toolbars|default(null) %}
+                    {{ block("toolbars") }}
+                    {% set table = modal.table %}
+                    {{ block('datatable') }} 
+                </div>
+            </div>
+        </div>
+        {{ block("import_btn") }}
+        <div class="col flex-box">
+            <div class="card flex-box flex-auto">
+                <div class="card-header" >
+                    {{ 'lackers.label.choiced'|trans }}
+                </div>
+                <div class="card-block">
+                    <div class="table table-form table-scroll">
+                        <div class="row-head">
+                            <div class="col-1 cell-v">{{ 'lackers.label.lp'|trans }}</div>
+                            <div class="col-5 cell-v">{{ 'lackers.label.color'|trans }}</div>
+                            <div class="col-4 cell-v">{{ 'lackers.label.option'|trans }}</div>
+                            <div class="col-2 cell-v">{{ 'lackers.label.actions'|trans }}</div>
+                        </div>
+                        <div id="modal-lackers-list" data-fieldtype="{{ fieldtype }}" class="fields-container table-body" data-sortable="1" data-prototype="{{ block('modal_lacker')|e }}" data-maxlackers="{{ modal.settings.max[0]|default('5') }}" >
+
+                        </div>                            
+                    </div>                            
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endblock -%}
+{%- block modal_form_submit -%}
+    <button type="button" class="btn-save btn btn-success" >{{"label.save"|trans}}</button>
+{%- endblock modal_form_submit -%}
+
+

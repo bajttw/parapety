@@ -1,0 +1,68 @@
+app_admin_productions:
+    path:     /
+    defaults: { _controller: AppBundle\Controller\ProductionsController::indexAction }
+
+app_admin_productions_client:
+    path:     /{cid}/client
+    defaults: { _controller: AppBundle\Controller\ProductionsController::clientIndexAction }
+
+app_admin_productions_ajax:
+    path:     /ajax
+    defaults: { _controller: AppBundle\Controller\ProductionsController::ajaxListAction }    
+
+app_admin_productions_client_ajax:
+    path:     /{cid}/client/ajax
+    defaults: { _controller: AppBundle\Controller\ProductionsController::clientAjaxListAction }    
+
+app_admin_productions_dic:
+    path:     /dic
+    defaults: { _controller: AppBundle\Controller\ProductionsController::ajaxDicAction }
+
+app_admin_productions_ajax_details:
+    path:     /ajax/details
+    defaults: { _controller: AppBundle\Controller\ProductionsController::ajaxListDetailsAction }    
+
+app_admin_productions_create:
+    path:     /create
+    defaults: { _controller: AppBundle\Controller\ProductionsController::createAction }
+    methods:  POST
+
+app_admin_productions_generate:
+    path:     /generate
+    defaults: { _controller: AppBundle\Controller\ProductionsController::generateAction }
+    methods:  POST
+
+app_admin_productions_data:
+    path:     /{id}/data
+    defaults: { _controller: AppBundle\Controller\ProductionsController::ajaxDataAction }    
+
+app_admin_productions_delete:
+    path:     /{id}/delete
+    defaults: { _controller: AppBundle\Controller\ProductionsController::deleteAction }
+
+app_admin_productions_edit:
+    path:     /{id}/edit
+    defaults: { _controller: AppBundle\Controller\ProductionsController::editAction }
+
+app_admin_productions_new:
+    path:     /new
+    defaults: { _controller: AppBundle\Controller\ProductionsController::newAction }
+
+app_admin_productions_remove:
+    path:     /{id}/remove
+    defaults: { _controller: AppBundle\Controller\ProductionsController::removeAction }
+    methods:  [POST, DELETE]
+
+app_admin_productions_service:
+    path:     /service
+    defaults: { _controller: AppBundle\Controller\ProductionsController::serviceAction }
+    
+app_admin_productions_show:
+    path:     /{id}/show
+    defaults: { _controller: AppBundle\Controller\ProductionsController::showAction }
+
+app_admin_productions_update:
+    path:     /{id}/update
+    defaults: { _controller: AppBundle\Controller\ProductionsController::updateAction }
+    methods:  [POST, PUT]
+

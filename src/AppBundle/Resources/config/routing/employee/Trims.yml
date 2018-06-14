@@ -1,0 +1,46 @@
+app_admin_trims:
+    path:     /
+    defaults: { _controller: "AppBundle:Trims:index" }
+
+app_admin_trims_ajax:
+    path:     /ajax
+    defaults: { _controller: "AppBundle:Trims:ajaxList" }
+
+app_admin_trims_dic:
+    path:     /dic
+    defaults: { _controller: "AppBundle:Trims:ajaxDic" }
+
+app_admin_trims_data:
+    path:     /{id}/data
+    defaults: { _controller: "AppBundle:Trims:ajaxData" }
+
+app_admin_trims_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:Trims:show" }
+
+app_admin_trims_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Trims:new" }
+
+app_admin_trims_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:Trims:create" }
+    methods:  POST
+
+app_admin_trims_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:Trims:edit" }
+
+app_admin_trims_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:Trims:update" }
+    methods:  [POST, PUT]
+
+app_admin_trims_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:Trims:delete" }
+
+app_admin_trims_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "AppBundle:Trims:remove" }
+    methods:  [POST, DELETE]

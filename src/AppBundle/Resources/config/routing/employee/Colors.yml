@@ -1,0 +1,46 @@
+colors:
+    path:     /
+    defaults: { _controller: "AppBundle:Colors:index" }
+
+colors_ajax:
+    path:     /ajax
+    defaults: { _controller: "AppBundle:Colors:ajaxList" }
+
+colors_dic:
+    path:     /dic
+    defaults: { _controller: "AppBundle:Colors:ajaxDic" }
+
+colors_data:
+    path:     /{id}/data
+    defaults: { _controller: "AppBundle:Colors:ajaxData" }
+
+colors_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:Colors:show" }
+
+colors_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Colors:new" }
+
+colors_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:Colors:create" }
+    methods:  POST
+
+colors_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:Colors:edit" }
+
+colors_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:Colors:update" }
+    methods:  [POST, PUT]
+
+colors_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:Colors:delete" }
+
+colors_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "AppBundle:Colors:remove" }
+    methods:  [POST, DELETE]

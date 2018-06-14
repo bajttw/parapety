@@ -1,0 +1,44 @@
+clientsgroups:
+    path:     /
+    defaults: { _controller: "AppBundle:ClientsGroups:index" }
+
+clientsgroups_ajax:
+    path:     /ajax
+    defaults: { _controller: "AppBundle:ClientsGroups:ajaxList" }
+
+clientsgroups_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:ClientsGroups:create" }
+    methods:  POST
+
+clientsgroups_data:
+    path:     /{id}/data
+    defaults: { _controller: "AppBundle:ClientsGroups:ajaxData" }
+
+clientsgroups_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:ClientsGroups:delete" }
+
+clientsgroups_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:ClientsGroups:edit" }
+
+clientsgroups_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:ClientsGroups:new" }
+
+clientsgroups_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "AppBundle:ClientsGroups:remove" }
+    methods:  [POST, DELETE]
+
+clientsgroups_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:ClientsGroups:show" }
+
+clientsgroups_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:ClientsGroups:update" }
+    methods:  [POST, PUT]
+
+

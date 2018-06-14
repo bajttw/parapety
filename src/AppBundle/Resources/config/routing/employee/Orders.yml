@@ -1,0 +1,96 @@
+orders:
+    path:     /
+    defaults: { _controller: "AppBundle:Orders:index" }
+
+orders_ajax:
+    path:     /ajax
+    defaults: { _controller: "AppBundle:Orders:ajaxList" }    
+
+orders_dic:
+    path:     /dic
+    defaults: { _controller: "AppBundle:Orders:ajaxDic" }
+
+orders_ajax_details:
+    path:     /ajax/details
+    defaults: { _controller: "AppBundle:Orders:ajaxListDetails" }    
+
+orders_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Orders:new" }
+
+orders_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:Orders:create" }
+    methods:  POST
+
+orders_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:Orders:edit" }
+
+orders_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:Orders:update" }
+    methods:  [POST, PUT]
+
+orders_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:Orders:delete" }
+
+orders_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "AppBundle:Orders:remove" }
+    methods:  [POST, DELETE]
+
+orders_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:Orders:show" }
+
+orders_data:
+    path:     /{id}/data
+    defaults: { _controller: "AppBundle:Orders:ajaxData" }    
+
+orders_import:
+    path:     /import
+    defaults: { _controller: "AppBundle:Orders:import" }
+
+orders_doimport:
+    path:     /doimport
+    defaults: { _controller: "AppBundle:Orders:doimport" }
+    methods:  [POST, PUT]
+
+
+orders_client:
+    path:     /{cid}/client
+    defaults: { _controller: "AppBundle:Orders:clientIndex" }
+
+orders_client_ajax:
+    path:     /{cid}/client/ajax
+    defaults: { _controller: "AppBundle:Orders:clientAjaxList" }    
+
+orders_client_new:
+    path:     /{cid}/client/new
+    defaults: { _controller: "AppBundle:Orders:new" }
+
+orders_client_create:
+    path:     /{cid}/client/create
+    defaults: { _controller: "AppBundle:Orders:create" }
+    methods:  POST
+
+orders_client_edit:
+    path:     /{cid}/client/{id}/edit
+    defaults: { _controller: "AppBundle:Orders:edit" }
+
+orders_client_update:
+    path:     /{cid}/client/{id}/update
+    defaults: { _controller: "AppBundle:Orders:update" }
+    methods:  [POST, PUT]
+
+orders_client_delete:
+    path:     /{cid}/client/{id}/delete
+    defaults: { _controller: "AppBundle:Orders:delete" }
+
+orders_client_remove:
+    path:     /{cid}/client/{id}/remove
+    defaults: { _controller: "AppBundle:Orders:remove" }
+    methods:  [POST, DELETE]
+

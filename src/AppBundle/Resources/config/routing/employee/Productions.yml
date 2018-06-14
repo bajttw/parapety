@@ -1,0 +1,63 @@
+productions:
+    path:     /
+    defaults: { _controller: "AppBundle:Productions:index" }
+
+productions_client:
+    path:     /{cid}/client
+    defaults: { _controller: "AppBundle:Productions:clientIndex" }
+
+productions_ajax:
+    path:     /ajax
+    defaults: { _controller: "AppBundle:Productions:ajaxList" }    
+
+productions_client_ajax:
+    path:     /{cid}/client/ajax
+    defaults: { _controller: "AppBundle:Productions:clientAjaxList" }    
+
+productions_dic:
+    path:     /dic
+    defaults: { _controller: "AppBundle:Productions:ajaxDic" }
+
+productions_ajax_details:
+    path:     /ajax/details
+    defaults: { _controller: "AppBundle:Productions:ajaxListDetails" }    
+
+productions_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:Productions:create" }
+    methods:  POST
+
+productions_data:
+    path:     /{id}/data
+    defaults: { _controller: "AppBundle:Productions:ajaxData" }    
+
+productions_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:Productions:delete" }
+
+productions_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:Productions:edit" }
+
+productions_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Productions:new" }
+
+productions_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "AppBundle:Productions:remove" }
+    methods:  [POST, DELETE]
+
+productions_service:
+    path:     /service
+    defaults: { _controller: "AppBundle:Productions:service" }
+    
+productions_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:Productions:show" }
+
+productions_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:Productions:update" }
+    methods:  [POST, PUT]
+

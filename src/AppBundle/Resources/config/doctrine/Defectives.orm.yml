@@ -1,0 +1,64 @@
+AppBundle\Entity\Defectives:
+    type: entity
+    table: Defectives
+    repositoryClass: AppBundle\Repository\DefectivesRepository
+    indexes:
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            options:
+                unsigned: true
+    fields:
+        description:
+            type: string
+            nullable: true
+            length: 250
+            fixed: false
+            comment: 'jakie uwagi'
+        status:
+            type: smallint
+            options:
+                unsigned: true
+                default: 1           
+    manyToOne:
+        product:
+            targetEntity: Products
+            joinColumn:
+                name: products_id
+                referencedColumnName: id
+        complaint:
+            targetEntity: Complaints
+            inversedBy: defectives
+            joinColumn:
+                name: complaints_id
+                referencedColumnName: id
+                onDelete: CASCADE
+    manyToMany:
+        uploads:
+            targetEntity: Uploads
+            joinTable:
+                name: Defectives_Uploads
+                joinColumns:
+                    orders_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    uploads_id:
+                        referencedColumnName: id                
+            cascade: [ "persist" ]
+        notes:
+            targetEntity: Notes
+            joinTable:
+                name: Defectives_Notes
+                joinColumns:
+                    productions_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    notes_id:
+                        referencedColumnName: id 
+            cascade: [ "persist" ]
+            
+    
+

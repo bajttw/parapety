@@ -1,0 +1,7 @@
+{% block positions_comments_signals %}
+    {% set btns={ 
+        fields: ['clientComment', 'positionComment', 'prodComment'],
+        additional: block('btn_upload')
+    } %}
+    {{ block("form_btns") }}
+{% endblock positions_comments_signals %}

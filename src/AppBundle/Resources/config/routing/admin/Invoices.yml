@@ -1,0 +1,100 @@
+app_admin_invoices:
+    path:     /
+    defaults: { _controller: AppBundle\Controller\InvoicesController::indexAction }
+
+app_admin_invoices_ajax:
+    path:     /ajax
+    defaults: { _controller: AppBundle\Controller\InvoicesController::ajaxListAction }    
+
+app_admin_invoices_dic:
+    path:     /dic
+    defaults: { _controller: AppBundle\Controller\InvoicesController::ajaxDicAction }
+
+app_admin_invoices_ajax_details:
+    path:     /ajax/details
+    defaults: { _controller: AppBundle\Controller\InvoicesController::ajaxListDetailsAction }    
+
+app_admin_invoices_new:
+    path:     /new
+    defaults: { _controller: AppBundle\Controller\InvoicesController::newAction }
+
+app_admin_invoices_create:
+    path:     /create
+    defaults: { _controller: AppBundle\Controller\InvoicesController::createAction }
+    methods:  POST
+
+app_admin_invoices_edit:
+    path:     /{id}/edit
+    defaults: { _controller: AppBundle\Controller\InvoicesController::editAction }
+
+app_admin_invoices_update:
+    path:     /{id}/update
+    defaults: { _controller: AppBundle\Controller\InvoicesController::updateAction }
+    methods:  [POST, PUT]
+
+app_admin_invoices_delete:
+    path:     /{id}/delete
+    defaults: { _controller: AppBundle\Controller\InvoicesController::deleteAction }
+
+app_admin_invoices_remove:
+    path:     /{id}/remove
+    defaults: { _controller: AppBundle\Controller\InvoicesController::removeAction }
+    methods:  [POST, DELETE]
+
+app_admin_invoices_show:
+    path:     /{id}/show
+    defaults: { _controller: AppBundle\Controller\InvoicesController::showAction }
+
+app_admin_invoices_data:
+    path:     /{id}/data
+    defaults: { _controller: AppBundle\Controller\InvoicesController::ajaxDataAction }    
+
+app_admin_invoices_import:
+    path:     /import
+    defaults: { _controller: AppBundle\Controller\InvoicesController::importAction }
+
+app_admin_invoices_doimport:
+    path:     /doimport
+    defaults: { _controller: AppBundle\Controller\InvoicesController::doimportAction }
+    methods:  [POST, PUT]
+
+app_admin_invoices_production:
+    path:     /production
+    defaults: { _controller: AppBundle\Controller\ProductionsController::createAction }
+    methods:  POST
+
+app_admin_invoices_client:
+    path:     /{cid}/client
+    defaults: { _controller: AppBundle\Controller\InvoicesController::clientIndexAction }
+
+app_admin_invoices_client_ajax:
+    path:     /{cid}/client/ajax
+    defaults: { _controller: AppBundle\Controller\InvoicesController::clientAjaxListAction }    
+
+app_admin_invoices_client_new:
+    path:     /{cid}/client/new
+    defaults: { _controller: AppBundle\Controller\InvoicesController::newAction }
+
+app_admin_invoices_client_create:
+    path:     /{cid}/client/create
+    defaults: { _controller: AppBundle\Controller\InvoicesController::createAction }
+    methods:  POST
+
+app_admin_invoices_client_edit:
+    path:     /{cid}/client/{id}/edit
+    defaults: { _controller: AppBundle\Controller\InvoicesController::editAction }
+
+app_admin_invoices_client_update:
+    path:     /{cid}/client/{id}/update
+    defaults: { _controller: AppBundle\Controller\InvoicesController::updateAction }
+    methods:  [POST, PUT]
+
+app_admin_invoices_client_delete:
+    path:     /{cid}/client/{id}/delete
+    defaults: { _controller: AppBundle\Controller\InvoicesController::deleteAction }
+
+app_admin_invoices_client_remove:
+    path:     /{cid}/client/{id}/remove
+    defaults: { _controller: AppBundle\Controller\InvoicesController::removeAction }
+    methods:  [POST, DELETE]
+

@@ -1,0 +1,42 @@
+pricelists:
+    path:     /
+    defaults: { _controller: "AppBundle:PriceLists:index" }
+
+pricelists_ajax:
+    path:     /ajax
+    defaults: { _controller: "AppBundle:PriceLists:ajaxList" }
+
+pricelists_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:PriceLists:create" }
+    methods:  POST
+
+pricelists_data:
+    path:     /{id}/data
+    defaults: { _controller: "AppBundle:PriceLists:ajaxData" }
+
+pricelists_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:PriceLists:delete" }
+
+pricelists_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:PriceLists:edit" }
+
+pricelists_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:PriceLists:new" }
+
+pricelists_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "AppBundle:PriceLists:remove" }
+    methods:  [POST, DELETE]
+
+pricelists_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:PriceLists:show" }
+
+pricelists_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:PriceLists:update" }
+    methods:  [POST, PUT]

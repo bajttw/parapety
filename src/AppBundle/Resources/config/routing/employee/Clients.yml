@@ -1,0 +1,64 @@
+clients:
+    path:     /
+    defaults: { _controller: "AppBundle:Clients:index" }
+
+clients_ajax:
+    path:     /ajax
+    defaults: { _controller: "AppBundle:Clients:ajaxList" }    
+
+clients_ajax_details:
+    path:     /ajax/details
+    defaults: { _controller: "AppBundle:Clients:ajaxListDetails" }    
+
+clients_dic:
+    path:     /dic
+    defaults: { _controller: "AppBundle:Clients:ajaxDic" }
+
+clients_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Clients:new" }
+
+clients_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:Clients:create" }
+    methods:  POST
+
+clients_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:Clients:edit" }
+
+clients_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:Clients:update" }
+    methods:  [POST, PUT]
+
+clients_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:Clients:delete" }
+
+clients_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "AppBundle:Clients:remove" }
+    methods:  [POST, DELETE]
+
+clients_data:
+    path:     /{id}/data
+    defaults: { _controller: "AppBundle:Clients:ajaxData" }    
+
+clients_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:Clients:show" }
+
+clients_service:
+    path:     /service
+    defaults: { _controller: "AppBundle:Clients:service" }
+
+clients_client_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Clients:new" }
+
+clients_client_edit:
+    path:     /client/{id}/edit
+    defaults: { _controller: "AppBundle:Clients:edit" }
+
+

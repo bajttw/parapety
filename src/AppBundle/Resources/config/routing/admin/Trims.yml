@@ -1,0 +1,46 @@
+app_admin_trims:
+    path:     /
+    defaults: { _controller: AppBundle\Controller\TrimsController::indexAction }
+
+app_admin_trims_ajax:
+    path:     /ajax
+    defaults: { _controller: AppBundle\Controller\TrimsController::ajaxListAction }
+
+app_admin_trims_dic:
+    path:     /dic
+    defaults: { _controller: AppBundle\Controller\TrimsController::ajaxDicAction }
+
+app_admin_trims_data:
+    path:     /{id}/data
+    defaults: { _controller: AppBundle\Controller\TrimsController::ajaxDataAction }
+
+app_admin_trims_show:
+    path:     /{id}/show
+    defaults: { _controller: AppBundle\Controller\TrimsController::showAction }
+
+app_admin_trims_new:
+    path:     /new
+    defaults: { _controller: AppBundle\Controller\TrimsController::newAction }
+
+app_admin_trims_create:
+    path:     /create
+    defaults: { _controller: AppBundle\Controller\TrimsController::createAction }
+    methods:  POST
+
+app_admin_trims_edit:
+    path:     /{id}/edit
+    defaults: { _controller: AppBundle\Controller\TrimsController::editAction }
+
+app_admin_trims_update:
+    path:     /{id}/update
+    defaults: { _controller: AppBundle\Controller\TrimsController::updateAction }
+    methods:  [POST, PUT]
+
+app_admin_trims_delete:
+    path:     /{id}/delete
+    defaults: { _controller: AppBundle\Controller\TrimsController::deleteAction }
+
+app_admin_trims_remove:
+    path:     /{id}/remove
+    defaults: { _controller: AppBundle\Controller\TrimsController::removeAction }
+    methods:  [POST, DELETE]

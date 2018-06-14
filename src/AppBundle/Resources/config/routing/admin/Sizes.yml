@@ -1,0 +1,46 @@
+app_admin_sizes:
+    path:     /
+    defaults: { _controller: AppBundle\Controller\SizesController::indexAction }
+
+app_admin_sizes_ajax:
+    path:     /ajax
+    defaults: { _controller: AppBundle\Controller\SizesController::ajaxListAction }
+
+app_admin_sizes_dic:
+    path:     /dic
+    defaults: { _controller: AppBundle\Controller\SizesController::ajaxDicAction }
+
+app_admin_sizes_data:
+    path:     /{id}/data
+    defaults: { _controller: AppBundle\Controller\SizesController::ajaxDataAction }
+
+app_admin_sizes_show:
+    path:     /{id}/show
+    defaults: { _controller: AppBundle\Controller\SizesController::showAction }
+
+app_admin_sizes_new:
+    path:     /new
+    defaults: { _controller: AppBundle\Controller\SizesController::newAction }
+
+app_admin_sizes_create:
+    path:     /create
+    defaults: { _controller: AppBundle\Controller\SizesController::createAction }
+    methods:  POST
+
+app_admin_sizes_edit:
+    path:     /{id}/edit
+    defaults: { _controller: AppBundle\Controller\SizesController::editAction }
+
+app_admin_sizes_update:
+    path:     /{id}/update
+    defaults: { _controller: AppBundle\Controller\SizesController::updateAction }
+    methods:  [POST, PUT]
+
+app_admin_sizes_delete:
+    path:     /{id}/delete
+    defaults: { _controller: AppBundle\Controller\SizesController::deleteAction }
+
+app_admin_sizes_remove:
+    path:     /{id}/remove
+    defaults: { _controller: AppBundle\Controller\SizesController::removeAction }
+    methods:  [POST, DELETE]

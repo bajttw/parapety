@@ -1,0 +1,99 @@
+{% use "blocks.html.twig" %}
+{% use "Form/blocks.html.twig" %}
+
+{% block prices_buttons %}
+    {%	set buttons = [
+        {
+            attr: {
+                class: 'btn-outline-success',
+                id: 'prices_import_btn'
+            },
+            label: 'pricelists.label.addPrices'|trans,
+            icon: 'add_circle_outline'
+        } 
+    ] %}
+{{ block('buttons') }}{% endblock prices_buttons %}
+
+{% block form_pricelists_price_actions %}
+    {% set en = 'prices' %}
+    {% set btn = {
+        d: {
+            toggle: 'confirmation'
+        }
+    } %}
+    {{ block('btn_delete') }}
+{% endblock form_pricelists_price_actions %}
+
+{% block form_pricelists_basic %}
+    {% set rowOpt={ defClass: 'row-blocks' } %}
+    {% set cellOpt= { defClass: 'col', form: 'field' } %}
+    {% set rows=[
+        {         
+            cells: [
+                { name: form.clients is defined ? 'clients' : 'clientsGroups' },
+                { name: 'title', options:{ } },
+                { name: 'start', options:{ } },
+                { name: 'end', options:{ } }
+            ]
+        },
+        {
+            attr: { class: 'row-info', style:"display: none;"}, 
+            cellOpt: { form: 'row' },
+            cells: [
+                'description'
+           ]
+        }
+        
+    ]%}
+    {{ block("div_table_rows") }}
+{% endblock form_pricelists_basic %}
+
+{%- block _appbundle_pricelists_prices_row -%}
+    {% set en= 'prices' %}
+    {% set divTab={ attr: { class: 'table-bordered table-form'} } %}
+    {{ block("begin_div_table") }}
+        {% set cellOpt={ ownClass: true } %}
+        {% set tabHeader={
+            cells: [ 
+                { name: 'priceListItem', options: { ownClass: false }, attr: { class: 'col-8'}}, 
+                'value', 
+                'actions' 
+            ]
+        }%}
+        {{ block("div_table_header") }}
+        {% set attr = attr|add_class('table-body') %}
+        {% if prototype is defined %}
+            {%- set attr = attr|merge({'data-prototype': form_row(prototype, { hidden: 1}) }) -%}        
+        {% endif %}
+        {% set attr = attr|set_array_value('data-form', 'positions' ) %}
+        {{- block('form_widget') -}}
+    {{ block("close_div") }}
+{%- endblock _appbundle_pricelists_prices_row -%}
+
+{%- block _appbundle_pricelists_prices_entry_row -%}
+    {% if hidden is defined %}
+        {% set attr = attr|merge({style: (attr.style|default('') ~ ' display:none;')|trim}) -%}
+    {% endif %}
+    {% set attr = attr|add_class( ['row-pos'] ) %}
+    <div  {{ block('widget_container_attributes') }}>
+        {% set rows=[
+            {
+                attr: { class: 'row-data' },
+                cellOpt: { cellData: true, ownClass: true },
+                cells: [ 
+                    { name: 'priceListItem', form: 'div', d: { disp: 'name'}, options: { ownClass: false }, attr: { class: 'col-8'} },
+                    { name: 'value', form: 'row' },
+                    { name: 'actions', cellData: false, content: block('form_pricelists_price_actions') }
+                ]
+            }
+        ] %}
+        {{ block("div_table_rows") }}
+         <div style="display:none;">
+            {{form_widget(form)}}
+        </div>
+    </div>         
+{%- endblock _appbundle_pricelists_prices_entry_row -%}
+
+
+
+

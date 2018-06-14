@@ -1,0 +1,12 @@
+{% extends 'Modal/content.html.twig' %}
+{%- block modal_body -%}
+    {% set toolbars=modal.toolbars|default(null) %}
+    {{ block("toolbars") }}
+    {% set table = modal.table %}
+    {{ block('datatable') }} 
+{%- endblock -%}
+{%- block modal_form_submit -%}
+    <button type="button" class="btn-save btn btn-success" >{{"serviceorders.label.addServices"|trans}}</button>
+{%- endblock modal_form_submit -%}
+
+
