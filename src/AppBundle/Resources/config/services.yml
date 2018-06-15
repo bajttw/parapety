@@ -1,12 +1,10 @@
 services:
-#    serwis.example:
-#        class: AppBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
-    app.twig_extension:
-        class: App\Twig\AppExtension:
-        arguments: ["@translator"]
-        tags: 
-            - { name: twig.extension }
+    # app.twig_extension:
+    #     class: App\Twig\AppExtension
+    #     arguments: ["@translator"]
+    #     tags: 
+    #         - { name: twig.extension }
+
     # app.form_entity_hidden:
     #     class: App\Form\EntityHiddenType:
     #         arguments: ["@doctrine.orm.entity_manager"]
