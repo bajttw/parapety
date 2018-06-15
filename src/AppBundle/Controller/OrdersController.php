@@ -493,7 +493,7 @@ class OrdersController extends AppController
         }
         $this->setTemplate('index');
         $this->setRenderOptions([
-            'title' => $this->titleText('index'),
+            'title' => $this->transGenerator->titleText('index'),
             'toolbars' => [
                 $this->genToolbar(),
                 $this->genFilterbar()
@@ -510,7 +510,7 @@ class OrdersController extends AppController
         ])
             ->addEntityModal()
             ->addTableExportModal( null, [
-                'title' => $this->genTranslateText('generate', 'modal.title', 'Productions'),
+                'title' => $this->transGenerator->modalTitle('generate', 'Productions'),
                 'columns' => static::$importFields,
                 'd' => [
                     'options' => [
@@ -533,7 +533,7 @@ class OrdersController extends AppController
         }
         $this->setTemplate('index');
         $this->setRenderOptions([
-            'title' => $this->titleText('client_index'),
+            'title' => $this->transGenerator->titleText('client_index'),
             'toolbars' => [
                 $this->genToolbar(null, 'client_index')
             ],
@@ -637,7 +637,7 @@ class OrdersController extends AppController
         $this->getEntitySettings();
         $this->setTemplate('pdf', null);
         $this->setRenderOptions([
-            'title' => $this->titleText('show'),
+            'title' => $this->transGenerator->titleText('show'),
             'entity'=>$this->entity->getShowData()
             //            'css_path'=> dirname($_SERVER['SCRIPT_FILENAME'])."/bundles/system/css/print.css"
         ]);
@@ -717,7 +717,7 @@ class OrdersController extends AppController
         
         // $this->setFormOptions('update', $options);
         // $this->setRenderOptions([
-        //     'title' => $this->titleText('edit'),
+        //     'title' => $this->transGenerator->transGenerator->titleTex('edit'),
         //     'form_options' => [
         //         'submit' => $this->genSubmitBtn('update')
         //     ]
@@ -730,7 +730,7 @@ class OrdersController extends AppController
         $this->setFormTemplate('', 'import');
         $this->setRenderOptions([
             'template_body' => $this->entityNameSpaces['path'] . ':importForm.html.twig',
-            'title' => $this->titleText('import'),
+            'title' => $this->transGenerator->titleTex('import'),
             'form_options' => [
                 'submit' => $this->genSubmitBtn('import')
             ]

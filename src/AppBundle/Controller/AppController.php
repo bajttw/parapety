@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormError;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use AppBundle\Utils\Utils;
+use AppBundle\Helpers\TransGenerator;
 use AppBundle\Entity\Settings;
 use AppBundle\Entity\Uploads;
 use AppBundle\Entity\Clients;
@@ -83,13 +84,14 @@ class AppController extends Controller
 
     ];
 
+
     protected static $activeHiddenFilter = [
         'name' => 'active',
         'type' => 'hidden',
         'value' => '1'
     ];
 
-
+    public $transGenerator;
 
     public function __construct($params = null)
     {
@@ -100,20 +102,17 @@ class AppController extends Controller
             }
 
         }
+        $this->transGenerator=new TransGenerator(static::en);
     }
 
 //  <editor-fold defaultstate="collapsed" desc="Translations">
+
 
     public static function gen_trans_text($str, $type, $entityName = null)
     {
         return $str ?
             Utils::gen_trans_text($str, $type, $entityName === '' ? '' : self::getEntityName($entityName) )
             : '';
-    }
-
-    public function genTranslateText($str, $type, $entityName = null)
-    {
-        return self::gen_trans_text($str, $type, $entityName );
     }
 
     public static function filterLabel($str, $entityName=null){
@@ -124,33 +123,6 @@ class AppController extends Controller
         return self::gen_trans_text('filter.'.$str, 'title', $entityName );
     }
 
-    public static function btnLabel($str, $entityName=null){
-        return self::gen_trans_text('btn.'.$str, 'label', $entityName );
-    }
-    
-    public static function btnTitle($str, $entityName=null){
-        return self::gen_trans_text('btn.'.$str, 'title', $entityName );
-    }
-
-    public function titleText($str, $entityName = null)
-    {
-        return $this->genTranslateText($str, 'title', $entityName);
-    }
-
-    public function labelText($str, $entityName = null)
-    {
-        return $this->genTranslateText($str, 'label', $entityName);
-    }
-
-    public function messageText($str, $entityName = null)
-    {
-        return $this->genTranslateText($str, 'message', $entityName);
-    }
-
-    public function errorText($str, $entityName = null)
-    {
-        return $this->genTranslateText($str, 'error', $entityName);
-    }
 
     public function trans($str, $include=[])
     {
@@ -338,8 +310,13 @@ class AppController extends Controller
     {
         if (!$this->entity) {
             $this->entity = new $this->entityNameSpaces['nameSpace'](['controller' => $this, 'defaults' => Utils::deep_array_value('defaults', $this->entitySettings)]);
-            $this->runFunction('newCustomEntity');
+            $this->newCustomEntity();
         }
+        return $this;
+    }
+
+    protected function newCustomEntity()
+    {
         return $this;
     }
 
@@ -562,7 +539,7 @@ class AppController extends Controller
         }
         $this->setTemplate('index');
         $this->setRenderOptions([
-            'title' => $this->titleText('index'),
+            'title' => $this->transGenerator->titleText('index'),
             'toolbars' => [
                 $this->genToolbar(),
                 $this->genFilterbar()
@@ -891,9 +868,9 @@ class AppController extends Controller
         $this->newEntity();
         $this->setFormOptions('create', $options);
         $this->setRenderOptions([
-            'title' => $this->titleText('new'),
+            'title' => $this->transGenerator->titleText('new'),
             'form_options' => [
-                'submit' => self::genSubmitBtn('create')
+                'submit' => $this->genSubmitBtn('create')
             ]
         ]);
         $this->createEntityForm();
@@ -906,10 +883,10 @@ class AppController extends Controller
         $this->setFormOptions('add', $options);
         $this->formOptions['attr']['data-form'] = static::en . 'generate';
         $this->setRenderOptions([
-            'title' => $this->titleText('generate'),
+            'title' => $this->transGenerator->titleText('generate'),
             'template_body' => $this->tmplPath( 'generate_body', static::ec),
             'form_options' => [
-                'submit' => self::genSubmitBtn('save')
+                'submit' => $this->genSubmitBtn('save')
             ]
         ]);
         $this->formSystem = $this->createForm(self::getNameSpace('Form', static::ec . "Generate", 'Type'), $this->entity, $this->formOptions);
@@ -923,9 +900,9 @@ class AppController extends Controller
         }
         $this->setFormOptions('update', $options);
         $this->setRenderOptions([
-            'title' => $this->titleText('edit'),
+            'title' => $this->transGenerator->titleText('edit'),
             'form_options' => [
-                'submit' => self::genSubmitBtn('update')
+                'submit' => $this->genSubmitBtn('update')
             ]
         ]);
         $this->createEntityForm();
@@ -942,10 +919,10 @@ class AppController extends Controller
         $this->formData->confirm = false;
         $this->setFormOptions('remove');
         $renderOptions = [
-            'title' => $this->titleText('delete'),
+            'title' => $this->transGenerator->titleText('delete'),
             'template_body' => $this->tmplPath('delete', '', 'Form'),
             'form_options' => [
-                'submit' => self::genSubmitBtn('remove')
+                'submit' => $this->genSubmitBtn('remove')
             ],
             'entity_name' => static::en
         ];
@@ -1043,7 +1020,7 @@ class AppController extends Controller
         }
         $fillData = Utils::deep_array_value('fillData', $modal, false);
         $default = [
-            'title' => $this->genTranslateText($name, 'modal.title', $ecn),
+            'title' => $this->transGenerator->modalTitle($name, $en),
             'd' => [
                 'method' => 'POST',
                 'options' => [
@@ -1366,12 +1343,12 @@ class AppController extends Controller
 
 // <editor-fold defaultstate="collapsed" desc="Generate functions">
 
-    public static function genSubmitBtn($type)
+    public function genSubmitBtn($type)
     {
         return [
             'attr' => [
                 'value' => $type,
-                'title' => self::btnTitle($type),
+                'title' => $this->transGenerator->btnTitle($type),
                 'class' => $type == 'remove' ? 'btn-danger' : 'btn-success',
                 'style' => $type == 'remove' ? "disabled:true" : ""
             ]
@@ -1394,7 +1371,7 @@ class AppController extends Controller
             $an = $action['action'];
             $action['attr']['class'] = 'btn-img btn-' . $an . (isset($action['attr']['class']) ? ' ' . $action['attr']['class'] : '');
             if (!isset($action['attr']['title'])) {
-                $action['attr']['title'] = $this->titleText( 'btn.'.$an, $en );
+                $action['attr']['title'] = $this->transGenerator->btnTitle( $an, $en );
             }
             $type = Utils::deep_array_value('type', $action, 'f');
             if ($type != 'f') {
@@ -1692,16 +1669,16 @@ class AppController extends Controller
         Utils::deep_array_value_set('type', $msg, 'info');
         if ($translate) {
             $label = Utils::deep_array_value('label', $msg);
-            $msg['label'] = $this->trans($this->labelText($label, $entityClassName));
-            $msg['title'] = $this->trans($this->titleText(Utils::deep_array_value('title', $msg), $entityClassName));
+            $msg['label'] = $this->trans($this->transGenerator->labelText($label, $entityClassName));
+            $msg['title'] = $this->trans($this->transGenerator->titleText(Utils::deep_array_value('title', $msg), $entityClassName));
             $message=Utils::deep_array_value('message', $msg, $label);
             if(is_array($message)){
                 $msg['message']=[];
                 foreach($message as $m){
-                    $msg['message'][] = $this->trans($this->messageText($m, $entityClassName), $data);
+                    $msg['message'][] = $this->trans($this->transGenerator->messageText($m, $entityClassName), $data);
                 }
             }else{
-                $msg['message'] = $this->trans($this->messageText($message, $entityClassName), $data);
+                $msg['message'] = $this->trans($this->transGenerator->messageText($message, $entityClassName), $data);
             }
         }
         return $msg;
@@ -1737,7 +1714,7 @@ class AppController extends Controller
             $messages['childs']=[];
             foreach ($errors as $key => $error) {
                 $messages['childs'][] = $this->errorMessage([
-                    'label' =>  $this->trans($this->labelText($error->getOrigin()->getConfig()->getOption('label'), null )),
+                    'label' =>  $this->trans($this->transGenerator($error->getOrigin()->getConfig()->getOption('label'), null )),
                     'message' => $error->getMessage()
                 ], null, false);
             }
@@ -1814,7 +1791,7 @@ class AppController extends Controller
                             'form' => $this->getUrl('update')
                         ],
                         'submit' => [
-                            'label' => $this->trans($this->labelText('update', '')),
+                            'label' => $this->trans($this->transGenerator('update', '')),
                             'title' => $this->trans($this->titleText('update', '')),
                         ]
                     ];
@@ -1853,7 +1830,7 @@ class AppController extends Controller
     public function errorJsonResponse($type='', $messageStr = '', $entityClassName='', $translate=false)
     {
         $msg=$this->errorMessage([ 'title' => 'error.'.$type ], $entityClassName, true);
-        $msg['message']= $translate ? $this->trans($this->messageText($messageStr, $entityClassName)) : $messageStr;
+        $msg['message']= $translate ? $this->trans($this->transGenerator->messageText($messageStr, $entityClassName)) : $messageStr;
         return new JsonResponse( ['errors' => $msg ], 400 );
     }
 
