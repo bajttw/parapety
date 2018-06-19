@@ -459,9 +459,11 @@
         } %}
         {% set btn_en = bar.en|default(en|default('')) %}
         {{ block("begin_div") }}
+            {{dump(bar.filters)}}
             <div class="filters">
                 {% for ffilter in bar.filters %}
                     {% if ffilter.type|default('1') != 'hidden' %}
+                        {% set ffilter=(ffilter|set_attr('id', bar.attr.id ~ '_' ~ ffilter.name ))|set_attr('name', ffilter.name ) %}
                         {{ block('filter_control') }}
                     {% else %}    
                         {{ block('filter_field') }}

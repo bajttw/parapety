@@ -186,13 +186,13 @@ class PriceListsController extends AppController
         
     }
 
-    public static function genCustomSettings($controller, &$entitySettings = [])
-    {
-        foreach (['PriceListItems'] as $ecn) {
-            $entitySettings['dictionaries'][$ecn] = $controller->getDic($ecn);
-        }
-        return $entitySettings;
-    }
+    // public static function genCustomSettings($controller, &$entitySettings = [])
+    // {
+    //     foreach (['PriceListItems'] as $ecn) {
+    //         $entitySettings['dictionaries'][$ecn] = $controller->getDic($ecn);
+    //     }
+    //     return $entitySettings;
+    // }
 
     protected function setCustomFormOptions()
     {
@@ -209,7 +209,7 @@ class PriceListsController extends AppController
             'fieldtype' => 'ajson',
             'content' => $this->tmplPath('table', '', 'Modal', self::$bundleName),
             'toolbars' => [
-                $this->genFilterbar($plins, 'pricelists_form')
+                $this->genFilterbar('pricelists_form', 'PriceListItems')
             ],
             'buttons' => [
                 'add' => [
@@ -221,7 +221,7 @@ class PriceListsController extends AppController
                     ]
                 ]
             ],
-            'table' => $this->genTable($plins, 'to_pricelist', [
+            'table' => $this->genTable('to_pricelist', 'PriceListItems', [
                 'd' => [
                     'ajax' => [
                         'url' => $this->getUrl('ajax_to_pricelist', $plins, false)

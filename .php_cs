@@ -1,4 +1,8 @@
 <?php
+$finder = PhpCsFixer\Finder::create()
+    ->exclude(['web', 'var', 'tmp', 'vendor' ])
+    ->in(__DIR__)
+;
 
 return PhpCsFixer\Config::create()
     ->setRules(array(
@@ -91,4 +95,6 @@ return PhpCsFixer\Config::create()
     ))
     //->setIndent("\t")
     ->setLineEnding("\n")
+    ->finder($finder)
+    ->setUsingCache(true)
 ;

@@ -143,13 +143,13 @@ class PriceListItemsController extends AppController
         return $this;
     }
 
-    public static function genCustomSettings($controller, &$entitySettings = [])
-    {
-        foreach (['Colors', 'Sizes'] as $ecn) {
-            $entitySettings['dictionaries'][$ecn] = $controller->getDic($ecn);
-        }
-        return $entitySettings;
-    }
+    // public static function genCustomSettings($controller, &$entitySettings = [])
+    // {
+    //     foreach (['Colors', 'Sizes'] as $ecn) {
+    //         $entitySettings['dictionaries'][$ecn] = $controller->getDic($ecn);
+    //     }
+    //     return $entitySettings;
+    // }
    
     // </editor-fold>
     protected function newEntityGenerator()

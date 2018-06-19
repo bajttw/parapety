@@ -171,9 +171,9 @@ class ProductionsController extends AppController
         $this->renderOptions['products_panel'] = $this->genPanel($pns, [
             'content' => $this->tmplPath('index', '', 'Panel'),
             'toolbars' => [
-                $this->genFilterbar($pns, 'productions_form')
+                $this->genFilterbar('productions_form', 'Products')
             ],
-            'table' => $this->genTable($pns, 'production', [
+            'table' => $this->genTable('production', 'Products', [
                 // 'actions' => true,
                 'export' => true,
                 'd' => [
@@ -193,7 +193,7 @@ class ProductionsController extends AppController
             'fieldtype' => 'ajson',
             'content' => $this->tmplPath('table', '', 'Modal', self::$bundleName),
             'toolbars' => [
-                $this->genFilterbar($ons, 'productions_form')
+                $this->genFilterbar('productions_form', 'Orders')
             ],
             'buttons' => [
                 'add' => [
@@ -205,7 +205,7 @@ class ProductionsController extends AppController
                     ]
                 ]
             ],
-            'table' => $this->genTable($ons, 'to_production', [
+            'table' => $this->genTable('to_production', 'Orders', [
                 'd' => [
                     'ajax' => [
                         'url' => $this->getUrl('ajax_to_production', $ons, false)

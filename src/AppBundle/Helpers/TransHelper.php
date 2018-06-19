@@ -5,19 +5,28 @@ namespace AppBundle\Helpers;
 use Symfony\Component\Translation\TranslatorInterface;
 
 
-class TransGenerator
+class TransHelper
 {
 
     private $en='';
     private $translator;  
     
     public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator=$translator;
         // string $entityName = ''){
         // $this->en=$entityName;
     }
 
-    public function genTranslateText(string $str, string $type, string $entityName = null): string
+    public function setEntityName(string $entityName){
+        $this->en=$entityName;
+    }
+
+    public function genTranslateText(?string $str, string $type, ?string $entityName=null): string
     {
+        if(is_null($str)){
+            return '';
+        }
         $en=is_null($entityName) ? $this->en : strtolower($entityName); 
         if ($str == '') {
             return 'error';
@@ -35,47 +44,47 @@ class TransGenerator
         return $text . $str;
     }
 
-    public function errorText($str, $entityName = null):string
+    public function errorText(?string $str, ?string $entityName=null):string
     {
         return $this->genTranslateText($str, 'error', $entityName);
     }
 
-    public function labelText(string $str, string $entityName = null):string
+    public function labelText(?string $str, ?string $entityName=null):string
     {
         return $this->genTranslateText($str, 'label', $entityName);
     }
 
-    public function messageText($str, $entityName = null):string
+    public function messageText(?string $str, ?string $entityName=null):string
     {
         return $this->genTranslateText($str, 'message', $entityName);
     }
 
-    public function titleText(string $str, string $entityName = null):string
+    public function titleText(?string $str, ?string $entityName=null):string
     {
         return $this->genTranslateText($str, 'title', $entityName );
     }
 
-    public function filterLabel(string $str, string $entityName=null):string
+    public function filterLabel(?string $str, ?string $entityName=null):string
     {
         return $this->labelText('filter'.$str, $entityName );
     }
     
-    public function filterTitle(string $str, string $entityName=null):string
+    public function filterTitle(?string $str, ?string $entityName=null):string
     {
         return $this->titleText('filter'.$str, $entityName );
     }
 
-    public function btnLabel(string $str, string $entityName=null):string
+    public function btnLabel(?string $str, ?string $entityName=null):string
     {
         return $this->labelText('btn'.$str, $entityName );
     }
     
-    public function btnTitle( string $str, string $entityName=null):string
+    public function btnTitle(?string $str, ?string $entityName=null):string
     {
         return $this->titleText('btn'.$str, $entityName );
     }
   
-    public function modalTitle( string $str, string $entityName=null):string
+    public function modalTitle(?string $str, ?string $entityName=null):string
     {
         return $this->titleText('btn'.$str, $entityName );
     }

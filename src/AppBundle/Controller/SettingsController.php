@@ -84,11 +84,11 @@ class SettingsController extends AppController
         $this->setRenderOptions([
             'title' => $this->transGenerator->titleTex('client_index'),
             'toolbars' => [
-                $this->genToolbar(null, 'client_index', [
+                $this->genToolbar('client_index', [
                     "cid" => $cid
                 ])
             ],
-            'table' => $this->genTable(null, 'index', [
+            'table' => $this->genTable('index', null, [
                 'actions' => 'index',
                 'd' => [
                     'ajax' => [

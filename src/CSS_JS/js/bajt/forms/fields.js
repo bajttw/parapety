@@ -293,14 +293,14 @@
                 //         dblclick: this._dblclick
                 //     });
                 // }
-                this._on(this.$container.find('.form-control'), {
-                    mouseover: function() {
-                        that.$container.find('.field-msg').slideDown('fast');
-                    },
-                    mouseout: function() {
-                        that.$container.find('.field-msg').slideUp('fast');
-                    }
-                });
+                // this._on(this.$container.find('.form-control'), {
+                //     mouseover: function() {
+                //         that.$container.find('.field-msg').slideDown('fast');
+                //     },
+                //     mouseout: function() {
+                //         that.$container.find('.field-msg').slideUp('fast');
+                //     }
+                // });
                 return this;
             },
             _blockStatus: 0,
@@ -937,9 +937,9 @@
                 //            console.log('validate field '+this.options.name);
                 var o = this.options;
                 this.$container.removeClass(this.valid.getClass(true));
-                this.$container.find('.field-msg').slideUp(function() {
-                    this.remove();
-                });
+                // this.$container.find('.field-msg').slideUp(function() {
+                //     this.remove();
+                // });
                 this.valid.init();
                 if (B.obj.is(o.limits)) {
                     var val = this.value(),
@@ -958,8 +958,8 @@
                 this.$container.addClass(this.valid.getClass());
                 if (this.valid.msg) {
                     var $msg = this.valid.msg.$html();
-                    this.$container.append($('<div class="field-msg"></div>').append($msg));
-                    this.valid.msg.label = o.label || o.name;
+                    // this.$container.append($('<div class="field-msg"></div>').append($msg));
+                    // this.valid.msg.label = o.label || o.name;
                 }
                 return this.valid;
             },

@@ -30,12 +30,52 @@ services:
         tags: ['controller.service_arguments']
 
 
-    trans_generator: 
-        class: AppBundle\Helpers\TransGenerator
+    helper.trans: 
+        class: AppBundle\Helpers\TransHelper
         arguments: ["@translator"]
         public: true
 
+    helper.entity: 
+        class: AppBundle\Helpers\EntityHelper
+        arguments: ["@doctrine.orm.entity_manager", '@helper.settings']
+        public: true
+   
+    helper.filter: 
+        class: AppBundle\Helpers\FilterHelper
+        arguments: ['@service_container']
+        public: true
 
+
+    helper.settings: 
+        class: AppBundle\Helpers\SettingsHelper
+        arguments: ["@doctrine.orm.entity_manager"]
+        public: true
+    
+    orders_listener:
+        class: AppBundle\EntityListener\OrdersListener
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.orm.entity_listener }
+        public: true
+
+    productions_listener:
+        class: AppBundle\EntityListener\ProductionsListener
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.orm.entity_listener }
+        public: true
+
+    deliveries_listener:
+        class: AppBundle\EntityListener\DeliveriesListener
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.orm.entity_listener }
+        public: true
+
+    # AppBundle\EventListener\NextNumber:
+    #     arguments: [ "@settings_helper" ]
+    #     tags:
+    #         - { name: doctrine.event_listener, event: postPersist, lazy: true }
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
     #     arguments:

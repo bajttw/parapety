@@ -2,6 +2,8 @@ AppBundle\Entity\Productions:
     type: entity
     repositoryClass: AppBundle\Repository\ProductionsRepository
     table: Productions
+    entityListeners:
+        AppBundle\EntityListener\ProductionsListener: ~
     indexes:
 
     id:
@@ -52,6 +54,5 @@ AppBundle\Entity\Productions:
 
     lifecycleCallbacks:
         prePersist: [ prePersistProductions ] 
-        postPersist: [ postPersistProductions ]
         preUpdate: [ preUpdateProductions ]        
         preRemove: [ preRemoveProductions ]

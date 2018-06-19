@@ -420,7 +420,7 @@ class OrdersController extends AppController
                 'name' => 'size', 
                 'ecn' => 'Sizes', 
                 'fieldtype' => 'select',
-                'data' => $this->getDic('Sizes')
+                'data' => $this->getEntityHelper()->getDic('Sizes')
             ],
             [ 
                 'name' => 'trims', 
@@ -454,12 +454,12 @@ class OrdersController extends AppController
         return $this;
     }
 
-    public static function genCustomSettings($controller, &$entitySettings=[]){
-        foreach (['Models' , 'Colors', 'Trims', 'Sizes'] as $ecn){
-            $entitySettings['dictionaries'][$ecn]=$controller->getDic($ecn);            
-        }  
-        return $entitySettings;
-    }
+    // public static function genCustomSettings($controller, &$entitySettings=[]){
+    //     foreach (['Models' , 'Colors', 'Trims', 'Sizes'] as $ecn){
+    //         $entitySettings['dictionaries'][$ecn]=$controller->getDic($ecn);            
+    //     }  
+    //     return $entitySettings;
+    // }
     
  // </editor-fold>   
     
@@ -498,7 +498,7 @@ class OrdersController extends AppController
                 $this->genToolbar(),
                 $this->genFilterbar()
             ],
-            'table' => $this->genTable(null, 'index', [
+            'table' => $this->genTable('index', null, [
                 'actions' => 'index',
                 'select' => [
                     'options' => [
@@ -535,9 +535,9 @@ class OrdersController extends AppController
         $this->setRenderOptions([
             'title' => $this->transGenerator->titleText('client_index'),
             'toolbars' => [
-                $this->genToolbar(null, 'client_index')
+                $this->genToolbar('client_index')
             ],
-            'table' => $this->genTable(null, 'index', [
+            'table' => $this->genTable('index', null, [
                 'actions' => 'index',
                 'd' => [
                     'ajax' => [
@@ -628,34 +628,34 @@ class OrdersController extends AppController
     }
     
     
-    public function pdfAction(Request $request, $id, $cid=0){
-        if (!$this->preAction($request, $cid)) {
-            return $this->responseAccessDenied();
-        }
-        $modal=$request->query->get('type');
-        $this->getEntityFromBase($id);
-        $this->getEntitySettings();
-        $this->setTemplate('pdf', null);
-        $this->setRenderOptions([
-            'title' => $this->transGenerator->titleText('show'),
-            'entity'=>$this->entity->getShowData()
-            //            'css_path'=> dirname($_SERVER['SCRIPT_FILENAME'])."/bundles/system/css/print.css"
-        ]);
+    // public function pdfAction(Request $request, $id, $cid=0){
+    //     if (!$this->preAction($request, $cid)) {
+    //         return $this->responseAccessDenied();
+    //     }
+    //     $modal=$request->query->get('type');
+    //     $this->getEntityFromBase($id);
+    //     $this->getEntitySettings();
+    //     $this->setTemplate('pdf', null);
+    //     $this->setRenderOptions([
+    //         'title' => $this->transGenerator->titleText('show'),
+    //         'entity'=>$this->entity->getShowData()
+    //         //            'css_path'=> dirname($_SERVER['SCRIPT_FILENAME'])."/bundles/system/css/print.css"
+    //     ]);
 
-        $html=$this->renderSystemView();
-        $options = [
-            'title' => "zamówienie",
-            'lowquality' => false,
-            'dpi' => null,
-            //            'orientation'  => "Landscape",
-            'margin-top'    => 6,
-            'margin-right'  => 6,
-            'margin-bottom' => 10,
-            'margin-left'   => 10,
-        ];
-        return new Response($this->get('knp_snappy.pdf')->getOutputFromHtml($html, $options),200,array('Content-Type'          => 'application/pdf','Content-Disposition'   => 'attachment; filename="file.pdf"'));
-        return new Response($html, 200,['Content-Type' => 'text/html']);
-    }
+    //     $html=$this->renderSystemView();
+    //     $options = [
+    //         'title' => "zamówienie",
+    //         'lowquality' => false,
+    //         'dpi' => null,
+    //         //            'orientation'  => "Landscape",
+    //         'margin-top'    => 6,
+    //         'margin-right'  => 6,
+    //         'margin-bottom' => 10,
+    //         'margin-left'   => 10,
+    //     ];
+    //     return new Response($this->get('knp_snappy.pdf')->getOutputFromHtml($html, $options),200,array('Content-Type'          => 'application/pdf','Content-Disposition'   => 'attachment; filename="file.pdf"'));
+    //     return new Response($html, 200,['Content-Type' => 'text/html']);
+    // }
     
 
     public function getEntiesFromBase(Request $request, $functionName = null, $options = [])
@@ -687,7 +687,7 @@ class OrdersController extends AppController
             }
         }
         foreach(['Orders', 'Positions'] as $n){
-            $options[$n]['limits']=Utils::deep_array_value('limits', $this->getEntitySettings($n), []);           
+            $options[$n]['limits']=$this->getEntityHelper()->getSettingsValue('limits', $n);//Utils::deep_array_value('limits', $this->getEntitySettings($n), []);           
         }
         return $options;
     }

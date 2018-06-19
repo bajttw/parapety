@@ -430,18 +430,7 @@ class Deliveries extends AppEntity{
         if (is_null($this->generated)) {
             $this->generated = new \DateTime();
         }
-        if (is_null($this->number)) {
-            $this->setNumber($this->genNumber());
-        }
 	}
-
-    /**
-     * @ORM\PostPersist
-     */
-    public function postPersistDeliveries()
-    {
-        $this->nextNr();
-    }
 
     /**
      * @ORM\PreUpdate

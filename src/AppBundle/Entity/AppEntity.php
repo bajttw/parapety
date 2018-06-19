@@ -9,6 +9,8 @@ class AppEntity
 {
     const ns = 'AppBundle\\Entity\\';
 
+    const numerate=false;
+
     protected $controller = null;
 
     protected $oldValues=[];
@@ -18,7 +20,7 @@ class AppEntity
     public function __construct($options = [])
     {
         $defaults = Utils::deep_array_value('defaults', $options);
-        $this->controller = Utils::deep_array_value('controller', $options);
+        // $this->controller = Utils::deep_array_value('controller', $options);
         if (is_array($defaults)) {
             foreach ($defaults as $name => $value) {
                 $fnInit = 'init' . ucfirst($name);
@@ -409,7 +411,7 @@ class AppEntity
 //  <editor-fold defaultstate="collapsed" desc="Numbering">
     protected $intNr;
 
-    public function setIntNr($nr)
+    public function setIntNr(int $nr=0)
     {
         $nr = intval($nr);
         $this->intNr = $nr > 0 ? $nr : 1;
@@ -453,7 +455,15 @@ class AppEntity
         return count($generator) > 0 ? implode('', $generator) : $nr;
     }
 
-    public function genNumber($client = null)
+    
+    public function genNumber(array $numerate):string
+    {
+        $this->setIntNr($numerate['nr']);
+        $this->setNumber($this->generateNumber($numerate['numberGenerator'], $this->getIntNr()));
+        return $this->getNumber();
+    }
+   
+    public function genNumber1($client = null):string
     {
         $numberGenerator = null;
         $nr = 0;

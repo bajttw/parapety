@@ -2,7 +2,7 @@
 
 namespace AppBundle\Helpers;
 
-class RouteGenerator
+class RouteHelper
 {
 
     private $en='';

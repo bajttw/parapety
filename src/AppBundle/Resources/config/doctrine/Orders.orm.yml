@@ -2,6 +2,8 @@ AppBundle\Entity\Orders:
     type: entity
     table: Orders
     repositoryClass: AppBundle\Repository\OrdersRepository
+    entityListeners:
+        AppBundle\EntityListener\OrdersListener: ~
     id:
         id:
             type: integer
@@ -187,5 +189,4 @@ AppBundle\Entity\Orders:
             cascade: [ "persist" ]
     lifecycleCallbacks: 
         prePersist: [ prePersistOrders ]
-        postPersist: [ postPersistOrders ]
         preUpdate: [ preUpdateOrders ]

@@ -15,6 +15,7 @@ class Orders extends AppEntity
     const en = 'orders';
     const ec = 'Orders';
 
+    const numerate = false;
  //  <editor-fold defaultstate="collapsed" desc="Fields utils">
 
     public static $shortNames = [
@@ -808,12 +809,12 @@ class Orders extends AppEntity
         return $this;
     }
 
-    public function initTrims($controller, $trims)
-    {
-        $this->trims = $trims;
+    // public function initTrims($controller, $trims)
+    // {
+    //     $this->trims = $trims;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * Get trims
@@ -1093,11 +1094,11 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function initModel($controller, $model)
-    {
-        $this->model = $controller->getFromBase($model, static::$shortNames['childs']['model']);
-        return $this;
-    }
+    // public function initModel($controller, $model)
+    // {
+    //     $this->model = $controller->getFromBase($model, static::$shortNames['childs']['model']);
+    //     return $this;
+    // }
 
     /**
      * Get model
@@ -1129,11 +1130,11 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function initSize($controller, $size)
-    {
-        $this->size = $controller->getFromBase($size, static::$shortNames['childs']['size']);
-        return $this;
-    }
+    // public function initSize($controller, $size)
+    // {
+    //     $this->size = $controller->getFromBase($size, static::$shortNames['childs']['size']);
+    //     return $this;
+    // }
 
     /**
      * Get size
@@ -1165,11 +1166,11 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function initColor($controller, $color)
-    {
-        $this->color = $controller->getFromBase($color, static::$shortNames['childs']['color']);
-        return $this;
-    }
+    // public function initColor($controller, $color)
+    // {
+    //     $this->color = $controller->getFromBase($color, static::$shortNames['childs']['color']);
+    //     return $this;
+    // }
 
     /**
      * Get color
@@ -1502,20 +1503,9 @@ class Orders extends AppEntity
         if (is_null($this->created)) {
             $this->created = new \DateTime();
         }
-        if (is_null($this->number)) {
-            $this->setNumber($this->genNumber($this->getClient()));
-        }
         $this->approve();
         $this->summary();
         // $this->calcProgress();
-    }
-
-    /**
-     * @ORM\PostPersist
-     */
-    public function postPersistOrders()
-    {
-        $this->nextNr($this->getClient());
     }
 
     /**

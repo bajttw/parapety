@@ -2,6 +2,8 @@ AppBundle\Entity\Deliveries:
     type: entity
     table: Deliveries
     repositoryClass: AppBundle\Repository\DeliveriesRepository
+    entityListeners:
+        AppBundle\EntityListener\DeliveriesListener: ~
     id:
         id:
             type: integer
@@ -58,6 +60,5 @@ AppBundle\Entity\Deliveries:
                 
     lifecycleCallbacks:
         prePersist: [ prePersistDeliveries ]
-        postPersist: [ postPersistDeliveries ]
         preUpdate: [ preUpdateDeliveries ]       
         preRemove: [ preRemoveDeliveries ]

@@ -113,7 +113,7 @@ class ClientsController extends AppController{
             $userManager = $this->get('fos_user.user_manager');
             $user=$userManager->findUserByEmail($email);
             if ($userManager->findUserByEmail($email) == null){
-                $defaultPass=$this->getSetting('password-default', true);
+                $defaultPass=$this->getSettingsHelper()->getSettingValue('password-default');
                 //            $this->getEntityManager()->persist($this->entity);
                 $user= $userManager->createUser();
                 $user->addClient($this->entity);
@@ -165,24 +165,22 @@ class ClientsController extends AppController{
 
 // </editor-fold>   
 
-    private function genClientServicePanel($entityClassName, $active=false, $cid='__cid__'){
-        $ens=self::getEntityNameSpaces($entityClassName);
-        $controller=self::getEntityController($ens);
-        return $this->genPanel($ens, [
+    private function genClientServicePanel(string $entityClassName, bool $active=false, $cid='__cid__'){
+        return $this->genPanel($entityClassName, [
             'active' => $active,
             'content' => $this->tmplPath('index', '', 'Panel'),
             'toolbars' => [
-                $this->genToolbar( $ens, 'service', [ 'tmpl' => true, "cid" => $cid ]),
-                $this->genFilterbar( $ens, 'service')
+                $this->genToolbar( 'service', $entityClassName, [ 'tmpl' => true, "cid" => $cid ]),
+                $this->genFilterbar( 'service', $entityClassName)
             ],
-            'table' => $this->genTable($ens, 'panel', [
+            'table' => $this->genTable('panel', $entityClassName, [
                 'actions' => true,
                 'export' => true,
                 'd' => [
                     'ajax' => [
-                        'url' => $this->getUrl('ajax', $ens, true, ["cid" => $cid])
+                        'url' => $this->getUrl('ajax', $entityClassName, true, ["cid" => $cid])
                     ],
-                    'filters' => $controller::getFilters('table_client', [ 'cid' => $cid ]) 
+                    'filters' => $this->getEntityHelper()->getControllerNamespace($entityClassName)::getFilters('table_client', [ 'cid' => $cid ]) 
                 ]
             ])
         ]);
@@ -196,25 +194,25 @@ class ClientsController extends AppController{
         }
         $cns=$this->getEntityNameSpaces();
         $cid='__cid__';
-        // $tecn=['Orders', 'Deliveries', 'Invoices', 'Settings'];
-        $tecn=[ 'Orders','Deliveries', 'Invoices', 'PriceLists', 'Settings' ];
         $tabs=[];
         $tabsOpt=[];
-        for($i=0; $i < count($tecn); $i++){
-            $tns=$this->getEntityNameSpaces($tecn[$i]);
-            $ten=$this->getEntityName($tns);
-            $tabs['client_'.$ten]=$this->genClientServicePanel($tns, $i==0, $cid);
+        $i=0;
+        foreach([ 'Orders','Deliveries', 'Invoices', 'PriceLists', 'Settings' ] as $tec){
+            $ten=$this->getEntityHelper()->getEntityName($tec);
+            $tabs['client_'.$ten]=$this->genClientServicePanel($tec, $i==0, $cid);
             $tabsOpt[$ten]=['ajax' => false];
-            $this->addEntityModal($tns);
+            $this->addEntityModal($tec);
+            $i++;
         }
         $tabsOpt['edit']=['ajax' => true];
-        $tabs['client_edit'] = $this->genPanel($cns, [
-            'label' => $this->labelText('edit'),
+        $cEditUrl=$this->getUrl('edit', null, true, ["id" => $cid, "type" => "p"]);
+        $tabs['client_edit'] = $this->genPanel(null, [
+            'label' => $this->getTransHelper()->labelText('edit'),
             'd' => [
                 'url' => json_encode([
-                    'start' => $this->getUrl('edit', $cns, true, ["id" => $cid, "type" => "p"]),
-                    'edit' => $this->getUrl('edit', $cns, true, ["id" => $cid, "type" => "p"]),
-                    'new' => $this->getUrl('new', $cns, true, [ "type" => "p"])
+                    'start' => $cEditUrl,
+                    'edit' => $cEditUrl,
+                    'new' => $this->getUrl('new', null, true, [ "type" => "p"])
                 ])               
             ],
             'attr' =>[
@@ -227,10 +225,10 @@ class ClientsController extends AppController{
                 'panel_left' => $this->genPanel($cns, [
                     'content' => $this->tmplPath('panel', null),
                     'toolbars' => [
-                        $this->genToolbar( ),
-                        $this->genFilterbar(null, 'service')
+                        $this->genToolbar(),
+                        $this->genFilterbar('service')
                     ],
-                    'table' => $this->genTable(null, 'panel', [
+                    'table' => $this->genTable('panel', null, [
                         'actions' => true, 
                         'select' => 'single',
                         'd' => [

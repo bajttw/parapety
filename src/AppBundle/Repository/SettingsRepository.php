@@ -72,7 +72,7 @@ class SettingsRepository extends AppRepository
     //     return $asJSON ? json_encode($result) : $result;
     // }
 
-    public function getSettingsValue($prefix, $options = [])
+    public function getSettingsValue(string $prefix, array $options = []):array
     {
         $prefix = strtolower($prefix);
         $pref_reg = '/' . $prefix . '[-]?/';
@@ -94,9 +94,8 @@ class SettingsRepository extends AppRepository
     //     return $entity;
     // }
 
-    public function getSetting($name, $options = [])
+    public function getSetting(string $name, array $options = [])
     {
-        $ff = 1;
         $this
             ->init()
             ->setOptionsFilters($options, strtolower($name))

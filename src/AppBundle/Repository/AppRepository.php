@@ -504,7 +504,7 @@ class AppRepository extends EntityRepository
         return $this;
     }
 
-    protected function selectFrom($entity = null)
+    protected function selectFrom($entity = null, $group=true )
     {
         $this->em = $this->getEntityManager();
         $this->qb = $this->getEntityManager()->createQueryBuilder();
@@ -517,7 +517,9 @@ class AppRepository extends EntityRepository
                 $this->addJoin($name);
             }
         }
-        $this->qb->groupBy('e.id');
+        if($group){
+            $this->qb->groupBy('e.id');
+        }
         return $this;
     }
 
@@ -678,7 +680,7 @@ class AppRepository extends EntityRepository
         $options['query'] = 'COUNT(e.id)';
         $this
             ->getOptions($options)
-            ->selectFrom()
+            ->selectFrom(null, false)
             ->addFilters();
         try {
             $count = $this->qb->getQuery()->getSingleScalarResult();

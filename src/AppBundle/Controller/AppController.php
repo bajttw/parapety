@@ -9,10 +9,15 @@ use Symfony\Component\Form\FormError;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use AppBundle\Utils\Utils;
+use AppBundle\Utils\Filter;
 use AppBundle\Helpers\TransGenerator;
 use AppBundle\Entity\Settings;
 use AppBundle\Entity\Uploads;
 use AppBundle\Entity\Clients;
+
+use AppBundle\Helpers\TransHelper;
+use AppBundle\Helpers\EntityHelper;
+use AppBundle\Helpers\SettingsHelper;
 
 define("AppBundle", 'AppBundle');
 
@@ -29,19 +34,17 @@ class AppController extends Controller
     protected $settings = [];
     protected $dictionaries = [];
 
-    protected $entitiesClasses = ['Clients', 'Settings', 'Uploads', 'Users', 'Notes', 'Colors', 'Models', 'Sizes', 'Trims', 'Orders', 'Positions', 'Products', 'Productions', 'Deliveries', 'Invoices', 'PriceLists', 'PriceListItems', 'Prices'];
+    // protected $entitiesClasses = ['Clients', 'Settings', 'Uploads', 'Users', 'Notes', 'Colors', 'Models', 'Sizes', 'Trims', 'Orders', 'Positions', 'Products', 'Productions', 'Deliveries', 'Invoices', 'PriceLists', 'PriceListItems', 'Prices'];
 
 
-    protected $entity = null;
-    protected $entityId = 0;
-    protected $entityNameSpaces = [];
+    // protected $entityNameSpaces = [];
 
     protected $entityQuery;
     protected $entityQueryFilters = [];
 
 
 
-    protected $entitiesSettings = null;
+    // protected $entitiesSettings = null;
     protected $entitySettings = [];
 
     protected $entityModal = [];
@@ -91,22 +94,269 @@ class AppController extends Controller
         'value' => '1'
     ];
 
-    public $transGenerator;
 
     public function __construct($params = null)
     {
-        $this->entityNameSpaces = $this->genEntityNameSpaces();
         if ($params) {
             if (isset($params['query'])) {
                 $this->entityQuery = $params['query'];
             }
 
         }
-        $this->transGenerator=new TransGenerator(static::en);
     }
 
-//  <editor-fold defaultstate="collapsed" desc="Translations">
+ //  <editor-fold defaultstate="collapsed" desc="Helpers">
+    protected $th;// TransHelper
+    protected $eh;//EntityHelper   
+    protected $sh;//SettingsHelper
+    protected function getTransHelper():TransHelper
+    {
+        if(is_null($this->th)){
+            $this->th=$this->get('helper.trans');
+            $this->th->setEntityName(static::en);
+        }
+        return $this->th;
+    }
 
+    protected function getEntityHelper():EntityHelper
+    {
+        if(is_null($this->eh)){
+            $this->eh=$this->get('helper.entity');
+            $this->eh->setEntityClassName(static::ec);
+        }
+        return $this->eh;
+    }
+
+    public function getSettingsHelper():SettingsHelper
+    {
+        if(is_null($this->sh)){
+            $this->sh=$this->get('helper.settings');
+        }
+        return $this->sh;
+    }
+
+    public function controllerFunction( string $functionName, ?string $entityClassName=null, ?array $arguments = null)
+    {
+        $entityController=$this->getEntityHelper()->getControllerNamespace($entityClassName);
+        if (method_exists($entityController, $functionName)) {
+            return call_user_func_array([$entityController, $functionName], is_array($arguments) ? $arguments : [$arguments]);
+        }
+        return [];
+    }
+ 
+    public function runFunction($functionName, $argument = null)
+    {
+        if (method_exists($this, $functionName)) {
+            return $argument ? $this->$functionName($argument) : $this->$functionName();
+        }
+        return null;
+    }
+    // public function getFromBase($condition, $entityClassName = null, $exeption=false)
+    // {
+    //     $repository = $this->getEntityManager()->getRepository($this->getEntityHelper()->getEntityNamespace($entityClassName));
+    //     $entity = is_array($condition) ? $repository->findOneBy($condition) : $repository->find($condition);
+    //     if (!$entity && $exeption) {
+    //         $this->getTransHelper()->messageText('notFound', $this->)
+    //         throw $this->createNotFoundException(
+    //             $this->trans([
+    //                 $this->getTransHelper()->errorText('base', ''),
+    //                 $this->getTransHelper()->errorText('notFound', $en),
+    //             ])
+    //             .' - ' 
+    //             . (is_array($condition) ? "Warunki wyszukiwania: " . json_encode($condition) : 'ID: ' . $condition)
+    //         );
+    //     }
+    //     return $entity;
+    // }
+ // </editor-fold>   
+
+ // <editor-fold defaultstate="collapsed" desc="entity">
+    protected $entity;
+    protected $entityId=0;
+    
+    protected function newEntity()
+    {
+        if(is_null($this->entity)){
+            $this->entity = $this->getEntityHelper()->newEntity(static::ec, ['defaults' => $this->getEntityHelper()->getSettingsValue('defaults') ] );
+            $this->newCustomEntity();  
+        }   
+        return $this->entity;
+    }
+
+    protected function newCustomEntity()
+    {
+        return $this->entity;
+    }
+
+    protected function newEntityGenerator()
+    {
+        if (!$this->entity) {
+            $this->entity = $this-getEntityHelper()->newEntityGenerator();
+        }
+        return $this;
+    }
+
+    protected function getEntityFromBase($condition, ?string $entityClassName = null)
+    {
+        $this->entity = $this->getEntityHelper()->fromBase($condition, $entityClassName);
+        if ($this->entity) {
+            $this->entityId = $this->entity->getId();
+        }
+        return $this->entity;
+    }
+ // </editor-fold>   
+ 
+ 
+ // <editor-fold defaultstate="collapsed" desc="Forms">
+    protected function setFormOptions($type, $options = [])
+    {
+        $default = [
+            'em' => $this->getDoctrine()->getManager(),
+            'translator' => $this->get('translator'),
+            'action' => $this->getUrl($type),
+            'attr' => [
+                'data-admin' => $this->isAdmin(),
+                'data-entity-id' => $this->entityId ? $this->entityId : '',
+                'data-form' => 'ajax'
+            ],
+            'form_admin' => $this->isAdmin(),
+        ];
+        switch ($type) {
+            case 'remove' :
+                $default['method'] = 'DELETE';
+                break;
+            case 'update' :
+                $default['method'] = 'PUT';
+                break;
+            case 'create' :
+            case 'add':
+            default :
+                $default['method'] = 'POST';
+        }
+        if (Utils::deep_array_key_exists('attr-class', $this->formOptions) && Utils::deep_array_key_exists('attr-class', $options)) {
+            Utils::addClass($this->formOptions, $options['attr']['class'], 'attr');
+            unset($options['attr']['class']);
+        }
+        $this->formOptions = array_replace_recursive($this->formOptions, $default, $options);
+        Utils::addClass($this->formOptions, ['ajaxCarlack', static::en], 'attr');
+        if ($type != 'remove') {
+            $this->formOptions['entities_settings'] = $this->getEntityHelper()->getEntitiesSettings();
+            $this->runFunction('setCustomFormOptions');
+        }
+        return $this;
+    }
+
+    protected function createEntityForm()
+    {
+        $this->formSystem = $this->createForm($this->getEntityHelper()->getFormNamespace(), $this->entity, $this->formOptions);
+        return $this;
+    }
+
+    protected function createCreateForm($options = [])
+    {
+        $this->newEntity();
+        $this->setFormOptions('create', $options);
+        $this->setRenderOptions([
+            'title' => $this->getTransHelper()->titleText('new'),
+            'form_options' => [
+                'submit' => $this->genSubmitBtn('create')
+            ]
+        ]);
+        $this->createEntityForm();
+        return $this;
+    }
+
+    protected function createGenerateForm($options = [])
+    {
+        $this->newEntityGenerator();
+        $this->setFormOptions('add', $options);
+        $this->formOptions['attr']['data-form'] = static::en . 'generate';
+        $this->setRenderOptions([
+            'title' => $this->getTransHelper()->titleText('generate'),
+            'template_body' => $this->tmplPath( 'generate_body', static::ec),
+            'form_options' => [
+                'submit' => $this->genSubmitBtn('save')
+            ]
+        ]);
+        $this->formSystem = $this->createForm( $this->getEntityHelper()->getFormNamespace(static::ec . "Generate"), $this->entity, $this->formOptions);
+        return $this;
+    }
+
+    protected function createEditForm($id, $options = [])
+    {
+        if (!$this->entity) {
+            $this->getEntityFromBase($id);
+        }
+        $this->setFormOptions('update', $options);
+        $this->setRenderOptions([
+            'title' => $this->getTransHelper()->titleText('edit'),
+            'form_options' => [
+                'submit' => $this->genSubmitBtn('update')
+            ]
+        ]);
+        $this->createEntityForm();
+        return $this;
+    }
+
+    protected function createDeleteForm($id, $options = [])
+    {
+        if (!$this->entity) {
+            $this->getEntityFromBase($id);
+        }
+        $this->formData = new \stdClass();
+        $this->formData->id = $id;
+        $this->formData->confirm = false;
+        $this->setFormOptions('remove');
+        $renderOptions = [
+            'title' => $this->getTransHelper()->titleText('delete'),
+            'template_body' => $this->tmplPath('delete', '', 'Form'),
+            'form_options' => [
+                'submit' => $this->genSubmitBtn('remove')
+            ],
+            'entity_name' => static::en
+        ];
+        if (method_exists($this->entity, 'getDataDelete')) {
+            $renderOptions['entity'] = $this->entity->getDataDelete();
+        }
+        else {
+            $renderOptions['entity'] = ['id' => $this->entity->getId()];
+            if (method_exists($this->entity, 'getName')) {
+                $renderOptions['entity']['name'] = $this->entity->getName();
+            }
+        }
+        $this->setRenderOptions($renderOptions);
+        $this->formSystem = $this->createForm($this->getEntityHelper()->getFormNamespace('Delete'), $this->formData, $this->formOptions);
+        return $this;
+    }
+ 
+
+// </editor-fold>  
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+//  <editor-fold defaultstate="collapsed" desc="Translations">
+    
 
     public static function gen_trans_text($str, $type, $entityName = null)
     {
@@ -156,12 +406,6 @@ class AppController extends Controller
 //  <editor-fold defaultstate="collapsed" desc="Entity service">
     public function getEntityNameSpaces($entityClassName = null)
     {
-        if (is_null($entityClassName)) {
-            return $this->entityNameSpaces;
-        }
-        if (is_array($entityClassName)) {
-            return $entityClassName;
-        }
         return self::genEntityNameSpaces($entityClassName);
     }
 
@@ -195,21 +439,15 @@ class AppController extends Controller
         ];
     }
 
-    public static function controllerFunction($entityController, $functionName, $arguments = null)
-    {
-        if (method_exists($entityController, $functionName)) {
-            return call_user_func_array([$entityController, $functionName], is_array($arguments) ? $arguments : [$arguments]);
-        }
-        return [];
-    }
+    // public static function controllerFunction($entityController, $functionName, $arguments = null)
+    // {
+    //     if (method_exists($entityController, $functionName)) {
+    //         return call_user_func_array([$entityController, $functionName], is_array($arguments) ? $arguments : [$arguments]);
+    //     }
+    //     return [];
+    // }
 
-    public function runFunction($functionName, $argument = null)
-    {
-        if (method_exists($this, $functionName)) {
-            return $argument ? $this->$functionName($argument) : $this->$functionName();
-        }
-        return null;
-    }
+
 
     public static function getBundleName($entityPath = null)
     {
@@ -298,42 +536,13 @@ class AppController extends Controller
         return self::getNameSpace('Controller', $entityClassName, 'Controller');
     }
 
-    public static function getEntityRepository($entityClassName = '')
-    {
-        if (is_array($entityClassName)) {
-            return $entityClassName['repository'];
-        }
-        return self::getNameSpace('Repository', $entityClassName, 'Repository');
-    }
 
-    protected function newEntity()
-    {
-        if (!$this->entity) {
-            $this->entity = new $this->entityNameSpaces['nameSpace'](['controller' => $this, 'defaults' => Utils::deep_array_value('defaults', $this->entitySettings)]);
-            $this->newCustomEntity();
-        }
-        return $this;
-    }
-
-    protected function newCustomEntity()
-    {
-        return $this;
-    }
-
-    protected function newEntityGenerator()
-    {
-        if (!$this->entity) {
-            $this->entity=new \stdClass();
-            $this->entity->items= new ArrayCollection();
-        }
-        return $this;
-    }
     
 // </editor-fold>   
 
 //  <editor-fold defaultstate="collapsed" desc="Routing">
 
-    protected function getRoute($routeSuffix = null, $entityClassName = null, $clientRoute = null)
+    protected function getRoute(?string $routeSuffix = null, ?string $entityClassName = null, ?bool $clientRoute = null):string
     {
         $route='';
         if($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
@@ -353,7 +562,8 @@ class AppController extends Controller
         return $route;
     }
 
-    protected function getSystemUrl($route, $parameters = [])
+
+    protected function getUrl(?string $routeSuffix = null, ?string $entityClassName = null, ?bool $isClient = null, array $parameters = []):string
     {
         $def_param = [];
         if ($this->isClient()) {
@@ -362,17 +572,10 @@ class AppController extends Controller
         if ($this->entityId > 0) {
             $def_param['id'] = $this->entityId;
         }
-        return $this->generateUrl($route, array_replace_recursive($def_param, $parameters));
-    }
-
-    protected function getUrl($routeSuffix = null, $entityClassName = null, $isClient = null, $parameters = [])
-    {
-        return $this->getSystemUrl($this->getRoute($routeSuffix, $entityClassName, $isClient), $parameters);
-    }
-
-    public function getRequest()
-    {
-        return $this->container->get('request_stack')->getCurrentRequest();
+        return $this->generateUrl(
+            $this->getRoute($routeSuffix, $entityClassName, $isClient),
+            array_replace_recursive($def_param, $parameters)
+        );
     }
 
     protected function setReturnUrl()
@@ -442,7 +645,7 @@ class AppController extends Controller
             'upload_route' => 'app_uploads_temp'
         ];
         $this->renderOptions = array_replace_recursive($this->renderOptions, $default, $options);
-        $this->renderOptions['entities_settings'] = $this->getEntitiesSettings();
+        $this->renderOptions['entities_settings'] = $this->getEntityHelper()->getEntitiesSettings();
         $this->renderOptions['layout'] = Utils::deep_array_value('view', $_REQUEST) ? 'content' : 'layout_dev';
         return $this;
     }
@@ -466,6 +669,11 @@ class AppController extends Controller
 // </editor-fold>   
 
 // <editor-fold defaultstate="collapsed" desc="Actions">
+
+    public function getRequest()
+    {
+        return $this->container->get('request_stack')->getCurrentRequest();
+    }
 
     public function getEntityFieldFromJson(Request $request, $fieldName="id")
     {
@@ -514,6 +722,9 @@ class AppController extends Controller
             'checkPrivilages' => 0,
             'entitySettings' => true,
         ];
+        $this->getTransHelper();
+        $this->getSettingsHelper();
+        $this->getEntityHelper();
         $this->renderType = $request->query->get('type');        
         $o = array_replace_recursive($default, $options);
         if ($cid == 0) {
@@ -526,8 +737,7 @@ class AppController extends Controller
             return false;
         }
         if ($o['entitySettings']) {
-            $this->genEntitiesSettings();
-            $this->entitySettings = $this->getEntitySettings(static::ec);
+            $this->entitySettings = $this->getEntityHelper()->getSettings();
         }
         return true;
     }
@@ -539,12 +749,12 @@ class AppController extends Controller
         }
         $this->setTemplate('index');
         $this->setRenderOptions([
-            'title' => $this->transGenerator->titleText('index'),
+            'title' => $this->getTransHelper()->titleText('index'),
             'toolbars' => [
                 $this->genToolbar(),
                 $this->genFilterbar()
             ],
-            'table' => $this->genTable(null, 'index', ['actions' => 'index'])
+            'table' => $this->genTable('index')
         ])
             ->addEntityModal();
         return $this->renderSystem();
@@ -651,7 +861,7 @@ class AppController extends Controller
         $this->getEntityFromBase($id);
         $this->setTemplate('show')
             ->setRenderOptions([
-            'title' => $this->titleText('show'),
+            'title' => $this->getTransHelper()->titleText('show'),
             'entity' => $this->entity->getShowData(false, ['shortNames' => false])
         ]);
         return $this->renderSystem();
@@ -818,136 +1028,9 @@ class AppController extends Controller
 
 // </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="Forms">
-    protected function setFormOptions($type, $options = [])
-    {
-        $default = [
-            'em' => $this->getDoctrine()->getManager(),
-            'translator' => $this->get('translator'),
-            'action' => $this->getUrl($type),
-            'attr' => [
-                'data-admin' => $this->isAdmin(),
-                'data-entity-id' => $this->entityId ? $this->entityId : '',
-                'data-form' => 'ajax'
-            ],
-            'form_admin' => $this->isAdmin(),
-        ];
-        switch ($type) {
-            case 'remove' :
-                $default['method'] = 'DELETE';
-                break;
-            case 'update' :
-                $default['method'] = 'PUT';
-                break;
-            case 'create' :
-            case 'add':
-            default :
-                $default['method'] = 'POST';
-        }
-        if (Utils::deep_array_key_exists('attr-class', $this->formOptions) && Utils::deep_array_key_exists('attr-class', $options)) {
-            Utils::addClass($this->formOptions, $options['attr']['class'], 'attr');
-            unset($options['attr']['class']);
-        }
-        $this->formOptions = array_replace_recursive($this->formOptions, $default, $options);
-        Utils::addClass($this->formOptions, ['ajaxCarlack', static::en], 'attr');
-        if ($type != 'remove') {
-            $this->formOptions['entities_settings'] = $this->getEntitiesSettings();
-            $this->runFunction('setCustomFormOptions');
-        }
-        return $this;
-    }
-
-    protected function createEntityForm()
-    {
-        $this->formSystem = $this->createForm($this->entityNameSpaces['formType'], $this->entity, $this->formOptions);
-        return $this;
-    }
-
-    protected function createCreateForm($options = [])
-    {
-        $this->newEntity();
-        $this->setFormOptions('create', $options);
-        $this->setRenderOptions([
-            'title' => $this->transGenerator->titleText('new'),
-            'form_options' => [
-                'submit' => $this->genSubmitBtn('create')
-            ]
-        ]);
-        $this->createEntityForm();
-        return $this;
-    }
-
-    protected function createGenerateForm($options = [])
-    {
-        $this->newEntityGenerator();
-        $this->setFormOptions('add', $options);
-        $this->formOptions['attr']['data-form'] = static::en . 'generate';
-        $this->setRenderOptions([
-            'title' => $this->transGenerator->titleText('generate'),
-            'template_body' => $this->tmplPath( 'generate_body', static::ec),
-            'form_options' => [
-                'submit' => $this->genSubmitBtn('save')
-            ]
-        ]);
-        $this->formSystem = $this->createForm(self::getNameSpace('Form', static::ec . "Generate", 'Type'), $this->entity, $this->formOptions);
-        return $this;
-    }
-
-    protected function createEditForm($id, $options = [])
-    {
-        if (!$this->entity) {
-            $this->getEntityFromBase($id);
-        }
-        $this->setFormOptions('update', $options);
-        $this->setRenderOptions([
-            'title' => $this->transGenerator->titleText('edit'),
-            'form_options' => [
-                'submit' => $this->genSubmitBtn('update')
-            ]
-        ]);
-        $this->createEntityForm();
-        return $this;
-    }
-
-    protected function createDeleteForm($id, $options = [])
-    {
-        if (!$this->entity) {
-            $this->getEntityFromBase($id);
-        }
-        $this->formData = new \stdClass();
-        $this->formData->id = $id;
-        $this->formData->confirm = false;
-        $this->setFormOptions('remove');
-        $renderOptions = [
-            'title' => $this->transGenerator->titleText('delete'),
-            'template_body' => $this->tmplPath('delete', '', 'Form'),
-            'form_options' => [
-                'submit' => $this->genSubmitBtn('remove')
-            ],
-            'entity_name' => static::en
-        ];
-        if (method_exists($this->entity, 'getDataDelete')) {
-            $renderOptions['entity'] = $this->entity->getDataDelete();
-        }
-        else {
-            $renderOptions['entity'] = ['id' => $this->entity->getId()];
-            if (method_exists($this->entity, 'getName')) {
-                $renderOptions['entity']['name'] = $this->entity->getName();
-            }
-        }
-        $this->setRenderOptions($renderOptions);
-        $this->formSystem = $this->createForm(static::$bundleName . '\\Form\\DeleteType', $this->formData, $this->formOptions);
-        return $this;
-    }
-    
-
-// </editor-fold>  
 
 //  <editor-fold defaultstate="collapsed" desc="Parameters">
     
-    /*
-     * Obsługa parametrów
-     */
     protected function getParameters()
     {
         if (!$this->parameters) {
@@ -962,14 +1045,6 @@ class AppController extends Controller
 
 // <editor-fold defaultstate="collapsed" desc="Utilites">
     
-    protected function removeElementsFromCollection($oldElements, $elements)
-    {
-        foreach ($oldElements as $oldElement) {
-            if (false === $elements->contains($oldElement)) {
-                $this->getEntityManager()->remove($oldElement);
-            }
-        }
-    }
 
     public function getEntityManager()
     {
@@ -994,19 +1069,19 @@ class AppController extends Controller
         return (($onlyAdmin && $this->isAdmin()) || (!$onlyAdmin && ($this->isAdmin() || ($this->isClient() && $this->user->hasClient($this->client))) ));
     }
 
-    public function addEntityModal($entityClassName = null, $options = [])
+    public function addEntityModal(?string $entityClassName=null, $options = [])
     {
-        $ens = $this->getEntityNameSpaces($entityClassName);
+        $en = $this->getEntityHelper()->getEntityName($entityClassName); 
         $default = [
-            'name' => $ens['name'],
-            'en' => $ens['name'],
-            'ecn' => $ens['className'],
+            'name' => $en,
+            'en' => $en,
+            'ecn' => $entityClassName,
             'd' => [],
             'attr' => [
                 'class' => 'ajax'
             ]
         ];
-        $settings = $this->controllerFunction($ens['controller'], 'getModal');
+        $settings = $this->controllerFunction('getModal', $entityClassName);
         return $this->addModal(array_replace_recursive($default, $settings, $options));
     }
 
@@ -1020,7 +1095,7 @@ class AppController extends Controller
         }
         $fillData = Utils::deep_array_value('fillData', $modal, false);
         $default = [
-            'title' => $this->transGenerator->modalTitle($name, $en),
+            'title' => $this->getTransHelper()->modalTitle($name, $en),
             'd' => [
                 'method' => 'POST',
                 'options' => [
@@ -1036,7 +1111,7 @@ class AppController extends Controller
             $default['data'] = $ecn != '' ? $this->getEntityManager()->getRepository('AppBundle:' . $ecn)->getList() : null;
         }
         if (!array_key_exists('settings', $modal)) {
-            $default['settings'] = $ecn ? $this->getEntitySettings($ecn) : $this->getSettingValue('modal-'.$name);
+            $default['settings'] = $ecn ? $this->getEntityHelper()->getSettings($ecn) : $this->getSettingsHelper()->getSettingValue('modal-'.$name);
         }
         $this->renderOptions['modals'][] = array_replace_recursive($default, $modal);
         return $this;
@@ -1047,11 +1122,11 @@ class AppController extends Controller
         $ecn = Utils::deep_array_value('ecn', $modal);
         if (\array_key_exists('dic', $modal)) {
             if (!is_array(Utils::deep_array_value('data', $modal))) {
-                $modal['data'] = $this->getDic(is_string($modal['dic']) ? $modal['dic'] : $ecn);
+                $modal['data'] = $this->getEntityHelper()->getDic(is_string($modal['dic']) ? $modal['dic'] : $ecn);
             }
-            $imgWidth = Utils::deep_array_value('image-width', $this->getEntitySettings($ecn));
+            $imgWidth = Utils::deep_array_value('image-width', $this->getEntityHelper()->getSettings($ecn));
             if ($imgWidth) {
-                $imgColumns = Utils::deep_array_value('image-columns', $this->getEntitySettings($ecn), intval(600 / $imgWidth));
+                $imgColumns = Utils::deep_array_value('image-columns', $this->getEntityHelper()->getSettings($ecn), intval(600 / $imgWidth));
                 $modal['dialog_attr']['style'] = Utils::deep_array_value('dialog_attr-style', $modal, '') . 'max-width:' . ($imgColumns * $imgWidth + 100) . 'px;';
             }
         }
@@ -1075,17 +1150,18 @@ class AppController extends Controller
         return $this;
     }
 
-    protected function addExpModal($entityClassName = null, $options = [])
+    protected function addExpModal(?string $entityClassName = null, $options = [])
     {
-        $ens = $this->getEntityNameSpaces($entityClassName);
+        $ec = $this->getEntityHelper()->getEntityClassName($entityClassName);
+        $en = $this->getEntityHelper()->getEntityName($entityClassName);
         $this->addModalsField([
             array_replace_recursive(
                 [
-                    'ecn' => $ens['className'],
-                    'name' => $ens['name'] . '_exp',
+                    'ecn' => $ec,
+                    'name' => $en . '_exp',
                     'fieldtype' => 'textarea',
                     'field_attr' => [
-                        'id' => $ens['name'] . '_exp_copy',
+                        'id' => $en . '_exp_copy',
                         'rows' => 10,
                         'cols' => 25,
                         'data-widget' => 'copytextarea',
@@ -1104,7 +1180,7 @@ class AppController extends Controller
     public function addShowModal($entityClassName = null, $options = [])
     {
         $ens = $this->getEntityNameSpaces($entityClassName);
-        $modal = $this->controllerFunction($ens['controller'], 'getModal');
+        $modal = $this->controllerFunction('getModal', $entityClassName);
         $modal['name'] = $ens['name'] . '_show';
         $modal['content'] = $this->tmplPath( 'show', $ens, 'modal');
         $modal['addClass'][] = 'modal-show';
@@ -1115,7 +1191,7 @@ class AppController extends Controller
     public function addTableExportModal($entityClassName = null, $options = [])
     {
         $ens = $this->getEntityNameSpaces($entityClassName);
-        $modal = $this->controllerFunction($ens['controller'], 'getModal');
+        $modal = $this->controllerFunction('getModal', $entityClassName);
         $modal['en'] = $ens['name'];
         $modal['ecn'] = $ens['className'];
         $modal['name'] = $ens['name'] . '_table_export';
@@ -1143,28 +1219,13 @@ class AppController extends Controller
             $defaultOptions['query'] = $this->entityQuery;
         }
         $function = isset($functionName) ? $functionName : 'getAll';
-        return $this->getEntityManager()->getRepository($this->entityNameSpaces['path'])->$function(array_replace_recursive($defaultOptions, $options));
+        return $this->getEntityHelper()->getRepository()->$function(array_replace_recursive($defaultOptions, $options));
+        // getEntityManager()->getRepository($this->entityNameSpaces['path'])->$function(array_replace_recursive($defaultOptions, $options));
     }
 
-    protected function getEntityFromBase($condition, $entityClassName = null)
-    {
-        $this->entity = $this->getFromBase($condition, $entityClassName);
-        if ($this->entity) {
-            $this->entityId = $this->entity->getId();
-        }
-        return $this->entity;
-    }
 
-    public function getFromBase($condition, $entityClassName = null, $exeption=false)
-    {
-        $ens = $this->getEntityNameSpaces($entityClassName);
-        $repository = $this->getEntityManager()->getRepository($ens['path']);
-        $entity = is_array($condition) ? $repository->findOneBy($condition) : $repository->find($condition);
-        if (!$entity && $exeption) {
-            throw $this->createNotFoundException($this->trans(['message.base_error', $ens['name'] . '.message.' . 'notFound']) . ' - ' . (is_array($condition) ? "Warunki wyszukiwania: " . json_encode($condition) : 'ID: ' . $condition));
-        }
-        return $entity;
-    }
+
+
 
     public function getEntityCount($entityClassName = null)
     {
@@ -1175,7 +1236,7 @@ class AppController extends Controller
     protected function findClient($cid)
     {
         if ($cid > 0) {
-            $this->client = $this->getClientsRepository()->find($cid);
+            $this->client = $this->getEntityManager()->getRepository(Clients::class)->find($cid);
             if (!$this->client) {
                 throw $this->createNotFoundException($this->trans(['message.error', 'clients.notFound']));
             }
@@ -1187,160 +1248,6 @@ class AppController extends Controller
     
 // </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="Settings">
-
-    public function getSettingsRepository(){
-        return $this->getEntityManager()->getRepository(Settings::class);
-    }
-
-    public function getClientsRepository(){
-        return $this->getEntityManager()->getRepository(Clients::class);
-    }
-
-    public function getSettingValue($name, $asJSON = false)
-    {
-        $setting=Utils::deep_array_value($name, $this->settings);
-        if(is_null($setting)){
-            $setting=$this->getSettingsRepository()->getSettingValue($name);
-            Utils::deep_array_value_set($name, $this->settings, $setting, true);
-        }
-        return $asJSON ? json_encode($setting) : $setting;
-    }
-
-    public function getSettingsValue($namePrefix, $asJSON= false){
-        $settings=Utils::deep_array_value($namePrefix, $this->settings);
-        if(is_null($settings)){
-            $settings=$this->getSettingsRepository()->getSettingsValue($namePrefix);
-            Utils::deep_array_value_set($namePrefix, $this->settings, $settings, true);
-        }
-        return $asJSON ? json_encode($settings) : $settings;
-    }
-
-    public function saveSetting($name, $value)
-    {
-        $setting = $this->getSettingsRepository()->getSetting($name);
-        if (!isset($setting)) {
-            $setting = new Settings();
-            $setting->setName($name);
-        }
-        $this->settings[$name]=$value;
-        $setting->setValue($value);
-        $this->getEntityManager()->persist($setting);
-        $this->getEntityManager()->flush();
-    }
-    
-    public function getClientSettingValue($client, $name, $asJSON = false)
-    {
-        $setting = $this->getSettingsRepository()->getSettingValue($name, [ 'clients' => $client->getId() ]);
-        return $asJSON ? json_encode($setting) : $setting;
-    }
-
-    public function getClientSettingsValue($client, $namePrefix, $asJSON = false)
-    {
-        $settings = $this->getSettingsRepository()->getSettingsValue($namePrefix, [ 'clients' => $client->getId() ]);
-        return $asJSON ? json_encode($settings) : $settings;
-    }
-   
-    public function saveClientSetting($client, $name, $value)
-    {
-        $setting = $this->getSettingsRepository()->getSetting($name, [ 'clients' => $client->getId() ] );
-        if (!isset($setting)) {
-            $setting = new Settings();
-            $setting->setClient($client);
-            $setting->setName($name);
-        }
-        $setting->setValue($value);
-        $this->getEntityManager()->persist($setting);
-        $this->getEntityManager()->flush();
-    }
-
-    protected function genEntitySettings($controller, $entityClassName = null)
-    {
-        $ens = self::genEntityNameSpaces($entityClassName);
-        $bp = str_replace('bundle', '', strtolower($ens['bundle']));
-        $prefix = $ens['bundle'] == AppBundle ? $ens["name"] : $bp . '_' . $ens["name"];
-        $settings = $this->getSettingsValue($prefix);
-        $settings['bp'] = $bp;
-        $settings['entityNameSpace'] = $ens["nameSpace"];
-        $settings['es'] = $ens;
-        $settings['en'] = $ens["name"];
-        $settings['ecn'] = $ens["className"];
-        $settings['fields'] = $ens["nameSpace"]::$shortNames;
-        if (method_exists($ens["controller"], 'genCustomSettings')) {
-            $ens["controller"]::genCustomSettings($controller, $settings);
-        }
-        if (!is_array($this->entitiesSettings)){
-            $this->entitiesSettings=[];
-        } 
-        $this->entitiesSettings[$ens["className"]]=$settings;
-        return $settings;
-    }
-
-    protected function genEntitiesSettings($eClasses = null){
-        $this->entitiesSettings = [];
-        if (!is_array($eClasses) || count($eClasses)==0 ) {
-            $eClasses = $this->entitiesClasses;
-        }
-        foreach ($eClasses as $ec) {
-            $this->genEntitySettings($this, $ec);
-        }
-        return $this->entitiesSettings;
-    }
-
-    public function getEntitiesSettings($eClasses = '')
-    {
-        if (is_array($this->entitiesSettings) && count($this->entitiesSettings) > 0) {
-            return $this->entitiesSettings;
-        }
-        return $this->genEntitiesSettings();
-    }
-
-    public function getEntitySettings( $entityClassName = null)
-    {
-        $ens = self::genEntityNameSpaces($entityClassName);
-        if (is_array($this->entitiesSettings) && array_key_exists($ens['className'], $this->entitiesSettings)){
-            return $this->entitiesSettings[$ens['className']];
-        }
-        return $this->genEntitySettings($ens);
-    }
-
-    protected function genDic($entityClassName = null)
-    {
-        $ens = self::genEntityNameSpaces($entityClassName);
-        $this->dictionaries[$ens['className']] = $this->getEntityManager()->getRepository($ens['path'])->getDic();
-        return $this->dictionaries[$ens['className']];
-    }
-
-    public function getDic($entityClassName = null)
-    {
-        $ens = self::genEntityNameSpaces($entityClassName);
-        if (array_key_exists($ens['className'], $this->dictionaries)) {
-            return $this->dictionaries[$ens['className']];
-        }
-        return $this->genDic($ens);
-    }
-
-    protected function tableSettingsFromBase($entityClassName = null, $tableType = 'index')
-    {
-        $ens = self::genEntityNameSpaces($entityClassName);
-        $ep = $ens['bundle'] == AppBundle ? $ens["name"] : str_replace('bundle', '', strtolower($ens['bundle'])) . '_' . $ens["name"];
-        $prefix = "tables-" . $ep;
-        $type = strtolower($tableType);
-        $table = $this->getSettingValue($prefix . "-" . $type);
-        if (!is_array($table)) {
-            $tables = $this->getSettingValue( $prefix);
-            $table = is_array($tables) && is_array($tables[$type]) ? $tables[$type] : [];
-        }
-        return $table;
-    }
-
-
-
-
-
-    
-// </editor-fold>
-
 // <editor-fold defaultstate="collapsed" desc="Generate functions">
 
     public function genSubmitBtn($type)
@@ -1348,19 +1255,19 @@ class AppController extends Controller
         return [
             'attr' => [
                 'value' => $type,
-                'title' => $this->transGenerator->btnTitle($type),
+                'title' => $this->getTransHelper()->btnTitle($type),
                 'class' => $type == 'remove' ? 'btn-danger' : 'btn-success',
                 'style' => $type == 'remove' ? "disabled:true" : ""
             ]
         ];
     }
 
-    protected function genActions($entityClassName = null, $actions = 'view', $options = [])
+    protected function genActions( $actions = 'view', ?string $entityClassName = null, array $options = [])
     {
         $ens = $this->getEntityNameSpaces($entityClassName);
         $en = $ens['name'];
         if (!is_array($actions)) {
-            $actions = $this->controllerFunction($ens['controller'], 'getActions', [ $actions ] );
+            $actions = $this->controllerFunction('getActions', $entityClassName, [ $actions ] );
         }
         if (count($actions) == 0) {
             return null;
@@ -1371,7 +1278,7 @@ class AppController extends Controller
             $an = $action['action'];
             $action['attr']['class'] = 'btn-img btn-' . $an . (isset($action['attr']['class']) ? ' ' . $action['attr']['class'] : '');
             if (!isset($action['attr']['title'])) {
-                $action['attr']['title'] = $this->transGenerator->btnTitle( $an, $en );
+                $action['attr']['title'] = $this->getTransHelper()->btnTitle( $an, $en );
             }
             $type = Utils::deep_array_value('type', $action, 'f');
             if ($type != 'f') {
@@ -1390,11 +1297,11 @@ class AppController extends Controller
                 $action['d']['action'] = $an;
                 $src = Utils::deep_array_value('src', $action);
                 if (isset($src)) {
-                    $urls[$an] = is_array($src) ? $src['url'] : $this->getUrl($src, $ens, false, ['id' => '__id__']);
+                    $urls[$an] = is_array($src) ? $src['url'] : $this->getUrl($src, $entityClassName, false, ['id' => '__id__']);
                 }
             }
             else {
-                $action['attr']['href'] = $this->getUrl($an, $ens, false, ['id' => '__id__', 'type' => $type]);
+                $action['attr']['href'] = $this->getUrl($an, $entityClassName, false, ['id' => '__id__', 'type' => $type]);
                 if($type == 'w'){
                     $action['attr']['target']=Utils::deep_array_value('target', $action, '_blank');
                 }
@@ -1412,11 +1319,10 @@ class AppController extends Controller
         ];
     }
 
-    protected function genFilterbar($entityClassName = null, $filtersType = 'index', $template = null, $options = [])
+    protected function genFilterbar(string $filtersType = 'index', ?string $entityClassName = null, array $template = null, $options = [])
     {
-        $ens = $this->getEntityNameSpaces($entityClassName);
-        $en = $ens['name'];
-        $filters = $this->controllerFunction($ens['controller'], 'getFilters', [ $filtersType, $options ]);
+        $en = $this->getEntityHelper()->getEntityName($entityClassName);
+        $filters = $this->controllerFunction('getFilters', $entityClassName, [ $filtersType, $options ]);
         if (count($filters) == 0) {
             return null;
         }
@@ -1431,74 +1337,41 @@ class AppController extends Controller
                 ];
             }
             else {
-                $filter['attr']['id'] = $id . '_' . $filter['name'];
-                $filter['attr']['name'] = $id . '[' . $filter['name'] . ']';
-                $filter['banned']= \array_key_exists('banned', $filter) ? (\is_string($filter['banned']) ? $this->getSetting($filter['banned']) : $filter['banned']) : null;
-                if (!isset($filter['data'])) {
-                    if (isset($filter['source'])) {
-                        $source=$filter['source'];
-                        switch ($source['type']) {
-                            case 'settings' :
-                                $filter['data'] = $this->getSettingValue($source['query']);
-                                if(\is_array($filter['banned'])){
-                                    foreach($filter['banned'] as $b){
-                                        for($i=0; $i< count($filter['data']); $i++){
-                                            if($filter['data'][$i]['v']== $b){
-                                                \array_splice($filter['data'], $i, 1);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                                break;
-                            case 'query' :
-                            // $fs[$i]['data']=$this->getEntityManager()->createQuery($fs[$i]['source']['query'])->getArrayResult();
-                                break;
-                            case 'entity' :
-                                $repository=$this->getEntityManager()->getRepository(Utils::deep_array_value('repository', $source, self::$bundlePath . Utils::deep_array_value('query', $source, '')));
-                                $filter['data'] = $repository->getFilter(Utils::deep_array_value('options', $source, [])) ;
-                                break;
-                        }
-                    }
-                    if(isset($filter['add'])){
-                        $start=Utils::deep_array_value('add-start', $filter);
-                        $end=Utils::deep_array_value('add-end', $filter);
-                        if(is_array($start)){
-                            foreach($start as $v){
-                                array_unshift($filter['data'], $v);
-                            }
-                        }
-                        if(is_array($end)){
-                            foreach($end as $v){
-                                array_push($filter['data'], $v);
-                            }
-                        }
-                    }
-                    if (isset($filter['setValue'])) {
-                        $filter['d']['def-value'] = $this->getSettingValue($filter['setValue']['query']);
-                    }
-                }
-                $fs[] = $filter;
+                $fs[] = $this->get('helper.filter')->generate($filter);
             }
         }
-        $default = [
-            'name' => $en,
-            'en' => $en,
-            'ecn' => $ens['className'],            
-            'filters' => $fs,
-            'd' => [
-                'options' => json_encode(['hiddenFilters' => $hfs])
-            ],
-            'attr' => ['id' => $id]
-        ];
-        return array_replace_recursive($default, $options);
+        return array_replace_recursive([
+                'name' => $en,
+                'en' => $en,
+                'filters' => $fs,
+                'd' => [
+                    'options' => json_encode(['hiddenFilters' => $hfs])
+                ],
+                'attr' => ['id' => $id]
+            ], 
+            $options
+        );
     }
 
-    protected function genToolbar($entityClassName = null, $toolsType = 'index', $options = [])
+    protected function genElement(string $name, ?string $entityClassName=null):array
+    {
+        $en=$this->getEntityHelper()->getEntityName($entityClassName);
+        return [
+            'name' => $en,
+            'en' => $en,
+            'ecn' => $this->getEntityHelper()->getEntityClassName($entityClassName),
+            'attr' => [
+                'id' => $en . '_' . $name,
+                'class' => 'toolbar'
+            ]
+            ];
+    }
+
+    protected function genToolbar(string $toolsType = 'index', ?string $entityClassName = null, array $options = [])
     {
         $ens = $this->getEntityNameSpaces($entityClassName);
         $en = $ens['name'];
-        $buttons = $this->controllerFunction($ens['controller'], 'getToolbarBtn', [ $toolsType, $options ]);
+        $buttons = $this->controllerFunction('getToolbarBtn',$entityClassName, [ $toolsType, $options ]);
         if (count($buttons) == 0) {
             return null;
         }
@@ -1508,50 +1381,46 @@ class AppController extends Controller
                 $buttons[$i]['routeParam']['type'] = 'm';
             }
             if(!Utils::deep_array_key_exists('attr-href', $buttons[$i])){
-                $buttons[$i]['attr']['href'] = $this->getUrl($buttons[$i]['action'], $ens, Utils::deep_array_value('isClient', $buttons[$i]), Utils::deep_array_value('routeParam', $buttons[$i], []));
+                $buttons[$i]['attr']['href'] = $this->getUrl($buttons[$i]['action'], $entityClassName, Utils::deep_array_value('isClient', $buttons[$i]), Utils::deep_array_value('routeParam', $buttons[$i], []));
             }
             Utils::deep_array_value_set('d-url', $buttons[$i], $buttons[$i]['attr']['href']);
             if (Utils::deep_array_value('tmpl', $options)) {
                 $buttons[$i]['d']['url-tmpl'] = $buttons[$i]['attr']['href'];
             }
         }
-        $default = [
-            'name' => $en,
-            'en' => $en,
-            'ecn' => $ens['className'],
-            'template' => null,
-            'elements' => $buttons,
-            'attr' => [
-                'id' => $en . '_toolbar',
-                'class' => 'toolbar'
-            ]
-        ];
-        return array_replace_recursive($default, $options);
+        return array_replace_recursive(
+            $this->genElement('toolbar', $entityClassName),
+            [
+                'tmpl' => false,
+                'elements'=> $buttons,
+                'attr' => [
+                    'class' => 'toolbar'
+                ]
+             ],
+            $options
+        );
     }
 
-    protected function genTable($entityClassName = null, $tableType = 'index', $options = [])
+    protected function genTable( string $tableType = 'index', ?string $entityClassName = null, array $options = [ 'actions' => 'index' ])
     {
         $ens = $this->getEntityNameSpaces($entityClassName);
-        $en = $ens['name'];
-        $default = [
-            'name' => $en,
-            'en' => $en,
-            'ecn' => $ens['className'],
-            'attr' => [
-                'id' => $en . '_table'
-            ],
-            'd' => [
-                'ajax' => [
-                    'url' => $this->getUrl('ajax', $ens),
-                    'dataSrc' => ''
-                ],
-                'order' => [],
-                'entity-urls' => [
-                    'data' => $this->getUrl('data', $ens, false, ['id' => '__id__'])
+        $en = $this->getEntityHelper()->getEntityName($entityClassName);
+        $default = array_replace_recursive(
+            $this->genElement('table', $entityClassName),           
+            [
+                'd' => [
+                    'ajax' => [
+                        'url' => $this->getUrl('ajax', $entityClassName),
+                        'dataSrc' => ''
+                    ],
+                    'order' => [],
+                    'entity-urls' => [
+                        'data' => $this->getUrl('data', $entityClassName, false, ['id' => '__id__'])
+                    ]
                 ]
             ]
-        ];
-        $entitySettings=$this->getEntitySettings($ens);
+        );
+        $entitySettings=$this->getEntityHelper()->getSettings($ens['className']);
         $entityTableOptions=array_replace_recursive([
                 "columns" => [
                     [ "data" => "id"]
@@ -1559,13 +1428,13 @@ class AppController extends Controller
             ],
             Utils::deep_array_value('tables-options', $entitySettings, [] )
         );
-        $tableOptions=$this->tableSettingsFromBase( $ens, $tableType);
+        $tableOptions=$this->getSettingsHelper()->getTableSettings( $en, $tableType);
         $settings = array_replace($entityTableOptions, is_array($tableOptions) ? $tableOptions : [] );
         $columns = &$settings['columns'];
         $actions = Utils::deep_array_value('actions', $options);
         if ($actions) {
-            $actionsList = $this->controllerFunction($ens['controller'], 'getActions', [ $actions ]);
-            $ac = $this->genActions($ens, $actionsList);
+            $actionsList = $this->controllerFunction('getActions',$entityClassName, [ $actions ]);
+            $ac = $this->genActions($actionsList, $entityClassName);
             $columns[] = array_replace_recursive(
                 [
                     'label' => 'actions',
@@ -1641,44 +1510,39 @@ class AppController extends Controller
                 ));
             }
             $default['d']['details'] = $detailOptions;
-            $default['d']['ajax']['url'] = $this->getUrl('ajax_details', $ens);
+            $default['d']['ajax']['url'] = $this->getUrl('ajax_details', $entityClassName);
 
         }
         return array_replace_recursive($default, ['d' => $settings], $options);
     }
 
-    protected function genPanel($entityClassName = null, $options = [])
+    protected function genPanel(?string $entityClassName = null, $options = [])
     {
-        $ens = $this->getEntityNameSpaces($entityClassName);
-        $en = $ens['name'];
-        $default = [
-            'name' => $en,
-            'en' => $en,
-            'ecn' => $ens['className'],
-            'attr' => [
-                'id' => $en . '_panel',
-            ]
-        ];
-        return array_replace_recursive($default, $options);
+        return array_replace_recursive(
+            [
+                $this->genElement('panel', $entityClassName)
+            ],
+            $options
+        );
     }
 
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Messages">
-    public function responseMessage($msg, $entityClassName = null, $translate = true, $data=[])
+    public function responseMessage($msg, $entityName = null, $translate = true, $data=[])
     {
         Utils::deep_array_value_set('type', $msg, 'info');
         if ($translate) {
-            $label = Utils::deep_array_value('label', $msg);
-            $msg['label'] = $this->trans($this->transGenerator->labelText($label, $entityClassName));
-            $msg['title'] = $this->trans($this->transGenerator->titleText(Utils::deep_array_value('title', $msg), $entityClassName));
+            $label = Utils::deep_array_value('label', $msg, '');
+            $msg['label'] = $this->trans($this->getTransHelper()->labelText($label, $entityName));
+            $msg['title'] = $this->trans($this->getTransHelper()->titleText(Utils::deep_array_value('title', $msg), $entityName));
             $message=Utils::deep_array_value('message', $msg, $label);
             if(is_array($message)){
                 $msg['message']=[];
                 foreach($message as $m){
-                    $msg['message'][] = $this->trans($this->transGenerator->messageText($m, $entityClassName), $data);
+                    $msg['message'][] = $this->trans($this->getTransHelper()->messageText($m, $entityName), $data);
                 }
             }else{
-                $msg['message'] = $this->trans($this->transGenerator->messageText($message, $entityClassName), $data);
+                $msg['message'] = $this->trans($this->getTransHelper()->messageText($message, $entityName), $data);
             }
         }
         return $msg;
@@ -1702,9 +1566,9 @@ class AppController extends Controller
         return $data;
     }
 
-    public function errorMessage($msg, $entityClassName = null, $translate = true){
+    public function errorMessage(array $msg, ?string $entityName = null, bool $translate = true){
         $msg['type']='error';
-        return $this->responseMessage($msg, $entityClassName, $translate);
+        return $this->responseMessage($msg, $entityName, $translate);
     }
 
     private function getFormErrorsMessages(){
@@ -1714,7 +1578,7 @@ class AppController extends Controller
             $messages['childs']=[];
             foreach ($errors as $key => $error) {
                 $messages['childs'][] = $this->errorMessage([
-                    'label' =>  $this->trans($this->transGenerator($error->getOrigin()->getConfig()->getOption('label'), null )),
+                    'label' =>  $this->trans($this->getTransHelper()($error->getOrigin()->getConfig()->getOption('label'), null )),
                     'message' => $error->getMessage()
                 ], null, false);
             }
@@ -1731,7 +1595,7 @@ class AppController extends Controller
     {
         return new JsonResponse($dataReturn, $success ? 200 : 400);
     }
-
+   
     public function saveManyToBaseJson($entities, $type, $dataReturn = [])
     {
         try {
@@ -1764,6 +1628,7 @@ class AppController extends Controller
         try {
             $this->getEntityManager()->flush();
             if ($this->entity ) {
+                $this->
                 $this->entityId = $this->entity->getId();
                 $msg=$this->responseMessage([
                     'title' => $type,
@@ -1791,7 +1656,7 @@ class AppController extends Controller
                             'form' => $this->getUrl('update')
                         ],
                         'submit' => [
-                            'label' => $this->trans($this->transGenerator('update', '')),
+                            'label' => $this->trans($this->getTransHelper()('update', '')),
                             'title' => $this->trans($this->titleText('update', '')),
                         ]
                     ];
@@ -1830,7 +1695,7 @@ class AppController extends Controller
     public function errorJsonResponse($type='', $messageStr = '', $entityClassName='', $translate=false)
     {
         $msg=$this->errorMessage([ 'title' => 'error.'.$type ], $entityClassName, true);
-        $msg['message']= $translate ? $this->trans($this->transGenerator->messageText($messageStr, $entityClassName)) : $messageStr;
+        $msg['message']= $translate ? $this->trans($this->getTransHelper()->messageText($messageStr, $entityClassName)) : $messageStr;
         return new JsonResponse( ['errors' => $msg ], 400 );
     }
 
