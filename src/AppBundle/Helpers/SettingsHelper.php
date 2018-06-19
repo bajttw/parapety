@@ -24,10 +24,11 @@ class SettingsHelper{
 
  //<editor-fold defaultstate="collapsed" desc="basic functions">
     public function getSettingValue(string $name, bool $asJSON= false){
-        if(!array_key_exists($name, $this->cached)){
-            $this->cached[$name]=$this->repository->getSettingValue($name);
+        $value = Utils::deep_array_value($name, $this->cached);
+        if(is_null($value)){
+            $value=$this->cached[$name]=$this->repository->getSettingValue($name);
         }
-        return $asJSON ? json_encode($this->cached[$name]) : $this->cached[$name];
+        return $asJSON && ($value) ? json_encode($value) : $value;
     }
 
     public function getSettingsValues(string $namePrefix, bool $asJSON= false){

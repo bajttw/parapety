@@ -459,7 +459,6 @@
         } %}
         {% set btn_en = bar.en|default(en|default('')) %}
         {{ block("begin_div") }}
-            {{dump(bar.filters)}}
             <div class="filters">
                 {% for ffilter in bar.filters %}
                     {% if ffilter.type|default('1') != 'hidden' %}

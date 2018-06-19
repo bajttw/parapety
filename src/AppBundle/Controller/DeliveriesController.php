@@ -195,7 +195,7 @@ class DeliveriesController extends AppController
         ]);
         $ons = $this->getEntityNameSpaces('Orders');
         $this->addModal([
-            'title' => $this->transGenerator->modalTitle('to_delivery', 'orders'),
+            'title' => $this->getTransHelper()->modalTitle('to_delivery', 'orders'),
             'name' => 'orders_import',
             'en' => $ons['name'],
             'ecn' => $ons['className'],
@@ -207,7 +207,7 @@ class DeliveriesController extends AppController
             'buttons' => [
                 'add' => [
                     'block' => 'btn_add',
-                    'label' => $this->trans($this->transGenerator->btnLabel('addOrders')),
+                    'label' => $this->trans($this->getTransHelper()->btnLabel('addOrders')),
                     'attr' => [
                         'class' => 'btn-success',
                         'id' => 'add_orders_btn'

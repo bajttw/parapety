@@ -202,7 +202,7 @@ class PriceListsController extends AppController
         // $this->formOptions['attr']['data-price-list-items'] =  $this->getDic('PriceListItems');
         $plins = $this->getEntityNameSpaces('PriceListItems');
         $this->addModal([
-            'title' => $this->transGenerator->modalTitle('to_pricelist', 'pricelistitems'),
+            'title' => $this->getTransHelper()->modalTitle('to_pricelist', 'pricelistitems'),
             'name' => 'pricelistitems_import',
             'en' => $plins['name'],
             'ecn' => $plins['className'],
@@ -214,7 +214,7 @@ class PriceListsController extends AppController
             'buttons' => [
                 'add' => [
                     'block' => 'btn_add',
-                    'label' => $this->trans($this->transGenerator->btnLabel('addPriceListItems')),
+                    'label' => $this->trans($this->getTransHelper()->btnLabel('addPriceListItems')),
                     'attr' => [
                         'class' => 'btn-success',
                         'id' => 'add_prices_btn'

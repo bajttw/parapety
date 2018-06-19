@@ -7,6 +7,28 @@ use AppBundle\Utils\Utils;
 
 class FilterHelper{
 
+    private $predefined=[
+        'active' => [
+            'name' => 'active',
+            'data' => [
+                ['v' => '1', 'n' => 'aktywny'],
+                ['v' => '0', 'n' => 'nieaktywny']
+            ],
+            'd' => [
+                'widget' => 'multiselect'
+            ],
+            'attr' => [
+                'multiple' => 'multiple'
+            ]
+        ]
+    ];
+
+    private $predefinedHidden=[
+        'active' => [
+            'name' => 'active',
+            'value' => '1'
+        ]
+    ];
 
     private $sc;
     private $eh;
@@ -21,12 +43,38 @@ class FilterHelper{
         $this->eh=$seviceContainer->get('helper.entity');
     }
 
-    public function generate($options){
+    public function generateHidden($options)
+    {
+        if(is_string($options)){
+            $options=Utils::deep_array_value($options, $this->predefinedHidden);
+        }    
+        if(!is_array($options)){
+            return null;
+        }
         $this->options=$options;
         $this->name=$options['name'];
-        
         return [
             'name' => $this->name,
+            'type' => 'hidden',
+            'value' => $options['value'],
+            'options' => Utils::deep_array_value('options', $options, [])
+        ];
+
+    }
+
+    public function generate($options):?array
+    {
+        if(is_string($options)){
+            $options=Utils::deep_array_value($options, $this->predefined);
+        }    
+        if(!is_array($options)){
+            return null;
+        }
+        $this->options=$options;
+        $this->name=$options['name'];
+        return [
+            'name' => $this->name,
+            'type' => Utils::deep_array_value('type', $options, 'select'),
             'attr' => Utils::deep_array_value('attr', $options, []),
             'd' => $this->getD(),
             'data' => $this->getData()
@@ -62,14 +110,14 @@ class FilterHelper{
         $source=$this->options['source'];
         switch($source['type']){
             case 'settings':
-                $this->filter['data']=[];
                 $banned= $this->getBanned();
                 $rows=$this->sh->getSettingValue($source['query']);
                 if(is_array($rows)){
                     foreach($rows as $row){
-                        if(!in_array($row['v'] , $banned)){
-                            $this->filter['data'][]=$row;
+                        if(is_array($banned) && count($banned) && in_array(array_key_exists('v', $row) ? $row['v'] : $row['value'] , $banned)){
+                            continue;
                         }
+                        $data[]=$row;
                     }
                 }
             break;

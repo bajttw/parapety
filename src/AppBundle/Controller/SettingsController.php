@@ -82,7 +82,7 @@ class SettingsController extends AppController
         }
         $this->setTemplate('index');
         $this->setRenderOptions([
-            'title' => $this->transGenerator->titleTex('client_index'),
+            'title' => $this->getTransHelper()->titleTex('client_index'),
             'toolbars' => [
                 $this->genToolbar('client_index', [
                     "cid" => $cid

@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use AppBundle\Utils\Utils;
 use AppBundle\Utils\Filter;
-use AppBundle\Helpers\TransGenerator;
 use AppBundle\Entity\Settings;
 use AppBundle\Entity\Uploads;
 use AppBundle\Entity\Clients;
@@ -18,6 +17,7 @@ use AppBundle\Entity\Clients;
 use AppBundle\Helpers\TransHelper;
 use AppBundle\Helpers\EntityHelper;
 use AppBundle\Helpers\SettingsHelper;
+use AppBundle\Helpers\FilterHelper;
 
 define("AppBundle", 'AppBundle');
 
@@ -32,7 +32,7 @@ class AppController extends Controller
     public static $bundlePath = AppBundle . ':';
 
     protected $settings = [];
-    protected $dictionaries = [];
+    // protected $dictionaries = [];
 
     // protected $entitiesClasses = ['Clients', 'Settings', 'Uploads', 'Users', 'Notes', 'Colors', 'Models', 'Sizes', 'Trims', 'Orders', 'Positions', 'Products', 'Productions', 'Deliveries', 'Invoices', 'PriceLists', 'PriceListItems', 'Prices'];
 
@@ -45,7 +45,7 @@ class AppController extends Controller
 
 
     // protected $entitiesSettings = null;
-    protected $entitySettings = [];
+    // protected $entitySettings = [];
 
     protected $entityModal = [];
 
@@ -72,27 +72,27 @@ class AppController extends Controller
     protected $formSystem = null;
     protected $parameters;
 
-    protected static $activeFilter = [
-        'name' => 'active',
-        'data' => [
-            ['v' => '1', 'n' => 'aktywny'],
-            ['v' => '0', 'n' => 'nieaktywny']
-        ],
-        'd' => [
-            'widget' => 'multiselect'
-        ],
-        'attr' => [
-            'multiple' => 'multiple'
-        ]
+    // protected static $activeFilter = [
+    //     'name' => 'active',
+    //     'data' => [
+    //         ['v' => '1', 'n' => 'aktywny'],
+    //         ['v' => '0', 'n' => 'nieaktywny']
+    //     ],
+    //     'd' => [
+    //         'widget' => 'multiselect'
+    //     ],
+    //     'attr' => [
+    //         'multiple' => 'multiple'
+    //     ]
 
-    ];
+    // ];
 
 
-    protected static $activeHiddenFilter = [
-        'name' => 'active',
-        'type' => 'hidden',
-        'value' => '1'
-    ];
+    // protected static $activeHiddenFilter = [
+    //     'name' => 'active',
+    //     'type' => 'hidden',
+    //     'value' => '1'
+    // ];
 
 
     public function __construct($params = null)
@@ -109,6 +109,7 @@ class AppController extends Controller
     protected $th;// TransHelper
     protected $eh;//EntityHelper   
     protected $sh;//SettingsHelper
+    protected $fh;//FilterHelper
     protected function getTransHelper():TransHelper
     {
         if(is_null($this->th)){
@@ -133,6 +134,14 @@ class AppController extends Controller
             $this->sh=$this->get('helper.settings');
         }
         return $this->sh;
+    }
+ 
+    public function getFilterHelper():FilterHelper
+    {
+        if(is_null($this->fh)){
+            $this->fh=$this->get('helper.filter');
+        }
+        return $this->fh;
     }
 
     public function controllerFunction( string $functionName, ?string $entityClassName=null, ?array $arguments = null)
@@ -1069,7 +1078,7 @@ class AppController extends Controller
         return (($onlyAdmin && $this->isAdmin()) || (!$onlyAdmin && ($this->isAdmin() || ($this->isClient() && $this->user->hasClient($this->client))) ));
     }
 
-    public function addEntityModal(?string $entityClassName=null, $options = [])
+    public function addEntityModal(?string $entityClassName=null, array $options = [])
     {
         $en = $this->getEntityHelper()->getEntityName($entityClassName); 
         $default = [
@@ -1150,7 +1159,7 @@ class AppController extends Controller
         return $this;
     }
 
-    protected function addExpModal(?string $entityClassName = null, $options = [])
+    protected function addExpModal(?string $entityClassName = null, array $options = [])
     {
         $ec = $this->getEntityHelper()->getEntityClassName($entityClassName);
         $en = $this->getEntityHelper()->getEntityName($entityClassName);
@@ -1331,13 +1340,14 @@ class AppController extends Controller
         $hfs = [];
         foreach ($filters as $filter) {
             if (Utils::deep_array_value('type', $filter) == 'hidden') {
-                $hfs[$filter['name']] = [
-                    'value' => Utils::deep_array_value('value', $filter),
-                    'options' => Utils::deep_array_value('options', $filter, [])
-                ];
+                $hfs[$filter['name']] = $this->getFilterHelper()->generateHidden($filter);
+                //  [
+                //     'value' => Utils::deep_array_value('value', $filter),
+                //     'options' => Utils::deep_array_value('options', $filter, [])
+                // ];
             }
             else {
-                $fs[] = $this->get('helper.filter')->generate($filter);
+                $fs[] = $this->getFilterHelper()->generate($filter);
             }
         }
         return array_replace_recursive([
@@ -1364,7 +1374,7 @@ class AppController extends Controller
                 'id' => $en . '_' . $name,
                 'class' => 'toolbar'
             ]
-            ];
+        ]   ;
     }
 
     protected function genToolbar(string $toolsType = 'index', ?string $entityClassName = null, array $options = [])
@@ -1449,11 +1459,11 @@ class AppController extends Controller
             );
             $default['d']['entity-urls'] = array_merge($default['d']['entity-urls'], $ac['urls']);
             if (array_key_exists('copy', $actionsList)) {
-                $this->addExpModal($ens);
+                $this->addExpModal($entityClassName);
                 $default['d']['copy-textarea'] = '#' . $en . '_exp_copy';
             }
             if (array_key_exists('show', $actionsList)) {
-                $this->addShowModal($ens);
+                $this->addShowModal($entityClassName);
                 $default['d']['show-modal'] = '#' . $en . '_show_modal';
             }
         }
@@ -1516,12 +1526,10 @@ class AppController extends Controller
         return array_replace_recursive($default, ['d' => $settings], $options);
     }
 
-    protected function genPanel(?string $entityClassName = null, $options = [])
+    protected function genPanel(?string $entityClassName = null, array $options = []):array
     {
         return array_replace_recursive(
-            [
-                $this->genElement('panel', $entityClassName)
-            ],
+            $this->genElement('panel', $entityClassName),
             $options
         );
     }

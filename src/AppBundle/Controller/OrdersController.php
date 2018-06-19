@@ -493,7 +493,7 @@ class OrdersController extends AppController
         }
         $this->setTemplate('index');
         $this->setRenderOptions([
-            'title' => $this->transGenerator->titleText('index'),
+            'title' => $this->getTransHelper()->titleText('index'),
             'toolbars' => [
                 $this->genToolbar(),
                 $this->genFilterbar()
@@ -509,8 +509,8 @@ class OrdersController extends AppController
             ])
         ])
             ->addEntityModal()
-            ->addTableExportModal( null, [
-                'title' => $this->transGenerator->modalTitle('generate', 'Productions'),
+            ->addTableExportModal( static::ec, [
+                'title' => $this->getTransHelper()->modalTitle('generate', 'Productions'),
                 'columns' => static::$importFields,
                 'd' => [
                     'options' => [
@@ -533,7 +533,7 @@ class OrdersController extends AppController
         }
         $this->setTemplate('index');
         $this->setRenderOptions([
-            'title' => $this->transGenerator->titleText('client_index'),
+            'title' => $this->getTransHelper()->titleText('client_index'),
             'toolbars' => [
                 $this->genToolbar('client_index')
             ],
@@ -637,7 +637,7 @@ class OrdersController extends AppController
     //     $this->getEntitySettings();
     //     $this->setTemplate('pdf', null);
     //     $this->setRenderOptions([
-    //         'title' => $this->transGenerator->titleText('show'),
+    //         'title' => $this->getTransHelper()->titleText('show'),
     //         'entity'=>$this->entity->getShowData()
     //         //            'css_path'=> dirname($_SERVER['SCRIPT_FILENAME'])."/bundles/system/css/print.css"
     //     ]);
@@ -658,19 +658,19 @@ class OrdersController extends AppController
     // }
     
 
-    public function getEntiesFromBase(Request $request, $functionName = null, $options = [])
-    {
-        $filters = $request->query->get('f');
-        $filters = isset($filters) ? json_decode($filters, true) : [];
-        $defaultOptions = [
-            'filters' => array_replace_recursive($this->entityQueryFilters, $filters)
-        ];
-        if (isset($this->entityQuery)) {
-            $defaultOptions['query'] = $this->entityQuery;
-        }
-        $function = isset($functionName) ? $functionName : 'getAll';
-        return $this->getEntityManager()->getRepository($this->entityNameSpaces['path'])->$function(array_replace_recursive($defaultOptions, $options));
-    }
+    // public function getEntiesFromBase(Request $request, $functionName = null, $options = [])
+    // {
+    //     $filters = $request->query->get('f');
+    //     $filters = isset($filters) ? json_decode($filters, true) : [];
+    //     $defaultOptions = [
+    //         'filters' => array_replace_recursive($this->entityQueryFilters, $filters)
+    //     ];
+    //     if (isset($this->entityQuery)) {
+    //         $defaultOptions['query'] = $this->entityQuery;
+    //     }
+    //     $function = isset($functionName) ? $functionName : 'getAll';
+    //     return $this->getEntityHelper()->getRepository()->$function(array_replace_recursive($defaultOptions, $options));
+    // }
 
 // </editor-fold>   
 //  <editor-fold defaultstate="collapsed" desc="Import">  
@@ -717,7 +717,7 @@ class OrdersController extends AppController
         
         // $this->setFormOptions('update', $options);
         // $this->setRenderOptions([
-        //     'title' => $this->transGenerator->transGenerator->titleTex('edit'),
+        //     'title' => $this->getTransHelper()->getTransHelper()->titleTex('edit'),
         //     'form_options' => [
         //         'submit' => $this->genSubmitBtn('update')
         //     ]
@@ -730,7 +730,7 @@ class OrdersController extends AppController
         $this->setFormTemplate('', 'import');
         $this->setRenderOptions([
             'template_body' => $this->entityNameSpaces['path'] . ':importForm.html.twig',
-            'title' => $this->transGenerator->titleTex('import'),
+            'title' => $this->getTransHelper()->titleTex('import'),
             'form_options' => [
                 'submit' => $this->genSubmitBtn('import')
             ]

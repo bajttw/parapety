@@ -16,7 +16,7 @@ class ClientsController extends AppController{
         $filters=[
         ];
         $fs=[
-            'active' => self::$activeFilter,
+            'active' => 'active',
             'users' =>[
                 'name' => 'users.id',
                 'source' => [
@@ -125,7 +125,7 @@ class ClientsController extends AppController{
                 $userManager->updateUser($user, true);
                     $dataReturn['messages']['childs']=[
                         $this->responseMessage([
-                            'title' => $this->trans($this->transGenerator->titleText('user_created', 'Clients')),
+                            'title' => $this->trans($this->getTransHelper()->titleText('user_created', 'Clients')),
                             'message' => [
                                 $this->trans($this->messageText('login', 'Users'), [$user->getUsername()]),
                                 $this->trans($this->messageText('password', 'Users'), [$defaultPass])
@@ -135,7 +135,7 @@ class ClientsController extends AppController{
                     ];
                 }catch(\Exception $e) {
                     $dataReturn['errors']['childs']=[ $this->errorMessage([
-                        'title' => $this->trans($this->transGenerator->titleText('error.user_create')),
+                        'title' => $this->trans($this->getTransHelper()->titleText('error.user_create')),
                         'message' => $e->getMessage()
                         ], null, false)
                     ];
@@ -206,7 +206,7 @@ class ClientsController extends AppController{
         }
         $tabsOpt['edit']=['ajax' => true];
         $cEditUrl=$this->getUrl('edit', null, true, ["id" => $cid, "type" => "p"]);
-        $tabs['client_edit'] = $this->genPanel(null, [
+        $tabs['client_edit'] = $this->genPanel(static::ec, [
             'label' => $this->getTransHelper()->labelText('edit'),
             'd' => [
                 'url' => json_encode([
@@ -221,8 +221,8 @@ class ClientsController extends AppController{
         ]);
         $this->setTemplate('service', null)
             ->setRenderOptions([
-                'title' => $this->transGenerator->titleText('service'),
-                'panel_left' => $this->genPanel($cns, [
+                'title' => $this->getTransHelper()->titleText('service'),
+                'panel_left' => $this->genPanel(static::ec, [
                     'content' => $this->tmplPath('panel', null),
                     'toolbars' => [
                         $this->genToolbar(),
@@ -233,9 +233,9 @@ class ClientsController extends AppController{
                         'select' => 'single',
                         'd' => [
                             'ajax' => [
-                                'url' => $this->getUrl('ajax_details', $cns, false)
+                                'url' => $this->getUrl('ajax_details', static::ec, false)
                             ],
-                            'filters' => [ 'active' => self::$activeHiddenFilter ]
+                            'filters' => [ 'active' => $this->getFilterHelper()->generateHidden('active') ]
                         ]
                     ])
                 ] ),

@@ -112,7 +112,7 @@
     //     font-size: inherit !important;
     //     line-height: inherit !important;
     // }
-    .toolbar &, .modal-footer > &, .content-footer > &{
+    .toolbar > &, .modal-footer > &, .content-footer > &{
         margin: 5px 10px;
         &:first-child{
             margin-left: 15px;
