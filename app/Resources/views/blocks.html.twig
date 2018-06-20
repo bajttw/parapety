@@ -407,7 +407,7 @@
 {# filter #}
 
     {% block filter_field %}
-        {% set attr = ffilter.attr|default({})|add_class(['form-control', 'filter']) %}
+        {% set attr = ffilter.attr|default({})|add_class(['form-control', 'filter']) %}        
         {% set data_opt = ffilter.d|default({}) %}
         {% if ffilter.data is defined and ffilter.data is not empty %}
             {% set data_opt = data_opt|set_array_value('dic', ffilter.data|json_encode() ) %}
@@ -457,12 +457,20 @@
             attr: bar.attr|default({})|add_class( ['bar', 'filterbar'] ),
             d: bar.d|default({})
         } %}
-        {% set btn_en = bar.en|default(en|default('')) %}
+        {% set en = bar.en|default(en|default('')) %}
         {{ block("begin_div") }}
             <div class="filters">
                 {% for ffilter in bar.filters %}
                     {% if ffilter.type|default('1') != 'hidden' %}
-                        {% set ffilter=(ffilter|set_attr('id', bar.attr.id ~ '_' ~ ffilter.name ))|set_attr('name', ffilter.name ) %}
+                        {% set text= 'filter.' ~ ffilter.name %}
+                        {% set ffilter=ffilter|array_replace({
+                            attr : {
+                                id: bar.attr.id ~ '_' ~ ffilter.name,
+                                name: bar.attr.id ~ '[' ~ ffilter.name ~ ']',
+                                title: text|gen_title(en)
+                            },
+                            label: text|gen_label(en)
+                        })%}
                         {{ block('filter_control') }}
                     {% else %}    
                         {{ block('filter_field') }}

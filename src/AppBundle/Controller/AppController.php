@@ -1328,36 +1328,32 @@ class AppController extends Controller
         ];
     }
 
-    protected function genFilterbar(string $filtersType = 'index', ?string $entityClassName = null, array $template = null, $options = [])
+    protected function genFilterbar(string $filtersType = 'index', ?string $entityClassName = null, string $template = null, array $options = [])
     {
-        $en = $this->getEntityHelper()->getEntityName($entityClassName);
-        $filters = $this->controllerFunction('getFilters', $entityClassName, [ $filtersType, $options ]);
-        if (count($filters) == 0) {
-            return null;
-        }
-        $id = $en . '_filterbar';
-        $fs = [];
-        $hfs = [];
-        foreach ($filters as $filter) {
-            if (Utils::deep_array_value('type', $filter) == 'hidden') {
-                $hfs[$filter['name']] = $this->getFilterHelper()->generateHidden($filter);
-                //  [
-                //     'value' => Utils::deep_array_value('value', $filter),
-                //     'options' => Utils::deep_array_value('options', $filter, [])
-                // ];
-            }
-            else {
-                $fs[] = $this->getFilterHelper()->generate($filter);
-            }
-        }
-        return array_replace_recursive([
-                'name' => $en,
-                'en' => $en,
-                'filters' => $fs,
+        // $en = $this->getEntityHelper()->getEntityName($entityClassName);
+        // $filters = $this->controllerFunction('getFilters', $entityClassName, [ $filtersType, $options ]);
+        // if (count($filters) == 0) {
+        //     return null;
+        // }
+        // $id = $en . '_filterbar';
+        // $fs = [];
+        // $hfs = [];
+        // foreach ($filters as $filter) {
+        //     if (Utils::deep_array_value('type', $filter) == 'hidden') {
+        //         $hfs[$filter['name']] = $this->getFilterHelper()->generateHidden($filter);
+        //     }
+        //     else {
+        //         $fs[] = $this->getFilterHelper()->generate($filter);
+        //     }
+        // }
+        $filters=$this->getFilterHelper()->generateFilters($filtersType, $entityClassName, $options);
+        return array_replace_recursive(
+            $this->genElement('filterbar', $entityClassName),
+            [
+                'filters' => $filters['visible'],
                 'd' => [
-                    'options' => json_encode(['hiddenFilters' => $hfs])
-                ],
-                'attr' => ['id' => $id]
+                    'options' => json_encode(['hiddenFilters' => $filters['hidden']])
+                ]
             ], 
             $options
         );

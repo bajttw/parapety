@@ -34,16 +34,13 @@ class FilterHelper{
     private $eh;
     private $sh;
 
-    private $options;
-    private $filter;
-
     public function __construct(ContainerInterface $seviceContainer){
         $this->sc=$seviceContainer;
         $this->sh=$seviceContainer->get('helper.settings');
         $this->eh=$seviceContainer->get('helper.entity');
     }
 
-    public function generateHidden($options)
+    public function generateHiddenFilter($options):?array
     {
         if(is_string($options)){
             $options=Utils::deep_array_value($options, $this->predefinedHidden);
@@ -51,18 +48,15 @@ class FilterHelper{
         if(!is_array($options)){
             return null;
         }
-        $this->options=$options;
-        $this->name=$options['name'];
         return [
-            'name' => $this->name,
+            'name' => $options['name'],
             'type' => 'hidden',
             'value' => $options['value'],
             'options' => Utils::deep_array_value('options', $options, [])
         ];
-
     }
 
-    public function generate($options):?array
+    public function generateFilter($options):?array
     {
         if(is_string($options)){
             $options=Utils::deep_array_value($options, $this->predefined);
@@ -70,44 +64,41 @@ class FilterHelper{
         if(!is_array($options)){
             return null;
         }
-        $this->options=$options;
-        $this->name=$options['name'];
         return [
-            'name' => $this->name,
+            'name' => $options['name'],
             'type' => Utils::deep_array_value('type', $options, 'select'),
             'attr' => Utils::deep_array_value('attr', $options, []),
-            'd' => $this->getD(),
-            'data' => $this->getData()
+            'd' => $this->getD($options),
+            'data' => $this->getData($options)
         ];
     }
 
-    protected function getD():array{
-        $d=Utils::deep_array_value('d', $this->options, []);
-        if (array_key_exists('setValue' ,$this->options)) {
+    private function getD(array $options):array
+    {
+        $d=Utils::deep_array_value('d', $options, []);
+        if (array_key_exists('setValue' ,$options)) {
             $d['def-value'] = $this->sh->getSettingValue($this->options['setValue']['query']);
         }
         return $d;
     }
-    protected function getBanned():array
+
+    private function getBannedValues(array $options):array
     {
-        $banned=Utils::deep_array_value('banned', $this->options);
+        $banned=Utils::deep_array_value('banned', $options);
         if(is_string($banned)){
             $banned= $this->sh->getSettingValue($banned);
         }
-        if(is_array($banned)){
-            return $banned;
-        }
-        return [];
+        return is_array($banned) ? $banned : [];
     }
 
-    protected function getData():array
+    private function getData(array $options):array
     {
-        $data=Utils::deep_array_value('data', $this->options);
+        $data=Utils::deep_array_value('data', $options);
         if(is_array($data)){
             return $data;
         }
         $data=[];
-        $source=$this->options['source'];
+        $source=$options['source'];
         switch($source['type']){
             case 'settings':
                 $banned= $this->getBanned();
@@ -127,9 +118,9 @@ class FilterHelper{
             break;
 
         }  
-        if(isset($this->options['add'])){
-            $start=Utils::deep_array_value('add-start', $this->options);
-            $end=Utils::deep_array_value('add-end', $this->options);
+        if(isset($options['add'])){
+            $start=Utils::deep_array_value('add-start', $options);
+            $end=Utils::deep_array_value('add-end', $options);
             if(is_array($start)){
                 foreach($start as $row){
                     array_unshift($data, $row);
@@ -143,6 +134,87 @@ class FilterHelper{
         }
         return $data;
 
+    }
+
+    public function generateFilters(string $type='index',  ?string $entityClassName=null, array $options=[]):array
+    {
+        $filters=[
+            'visible' => [],
+            'hidden' => []
+        ];
+        $entityClassName=$this->eh->getEntityClassName($entityClassName);
+        $fn='get'.$entityClassName.'Filters';
+        foreach($this->$fn($type, $options) as $name => $filter){
+            $fname=Utils::deep_array_value('name', $filter, $name);
+            if (Utils::deep_array_value('type', $filter) == 'hidden'){
+                $filters['hidden'][$fname] = $this->generateHiddenFilter($filter);
+            }else{
+                $filters['visible'][$fname] = $this->generateFilter($filter);
+            }
+        }
+        return $filters;
+    }
+
+    private function choiceFilters(array &$defined, array $names):array
+    {
+        $filters=[];
+        foreach($names as $n){
+            $filters[$n]= $defined[$n];
+        }
+        return $filters;
+    }
+
+    public function getOrdersFilters(string $type='index', array $options=[]):array
+    {
+
+    }
+
+    public function getClientsFilters(string $type='index', array $options=[]):array
+    {
+        $defined= [
+            'active' => 'active',
+            'users' =>[
+                'name' => 'users.id',
+                'source' => [
+                    'type' => 'entity',
+                    'query' => 'Users',
+                    'options' => [
+                        'filters' => [
+                            'type' => [
+                                'condition' => 'gte',
+                                'value' => '2'
+                            ],
+                            'enabled' => [ 'value' => true]
+                        ]
+                        
+                    ]
+                ],
+                'attr' => [
+                    'multiple' => 'multiple'
+                ],
+                'd' => [
+                    'widget' => 'multiselect'                
+                ]
+            ],
+            'regular' =>[
+                'name' => 'regular',
+                'data' => [
+                    ['v' => '1', 'n' => 'stały'],
+                    ['v' => '0', 'n' => 'zwykły']
+                    ],
+                    'd' => [
+                        'widget' => 'multiselect'
+                    ],
+                    'attr' => [
+                        'multiple' => 'multiple'
+                    ]
+            ]
+        ];
+        $defType='index';
+        $filterTypes=[
+            'index' => ['active', 'regular']
+        ];
+        return $this->choiceFilters($defined, array_key_exists($type, $filterTypes) ? $filterTypes[$type] : $filterTypes[$type]); 
     }
 
 

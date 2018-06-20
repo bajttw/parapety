@@ -11,60 +11,60 @@ class ClientsController extends AppController{
     const en='clients';
     const ec='Clients';
 
-    public static function getFilters($type='index', $options=[]){
-        $id=array_key_exists('id', $options) ? $options['id'] : null;
-        $filters=[
-        ];
-        $fs=[
-            'active' => 'active',
-            'users' =>[
-                'name' => 'users.id',
-                'source' => [
-                    'type' => 'entity',
-                    'query' => 'Users',
-                    'options' => [
-                        'filters' => [
-                            'type' => [
-                                'condition' => 'gte',
-                                'value' => '2'
-                            ],
-                            'enabled' => [ 'value' => true]
-                        ]
+    // public static function getFilters($type='index', $options=[]){
+    //     $id=array_key_exists('id', $options) ? $options['id'] : null;
+    //     $filters=[
+    //     ];
+    //     $fs=[
+    //         'active' => 'active',
+    //         'users' =>[
+    //             'name' => 'users.id',
+    //             'source' => [
+    //                 'type' => 'entity',
+    //                 'query' => 'Users',
+    //                 'options' => [
+    //                     'filters' => [
+    //                         'type' => [
+    //                             'condition' => 'gte',
+    //                             'value' => '2'
+    //                         ],
+    //                         'enabled' => [ 'value' => true]
+    //                     ]
                         
-                    ]
-                ],
-                'attr' => [
-                    'multiple' => 'multiple'
-                ],
-                'd' => [
-                    'widget' => 'multiselect'                
-                ]
-            ],
-            'regular' =>[
-                'name' => 'regular',
-                'data' => [
-                    ['v' => '1', 'n' => 'stały'],
-                    ['v' => '0', 'n' => 'zwykły']
-                    ],
-                    'd' => [
-                        'widget' => 'multiselect'
-                    ],
-                    'attr' => [
-                        'multiple' => 'multiple'
-            ]
-            ]
-        ];
-        switch($type){
-            case 'index':
-            case 'service':
-            default:
-                foreach(['active', 'regular'] as $f){
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-            break;
-        }
-        return $filters;
-    }
+    //                 ]
+    //             ],
+    //             'attr' => [
+    //                 'multiple' => 'multiple'
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect'                
+    //             ]
+    //         ],
+    //         'regular' =>[
+    //             'name' => 'regular',
+    //             'data' => [
+    //                 ['v' => '1', 'n' => 'stały'],
+    //                 ['v' => '0', 'n' => 'zwykły']
+    //                 ],
+    //                 'd' => [
+    //                     'widget' => 'multiselect'
+    //                 ],
+    //                 'attr' => [
+    //                     'multiple' => 'multiple'
+    //         ]
+    //         ]
+    //     ];
+    //     switch($type){
+    //         case 'index':
+    //         case 'service':
+    //         default:
+    //             foreach(['active', 'regular'] as $f){
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //         break;
+    //     }
+    //     return $filters;
+    // }
 
     public static function getActions($type = 'index', $options=[]){
         $actions= [

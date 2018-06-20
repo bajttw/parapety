@@ -4,7 +4,8 @@ namespace AppBundle\Twig;
 
 use AppBundle\Utils\Utils;
 use Symfony\Component\Translation\TranslatorInterface;
-use \Twig_Extension;
+
+// use \Twig_Extension;
 
 class AppExtension extends \Twig_Extension
 {

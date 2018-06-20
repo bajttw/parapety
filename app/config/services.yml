@@ -20,7 +20,7 @@ services:
         resource: '../../src/AppBundle/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../src/AppBundle/{Entity,Repository,Tests}'
+        exclude: '../../src/AppBundle/{Entity,Repository,Tests,Utils,CSS_JS}'
 
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
@@ -29,53 +29,114 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    AppBundle\Helpers\:
+        resource: '../../src/AppBundle/Helpers'
+        public: true
 
+    AppBundle\EntityListener\:
+        resource: '../../src/AppBundle/EntityListener'
+        # arguments: ['@service_container']
+        public: true
+        tags:
+            - { name: doctrine.orm.entity_listener }
+    
+
+    # productions_listener:
+    #     class: AppBundle\EntityListener\ProductionsListener
+    #     arguments: ['@service_container']
+    #     tags:
+    #         - { name: doctrine.orm.entity_listener }
+    #     public: true
+
+    # deliveries_listener:
+    #     class: AppBundle\EntityListener\DeliveriesListener
+    #     arguments: ['@service_container']
+    #     tags:
+    #         - { name: doctrine.orm.entity_listener }
+    #     public: true
+  
     helper.trans: 
-        class: AppBundle\Helpers\TransHelper
-        arguments: ["@translator"]
+        alias: AppBundle\Helpers\TransHelper
         public: true
-
+ 
     helper.entity: 
-        class: AppBundle\Helpers\EntityHelper
-        arguments: ["@doctrine.orm.entity_manager", '@helper.settings']
+        alias: AppBundle\Helpers\EntityHelper
         public: true
-   
-    helper.filter: 
-        class: AppBundle\Helpers\FilterHelper
-        arguments: ['@service_container']
-        public: true
-
 
     helper.settings: 
-        class: AppBundle\Helpers\SettingsHelper
-        arguments: ["@doctrine.orm.entity_manager"]
+        alias: AppBundle\Helpers\SettingsHelper
         public: true
     
-    orders_listener:
-        class: AppBundle\EntityListener\OrdersListener
-        arguments: ['@service_container']
-        tags:
-            - { name: doctrine.orm.entity_listener }
+    helper.filter: 
+        alias: AppBundle\Helpers\FilterHelper
         public: true
-
-    productions_listener:
-        class: AppBundle\EntityListener\ProductionsListener
-        arguments: ['@service_container']
-        tags:
-            - { name: doctrine.orm.entity_listener }
+    
+    helper.route: 
+        alias: AppBundle\Helpers\RouteHelper
         public: true
+ 
+ 
+ 
+        # helper.settings: 
+ 
+        #     alias: '@AppBundle\Helpers\SettingsHelper'
+    #     public: true
+    # helper.filter: 
+    #     alias: '@AppBundle\Helpers\FilterHelper'
+    #     public: true
+        # class: AppBundle\Helpers\TransHelper
+        # # arguments: ["@service_container"]
+        # public: true
 
-    deliveries_listener:
-        class: AppBundle\EntityListener\DeliveriesListener
-        arguments: ['@service_container']
-        tags:
-            - { name: doctrine.orm.entity_listener }
-        public: true
+    # AppBundle\Helpers\TransHelper: '@helper.trans'
 
-    # AppBundle\EventListener\NextNumber:
-    #     arguments: [ "@settings_helper" ]
+    # helper.trans: 
+    #     class: AppBundle\Helpers\TransHelper
+    #     arguments: ["@translator"]
+    #     public: true
+
+    # helper.entity: 
+    #     class: AppBundle\Helpers\EntityHelper
+    #     # arguments: ["@service_container"]
+    #     public: true
+
+    # AppBundle\Helpers\EntityHelper: '@helper.entity'
+
+    # helper.entity: 
+    #     class: AppBundle\Helpers\EntityHelper
+    #     arguments: ["@doctrine.orm.entity_manager", '@helper.settings']
+    #     public: true
+   
+    # helper.filter: 
+    #     class: AppBundle\Helpers\FilterHelper
+    #     arguments: ['@service_container']
+    #     public: true
+
+    # helper.element: 
+    #     class: AppBundle\Helpers\ElementHelper
+    #     arguments: ['@service_container']
+    #     public: true
+
+
+    # helper.settings: 
+    #     class: AppBundle\Helpers\SettingsHelper
+    #     # arguments: ["@doctrine.orm.entity_manager"]
+    #     public: true
+    
+    # orders_listener:
+    #     class: AppBundle\EntityListener\OrdersListener
+    #     arguments: ['@service_container']
     #     tags:
-    #         - { name: doctrine.event_listener, event: postPersist, lazy: true }
+    #         - { name: doctrine.orm.entity_listener }
+    #     public: true
+
+
+    # app.twig_extension:
+    #     class: App\Twig\AppExtension
+    #     arguments: ["@translator"]
+    #     tags: 
+    #         - { name: twig.extension }
+
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
     #     arguments:

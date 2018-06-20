@@ -4,21 +4,24 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-    	{
-	        "type": "chrome",
-	        "request": "launch",
-	        "name": "Chrome",
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Chrome",
             "url": "http://127.0.0.1/Drako_new/web/app_dev.php",
-	        "webRoot": "${workspaceRoot}"
+            "webRoot": "${workspaceRoot}"
         },
         {
             "name": "XDebug",
             "type": "php",
             "request": "launch",
             "port": 9000,
-            "ignore" : [ "**/vendor/**/*.php" ],
+            "ignore": ["**/vendor/**/*.php"],
             "xdebugSettings": {
-                "max_children": 20
+                "max_children": 256
+            },
+            "pathMappings": {
+                "/drako_new/web": "${workspaceRoot}/web"
             }
         },
         {

@@ -7,6 +7,7 @@ use AppBundle\Entity\Settings;
 use AppBundle\Entity\Clients;
 use AppBundle\Entity\Users;
 use AppBundle\Utils\Utils;
+use Symfony\Component\DependencyInjection\ContainerInterface ;
 
 class SettingsHelper{
     private $em;
@@ -15,6 +16,10 @@ class SettingsHelper{
     private $cached=[];
     private $clientCached=[];
     private $userCached=[];
+
+    // public function __construct(ContainerInterface $seviceContainer){
+    //     $this->em=$seviceContainer->get('doctrine.orm.entity_manager');
+    // }
 
 
     public function __construct(EntityManager $entityManager){
