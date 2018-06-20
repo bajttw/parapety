@@ -413,12 +413,11 @@
                 this._callFunction('_preSubmit');
                 // valid = this.validate();
                 // if (this.inState('notValid')) return;
-                this.block(false);
                 var that = this,
                     o = this.options,
                     $form = this.element,
                     url = $form.attr('action'),
-                    fdata = B.obj.is(data) && B.obj.is(data.fdata) ? data.fdata : $form.serialize(),
+                    fdata = B.obj.is(data) && B.obj.is(data.fdata) ? data.fdata : this.getFormData(),
                     $modal = $form.closest('.modal'),
                     $panel = $form.closest('.panel'),
                     isModal = B.obj.is$($modal),
@@ -665,6 +664,15 @@
             field: function(index) {
                 return typeof index === 'number' ? this._fields[index] : this._fieldsByName[index];
             },
+            getFormData:function(){
+                var fdata, 
+                    state=this._state;
+                this.state('serialize');
+                fdata=this.element.serialize();
+                console.log(this.element.serializeArray());
+                this.state(state);
+                return fdata;
+            },
             getLimits: function(name) {
                 var o = this.options,
                     l = o.limits;
@@ -721,9 +729,10 @@
             state: function(state, data) {
                 if (state !== undefined && this.allowedOperation(state, data)) {
                     this._state = state;
-                    switch (
-                        state //operacje przy zmianie stanu
-                    ) {
+                    switch ( state  ) {
+                        case 'form-serialize':
+                            this.block(false);
+                        break;
                         case 'init':
                             break;
                         case 'start':
