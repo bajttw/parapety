@@ -187,7 +187,7 @@ class FilterHelper{
     private function getEntityFilters(string $type='index'):array
     {
         $getFunction='get'. $this->ecn. 'Filters';       
-        return method_exists($getFunction, $this) ? $this->$getFunction($type) : $this->getGenericFilters($type);
+        return method_exists($this, $getFunction) ? $this->$getFunction($type) : $this->getGenericFilters($type);
     }
 
     private function generateHiddenFilter($filterOptions):?array
@@ -252,7 +252,7 @@ class FilterHelper{
             'index' => ['active']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
-        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+        return $this->choiceFilters($filterTypes[$idx], $defined); 
     }
 
     public function getClientsFilters(string $type='index'):array
@@ -300,7 +300,7 @@ class FilterHelper{
             'index' => ['active', 'regular']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
-        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+        return $this->choiceFilters($filterTypes[$idx], $defined); 
     }
 
     public function getOrdersFilters(string $type='index'):array
@@ -513,7 +513,7 @@ class FilterHelper{
             'table_client' => ['hidden-client']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
-        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+        return $this->choiceFilters($filterTypes[$idx], $defined); 
     }
 
     public function getProductionsFilters(string $type='index'):array
@@ -558,7 +558,7 @@ class FilterHelper{
             'index' => ['generated', 'progress']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
-        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+        return $this->choiceFilters($filterTypes[$idx], $defined);  
     }
 
     public function getPriceListsFilters(string $type='index'):array
@@ -635,7 +635,7 @@ class FilterHelper{
             'table_client' => ['hidden-client']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'service';
-        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+        return $this->choiceFilters($filterTypes[$idx], $defined);  
     }
 
     public function getDeliveriesFilters(string $type='index'):array
@@ -683,7 +683,7 @@ class FilterHelper{
             'table_client' => ['hidden-client']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'service';
-        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+        return $this->choiceFilters($filterTypes[$idx], $defined);  
     }
 
     public function getProductsFilters(string $type='index'):array
@@ -734,7 +734,7 @@ class FilterHelper{
             'deliveries_table' => ['hidden-delivery']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
-        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+        return $this->choiceFilters($filterTypes[$idx], $defined);  
     }
 
     public function getInvoicesFilters(string $type='index'):array
@@ -782,7 +782,7 @@ class FilterHelper{
             'table-client' => ['hidden-client']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
-        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+        return $this->choiceFilters($filterTypes[$idx], $defined);  
     }
 
     public function getPriceListItemsFilters(string $type='index'):array
@@ -824,7 +824,7 @@ class FilterHelper{
             'def' => ['size', 'color']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : '';
-        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+        return $this->choiceFilters($filterTypes[$idx], $defined);  
     }
 
 

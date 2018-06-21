@@ -144,6 +144,14 @@ class AppController extends Controller
         return $this->fh;
     }
 
+    public function getEntityManager()
+    {
+        if (!$this->entityManager) {
+            $this->entityManager = $this->getDoctrine()->getManager();
+        }
+        return $this->entityManager;
+    }
+
     public function controllerFunction( string $functionName, ?string $entityClassName=null, ?array $arguments = null)
     {
         $entityController=$this->getEntityHelper()->getControllerNamespace($entityClassName);
@@ -816,14 +824,10 @@ class AppController extends Controller
         if (!$this->preAction($request, $cid, ['entitySettings' => false])) {
             return $this->responseAccessDenied(true);
         }
-        $defaultFilters=$this->getFilters('table_client', [
-            'cid' => $cid
-        ]);
+        $defaultFilters=$this->getFilterHelper()->generateFilters('table_client', static::ec, [ 'values' => [ 'client' => $cid ]  ]);
         $filters = $request->query->get('f');
         return new JsonResponse($this->getEntiesFromBase($request, 'getList', [ 
-            'filters' => isset($filters) ? 
-                array_replace_recursive($defaultFilters, json_decode($filters, true)) : 
-                $defaultFilters 
+                'filters' => isset($filters) ? array_replace_recursive($defaultFilters, json_decode($filters, true)) : $defaultFilters 
             ])
         );
     }
@@ -1055,13 +1059,6 @@ class AppController extends Controller
 // <editor-fold defaultstate="collapsed" desc="Utilites">
     
 
-    public function getEntityManager()
-    {
-        if (!$this->entityManager) {
-            $this->entityManager = $this->getDoctrine()->getManager();
-        }
-        return $this->entityManager;
-    }
     public function isAdmin()
     {
         $this->admin = $this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
@@ -1328,24 +1325,8 @@ class AppController extends Controller
         ];
     }
 
-    protected function genFilterbar(string $filtersType = 'index', ?string $entityClassName = null, string $template = null, array $options = [])
+    protected function genFilterbar(string $filtersType = 'index', ?string $entityClassName = null, string $template = null, array $options = []):array
     {
-        // $en = $this->getEntityHelper()->getEntityName($entityClassName);
-        // $filters = $this->controllerFunction('getFilters', $entityClassName, [ $filtersType, $options ]);
-        // if (count($filters) == 0) {
-        //     return null;
-        // }
-        // $id = $en . '_filterbar';
-        // $fs = [];
-        // $hfs = [];
-        // foreach ($filters as $filter) {
-        //     if (Utils::deep_array_value('type', $filter) == 'hidden') {
-        //         $hfs[$filter['name']] = $this->getFilterHelper()->generateHidden($filter);
-        //     }
-        //     else {
-        //         $fs[] = $this->getFilterHelper()->generate($filter);
-        //     }
-        // }
         $filters=$this->getFilterHelper()->generateFilters($filtersType, $entityClassName, $options);
         return array_replace_recursive(
             $this->genElement('filterbar', $entityClassName),
@@ -1746,53 +1727,53 @@ class AppController extends Controller
 // </editor-fold>
 
 
-    public static function genFilter($type = 'index', $options = [])
-    {
-        $id = Utils::deep_array_value('id', $options);
-        $cid = Utils::deep_array_value('cid', $options);
-        $isClient=$cid != null;
-        switch($type){
-            case 'client_hidden':
-                return [
-                    'name' => 'client',
-                    'type' => 'hidden',
-                    'value' => $isClient ? [ $cid ] : [],
-                ];
-            break;
-            case 'clients_hidden':
-                return [
-                    'name' => 'clients',
-                    'type' => 'hidden',
-                    'value' => $isClient ? [ $cid ] : [],
-                ];
-            break;
-        }
-        return null;
-    }
+    // public static function genFilter($type = 'index', $options = [])
+    // {
+    //     $id = Utils::deep_array_value('id', $options);
+    //     $cid = Utils::deep_array_value('cid', $options);
+    //     $isClient=$cid != null;
+    //     switch($type){
+    //         case 'client_hidden':
+    //             return [
+    //                 'name' => 'client',
+    //                 'type' => 'hidden',
+    //                 'value' => $isClient ? [ $cid ] : [],
+    //             ];
+    //         break;
+    //         case 'clients_hidden':
+    //             return [
+    //                 'name' => 'clients',
+    //                 'type' => 'hidden',
+    //                 'value' => $isClient ? [ $cid ] : [],
+    //             ];
+    //         break;
+    //     }
+    //     return null;
+    // }
 
-    public static function getFilters($type = 'index', $options = [])
-    {
-        $filters = [
-            static::$activeFilter
-        ];
-        return $filters;
-    }
+    // public static function getFilters($type = 'index', $options = [])
+    // {
+    //     $filters = [
+    //         static::$activeFilter
+    //     ];
+    //     return $filters;
+    // }
 
-    public static function addFilter(&$filters, $filter, $index=null)
-    {
-        if(is_array($filter)){
-            if(isset($index)){
-                if( !Utils::deep_array_value_check('type', $filter, 'hidden') ){
-                    Utils::deep_array_value_set('label', $filter, self::filterLabel($index, static::en));
-                    Utils::deep_array_value_set('attr-title', $filter, self::filterTitle($index, static::en));
-                }
-                $filters[$index]=$filter;
-            }else{
-                $filters[]=$filter;
-            }
-        }
-        return $filters;
-    }
+    // public static function addFilter(&$filters, $filter, $index=null)
+    // {
+    //     if(is_array($filter)){
+    //         if(isset($index)){
+    //             if( !Utils::deep_array_value_check('type', $filter, 'hidden') ){
+    //                 Utils::deep_array_value_set('label', $filter, self::filterLabel($index, static::en));
+    //                 Utils::deep_array_value_set('attr-title', $filter, self::filterTitle($index, static::en));
+    //             }
+    //             $filters[$index]=$filter;
+    //         }else{
+    //             $filters[]=$filter;
+    //         }
+    //     }
+    //     return $filters;
+    // }
 
     public static function getActions($type = 'index', $options=[])
     {
