@@ -165,7 +165,8 @@ class ClientsController extends AppController{
 
 // </editor-fold>   
 
-    private function genClientServicePanel(string $entityClassName, bool $active=false, $cid='__cid__'){
+    private function genClientServicePanel(string $entityClassName, bool $active=false, $cid='__cid__'):array
+    {
         return $this->genPanel($entityClassName, [
             'active' => $active,
             'content' => $this->tmplPath('index', '', 'Panel'),
@@ -180,7 +181,7 @@ class ClientsController extends AppController{
                     'ajax' => [
                         'url' => $this->getUrl('ajax', $entityClassName, true, ["cid" => $cid])
                     ],
-                    'filters' => $this->getEntityHelper()->getControllerNamespace($entityClassName)::getFilters('table_client', [ 'cid' => $cid ]) 
+                    'filters' => $this->getFilterHelper()->generateFilters('table_client', $entityClassName, [ 'values' => ['client' => $cid ]]) 
                 ]
             ])
         ]);

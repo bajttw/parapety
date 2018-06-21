@@ -3,7 +3,7 @@
 namespace AppBundle\Helpers;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\DependencyInjection\ContainerInterface ;
+// use Symfony\Component\DependencyInjection\ContainerInterface ;
 use AppBundle\Utils\Utils;
 
 class EntityHelper{
@@ -14,13 +14,12 @@ class EntityHelper{
     private $entityClassName='';
     public $entitiesClasses = ['Clients', 'Settings', 'Uploads', 'Users', 'Notes', 'Colors', 'Models', 'Sizes', 'Trims', 'Orders', 'Positions', 'Products', 'Productions', 'Deliveries', 'Invoices', 'PriceLists', 'PriceListItems', 'Prices'];
    
-    private $sc;
     private $em;
     private $sh;
 
-    public function __construct(ContainerInterface $seviceContainer){
-        $this->sh=$seviceContainer->get('helper.settings');
-        $this->em=$seviceContainer->get('doctrine.orm.entity_manager');
+    public function __construct(EntityManager $entityManager, SettingsHelper $settingsHelper){
+        $this->sh=$settingsHelper;
+        $this->em=$entityManager;
     }
     // public function __construct(EntityManager $entityManager, SettingsHelper $settingsHelper){
     //     $this->sh=$settingsHelper;

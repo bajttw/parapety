@@ -50,37 +50,23 @@ class FilterHelper{
 
     ];
 
-    // private $predefinedHidden=[
-    //     'active' => [
-    //         'name' => 'active',
-    //         'value' => '1'
-    //     ],
-    //     'client' => [
-    //         'name' => 'client',
-    //         'source' => [
-    //             'type' => 'options',
-    //             'query' => 'client'
-    //         ]
-    //     ]
-    // ];
-
-    private $sc;//serviceContainer
     private $eh;//entityHelper
     private $sh;//settingsHelper
+
     private $en;//entityName
     private $ecn;//entityClassName
     private $options=[];
 
-    public function __construct(ContainerInterface $seviceContainer){
-        $this->sc=$seviceContainer;
-        $this->sh=$seviceContainer->get('helper.settings');
-        $this->eh=$seviceContainer->get('helper.entity');
+    public function __construct(EntityHelper $entityHelper, SettingsHelper $settingsHelper){
+        $this->eh=$entityHelper;
+        $this->sh=$settingsHelper;
     }
 
     private function getDefined(string $name, array &$definedFilters)
     {
         $filter=Utils::deep_array_value($name, $definedFilters);
-        if(is_array($filter) && strpos('hidden-', $name) === 0 ){
+        $gg=strpos($name, 'hidden-');
+        if(is_array($filter) && strpos($name, 'hidden-') === 0 ){
             $filter['type']='hidden';
         }
         return $filter;
@@ -122,7 +108,7 @@ class FilterHelper{
         $source=$filterOptions['source'];
         switch($source['type']){
             case 'settings':
-                $banned= $this->getBanned();
+                $banned= $this->getBannedValues($filterOptions);
                 $rows=$this->sh->getSettingValue($source['query']);
                 if(is_array($rows)){
                     foreach($rows as $row){
@@ -165,11 +151,11 @@ class FilterHelper{
         return is_array($banned) ? $banned : [];
     }
 
-    private function getD(array $filterOptions):array
+    private function getD(array &$filterOptions):array
     {
         $d=Utils::deep_array_value('d', $filterOptions, []);
         if (array_key_exists('setValue' ,$filterOptions)) {
-            $d['def-value'] = $this->sh->getSettingValue($this->options['setValue']['query']);
+            $d['def-value'] = $this->sh->getSettingValue($filterOptions['setValue']['query']);
         }
         return $d;
     }
@@ -190,14 +176,8 @@ class FilterHelper{
         return method_exists($this, $getFunction) ? $this->$getFunction($type) : $this->getGenericFilters($type);
     }
 
-    private function generateHiddenFilter($filterOptions):?array
+    private function generateHiddenFilter(array &$filterOptions):array
     {
-        if(is_string($filterOptions)){
-            $filterOptions=Utils::deep_array_value($filterOptions, $this->predefinedHidden);
-        }    
-        if(!is_array($filterOptions)){
-            return null;
-        }
         return [
             'name' => $filterOptions['name'],
             'type' => 'hidden',
@@ -206,14 +186,8 @@ class FilterHelper{
         ];
     }
 
-    public function generateFilter($filterOptions):?array
+    public function generateFilter(array &$filterOptions):array
     {
-        if(is_string($filterOptions)){
-            $filterOptions=Utils::deep_array_value($filterOptions, $this->predefined);
-        }    
-        if(!is_array($filterOptions)){
-            return null;
-        }
         return [
             'name' => $filterOptions['name'],
             'type' => Utils::deep_array_value('type', $filterOptions, 'select'),
@@ -234,7 +208,7 @@ class FilterHelper{
         ];
         foreach($this->getEntityFilters($type) as $name => $filter){
             $filter=$this->getFilter($filter);
-            $fname= strpos('hidden-', $name) === false ? $name : substr($name, 7) ;
+            $fname= strpos($name, 'hidden-') === false ? $name : substr($name, 7) ;
             if (Utils::deep_array_value('type', $filter) == 'hidden'){
                 $filters['hidden'][$fname] = $this->generateHiddenFilter($filter);
             }else{
@@ -305,7 +279,7 @@ class FilterHelper{
 
     public function getOrdersFilters(string $type='index'):array
     {
-        $id = Utils::deep_array_value('id', $this->options);
+        $pid = Utils::deep_array_value('values-id', $this->options);
         $defined = [
             'client' => 'client',
             'status' => [
@@ -382,69 +356,33 @@ class FilterHelper{
                     'widget' => 'multiselect'
                 ]
             ],
-            'not_package' => [
-                'name' => 'positions.package',
-                'type' => 'hidden',
-                'value' => $id == null ? null : [null, $id],
-            ],
-            'package' => [
-                'name' => 'positions.package',
-                'type' => 'hidden',
-                'value' => null,
-                'options' => ['not' => true]
-            ],
-            'not_production' => [
-                'name' => 'production',
-                'type' => 'hidden',
-                'value' => $id == null ? null : [null, $id],
-            ],
-            'production' => [
-                'name' => 'production',
-                'type' => 'hidden',
-                'value' => null,
-                'options' => ['not' => true]
-            ],
-            'not_shipment' => [
-                'name' => 'shipment',
-                'type' => 'hidden',
-                'value' => $id == null ? null : [null, $id],
-            ],
-            'shipment' => [
-                'name' => 'shipment',
-                'type' => 'hidden',
-                'value' => null,
-                'options' => ['not' => true]
-            ],
-            'notState' => [
-                'name' => 'status',
-                'type' => 'hidden',
-                'source' => [
-                    'type' => 'options',
-                    'query' => 'bannedStates'
+            'hidden' => [
+                'toProduction' => [
+                    'name' => 'production',
+                    'value' => is_null($pid) ? null : [null, $pid],
                 ],
-                'options' => ['not' => true]
-            ],
-            'posSize' => [
-                'name' => 'positions.size',
-                'type' => 'hidden',
-                'source' => [
-                    'type' => 'options',
-                    'query' => 'size'
+                'production' => [
+                    'name' => 'production',
+                    'value' => null,
+                    'options' => ['not' => true]
+                ],
+                'notState' => [
+                    'name' => 'status',
+                    'type' => 'hidden',
+                    'source' => [
+                        'type' => 'options',
+                        'query' => 'bannedStates'
+                    ],
+                    'options' => ['not' => true]
+                ],
+                'posSize' => [
+                    'name' => 'positions.size',
+                    'type' => 'hidden',
+                    'source' => [
+                        'type' => 'options',
+                        'query' => 'size'
+                    ]
                 ]
-            ],
-            'posPackage' => [
-                'operator' => 'or',
-                'name' => "positions.package",
-                'type' => 'hidden',
-                'source' => [
-                    'type' => 'options',
-                    'query' => 'package'
-                ]
-            ],
-            'posNoPackage' => [
-                'name' => "positions.package",
-                'type' => 'hidden',
-                'value' => null
             ]
         ];
         $filterTypes=[
@@ -452,11 +390,10 @@ class FilterHelper{
             'def' => ['status', 'express', 'created', 'approved'],
             'index' => ['client', 'status', 'express', 'created', 'approved'],
             'package' => ['ways', 'approved', 'status', 'express' ],
-            'packageHiddens' => ['posNoPackage'],
             'production' => ['generated'],
             'productions_form' => ['client', 'approved', 'express'],
+            'productions_table' => ['hidden-toProduction'],
             'service' => ['status', 'express', 'created'],
-            'shipment' => ['generated', 'production', 'not_shipment'],
             'table_client' => ['hidden-client'],
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'def';
@@ -503,9 +440,6 @@ class FilterHelper{
                     'widget' => 'multiselect',
                     'def-value' => ['null']               
                 ]
-            // ],
-            // 'hidden' => [
-            //     'client' => 'hidden-client'
             ] 
         ];
         $filterTypes=[
@@ -624,7 +558,11 @@ class FilterHelper{
             ],
             'hidden' => [
                 'client' => [
-                    'name' => 'clients.id'
+                    'name' => 'clients.id',
+                    'source' => [
+                        'type' => 'options',
+                        'query' => 'client'
+                    ]
                 ]   
             ]
                 
