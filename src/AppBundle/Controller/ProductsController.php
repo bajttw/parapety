@@ -15,68 +15,68 @@ class ProductsController extends AppController
     const en = 'products';
     const ec = 'Products';
 
-    public static function getFilters($type = 'index', $options = [])
-    {
-        $id = Utils::deep_array_value('id', $options);
-        $pid = Utils::deep_array_value('pid', $options);
-        $did = Utils::deep_array_value('did', $options);
-        $filters = [];
-        $fs = [
-            "cutTime" => [
-                'name' => 'cutTime',
-                'data' => [
-                    ['v' => 0, 'n' => 'przed'],
-                    ['v' => 1, 'n' => 'po'],
-                ],
-                'd' => [
-                    'widget' => 'multiselect',
-                    'filter-options' => json_encode(['type' => 'set']),
-                ],
-            ],
-            "packingTime" => [
-                'name' => 'packingTime',
-                'data' => [
-                    ['v' => 0, 'n' => 'przed'],
-                    ['v' => 1, 'n' => 'po'],
-                ],
-                'd' => [
-                    'widget' => 'multiselect',
-                    'filter-options' => json_encode(['type' => 'set']),
-                ],
-            ],
-            "hiddenProduction" => [
-                "name" => 'production',
-                'type' => 'hidden',
-                'value' => $pid,
-            ],
-            "hiddenDelivery" => [
-                "name" => 'delivery',
-                'type' => 'hidden',
-                'value' => $did,
-            ]
+    // public static function getFilters($type = 'index', $options = [])
+    // {
+    //     $id = Utils::deep_array_value('id', $options);
+    //     $pid = Utils::deep_array_value('pid', $options);
+    //     $did = Utils::deep_array_value('did', $options);
+    //     $filters = [];
+    //     $fs = [
+    //         "cutTime" => [
+    //             'name' => 'cutTime',
+    //             'data' => [
+    //                 ['v' => 0, 'n' => 'przed'],
+    //                 ['v' => 1, 'n' => 'po'],
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect',
+    //                 'filter-options' => json_encode(['type' => 'set']),
+    //             ],
+    //         ],
+    //         "packingTime" => [
+    //             'name' => 'packingTime',
+    //             'data' => [
+    //                 ['v' => 0, 'n' => 'przed'],
+    //                 ['v' => 1, 'n' => 'po'],
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect',
+    //                 'filter-options' => json_encode(['type' => 'set']),
+    //             ],
+    //         ],
+    //         "hiddenProduction" => [
+    //             "name" => 'production',
+    //             'type' => 'hidden',
+    //             'value' => $pid,
+    //         ],
+    //         "hiddenDelivery" => [
+    //             "name" => 'delivery',
+    //             'type' => 'hidden',
+    //             'value' => $did,
+    //         ]
 
-        ];
-        switch ($type) {
-            case 'index':
-            case 'productions_form':
-                foreach (['cutTime', 'packingTime'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-                break;
+    //     ];
+    //     switch ($type) {
+    //         case 'index':
+    //         case 'productions_form':
+    //             foreach (['cutTime', 'packingTime'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //             break;
 
-            case 'productions_table':
-                foreach (['hiddenProduction'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-                break;
-            case 'deliveries_table':
-                foreach (['hiddenDelivery'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-                break;
-        }
-        return $filters;
-    }
+    //         case 'productions_table':
+    //             foreach (['hiddenProduction'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //             break;
+    //         case 'deliveries_table':
+    //             foreach (['hiddenDelivery'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //             break;
+    //     }
+    //     return $filters;
+    // }
 
     public static function getActions($type = 'view', $options = [])
     {

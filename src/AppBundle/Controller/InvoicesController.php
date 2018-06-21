@@ -25,83 +25,83 @@ class InvoicesController extends AppController
     public $formExport = true;
     public static $importFields=['id', 'number', 'created'];
     
-    public static function getFilters($type = 'index', $options = [])
-    {
-        $id = Utils::deep_array_value('id', $options);
-        $cid = Utils::deep_array_value('cid', $options);
-        $isClient=$cid != null;
-        $filters = [];
-        $fs = [
-            'client' => [
-                'name' => 'client',
-                'source' => [
-                    'type' => 'entity',
-                    'query' => 'Clients',
-                ],
-                'attr' => [
-                    'multiple' => 'multiple'
-                ],
-                'd' => [
-                    'widget' => 'multiselect'                
-                ]
-            ],
-            'created' => [
-                'name' => 'created',
-                'type' => 'input',
-                'setValue' => [
-                    'type' => 'settings',
-                    'query' => 'invoices-filters-created-value'
-                ],
-                'source' => [
-                    'type' => 'settings',
-                    'query' => 'invoices-filters-dateRanges'
-                ],
-                // 'attr' => [
-                //     'data-daterange' => json_encode([]),
-                //     'data-filter-options' => json_encode(['type' => 'date_period']),
-                // ],
-                'd' => [
-                    'filter-options' => json_encode(['type' => 'date_period']),
-                    'widget' => 'daterange'
-                ]
+    // public static function getFilters($type = 'index', $options = [])
+    // {
+    //     $id = Utils::deep_array_value('id', $options);
+    //     $cid = Utils::deep_array_value('cid', $options);
+    //     $isClient=$cid != null;
+    //     $filters = [];
+    //     $fs = [
+    //         'client' => [
+    //             'name' => 'client',
+    //             'source' => [
+    //                 'type' => 'entity',
+    //                 'query' => 'Clients',
+    //             ],
+    //             'attr' => [
+    //                 'multiple' => 'multiple'
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect'                
+    //             ]
+    //         ],
+    //         'created' => [
+    //             'name' => 'created',
+    //             'type' => 'input',
+    //             'setValue' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'invoices-filters-created-value'
+    //             ],
+    //             'source' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'invoices-filters-dateRanges'
+    //             ],
+    //             // 'attr' => [
+    //             //     'data-daterange' => json_encode([]),
+    //             //     'data-filter-options' => json_encode(['type' => 'date_period']),
+    //             // ],
+    //             'd' => [
+    //                 'filter-options' => json_encode(['type' => 'date_period']),
+    //                 'widget' => 'daterange'
+    //             ]
                 
-            ],
-            'term' => [
-                'name' => 'term',
-                'type' => 'input',
-                'setValue' => [
-                    'type' => 'settings',
-                    'query' => 'invoices-filters-term-value'
-                ],
-                'source' => [
-                    'type' => 'settings',
-                    'query' => 'invoices-filters-dateRanges'
-                ],
-                'd' => [
-                    'filter-options' => json_encode(['type' => 'date_period']),
-                    'widget' => 'daterange'
-                ]
+    //         ],
+    //         'term' => [
+    //             'name' => 'term',
+    //             'type' => 'input',
+    //             'setValue' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'invoices-filters-term-value'
+    //             ],
+    //             'source' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'invoices-filters-dateRanges'
+    //             ],
+    //             'd' => [
+    //                 'filter-options' => json_encode(['type' => 'date_period']),
+    //                 'widget' => 'daterange'
+    //             ]
                 
-            ]
-        ];
+    //         ]
+    //     ];
         
-        switch ($type) {
-            case 'index' :
-                foreach (['client', 'created', 'term'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-            break;
-            case 'service' :
-                foreach (['created', 'term'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-            break;
-            case 'table_client':
-                self::addFilter($filters, self::genFilter('client_hidden', $options), 'client');
-            break;
-        }
-        return $filters;
-    }
+    //     switch ($type) {
+    //         case 'index' :
+    //             foreach (['client', 'created', 'term'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //         break;
+    //         case 'service' :
+    //             foreach (['created', 'term'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //         break;
+    //         case 'table_client':
+    //             self::addFilter($filters, self::genFilter('client_hidden', $options), 'client');
+    //         break;
+    //     }
+    //     return $filters;
+    // }
 
     public static function getActions($type = 'view', $options=[])
     {

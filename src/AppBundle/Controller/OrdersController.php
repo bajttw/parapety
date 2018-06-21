@@ -25,221 +25,221 @@ class OrdersController extends AppController
     public $formExport = true;
     public static $importFields=['id', 'number', 'created'];
     
-    public static function getFilters($type = 'index', $options = [])
-    {
-        $id = Utils::deep_array_value('id', $options);
-        $cid = Utils::deep_array_value('cid', $options);
-        $isClient=$cid != null;
-        $filters = [];
-        $fs = [
-            'client' => [
-                'name' => 'client',
-                'source' => [
-                    'type' => 'entity',
-                    'query' => 'Clients',
-                ],
-                'attr' => [
-                    'multiple' => 'multiple'
-                ],
-                'd' => [
-                    'widget' => 'multiselect'                
-                ]
-            ],
-            'status' => [
-                'name' => 'status',
-                'source' => [
-                    'type' => 'settings',
-                    'query' => 'orders-dictionaries-status'
-                ],
-                'attr' => [
-                    'multiple' => 'multiple'
-                ],
-                'd' => [
-                    'widget' => 'multiselect'                
-                ]
-            ],
-            'express' => [
-                'name' => 'express',
-                'source' => [
-                    'type' => 'settings',
-                    'query' => 'orders-dictionaries-express'
-                ],
-                'attr' => [
-                    'multiple' => 'multiple'
-                ],
-                'd' => [
-                    'widget' => 'multiselect'
-                ]
-            ],
-            'created' => [
-                'name' => 'created',
-                'type' => 'input',
-                'setValue' => [
-                    'type' => 'settings',
-                    'query' => 'orders-filters-created-value'
-                ],
-                'source' => [
-                    'type' => 'settings',
-                    'query' => 'orders-filters-dateRanges'
-                ],
-                // 'attr' => [
-                //     'data-daterange' => json_encode([]),
-                //     'data-filter-options' => json_encode(['type' => 'date_period']),
-                // ],
-                'd' => [
-                    'filter-options' => json_encode(['type' => 'date_period']),
-                    'widget' => 'daterange'
-                ]
+    // public static function getFilters($type = 'index', $options = [])
+    // {
+    //     $id = Utils::deep_array_value('id', $options);
+    //     $cid = Utils::deep_array_value('cid', $options);
+    //     $isClient=$cid != null;
+    //     $filters = [];
+    //     $fs = [
+    //         'client' => [
+    //             'name' => 'client',
+    //             'source' => [
+    //                 'type' => 'entity',
+    //                 'query' => 'Clients',
+    //             ],
+    //             'attr' => [
+    //                 'multiple' => 'multiple'
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect'                
+    //             ]
+    //         ],
+    //         'status' => [
+    //             'name' => 'status',
+    //             'source' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'orders-dictionaries-status'
+    //             ],
+    //             'attr' => [
+    //                 'multiple' => 'multiple'
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect'                
+    //             ]
+    //         ],
+    //         'express' => [
+    //             'name' => 'express',
+    //             'source' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'orders-dictionaries-express'
+    //             ],
+    //             'attr' => [
+    //                 'multiple' => 'multiple'
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect'
+    //             ]
+    //         ],
+    //         'created' => [
+    //             'name' => 'created',
+    //             'type' => 'input',
+    //             'setValue' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'orders-filters-created-value'
+    //             ],
+    //             'source' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'orders-filters-dateRanges'
+    //             ],
+    //             // 'attr' => [
+    //             //     'data-daterange' => json_encode([]),
+    //             //     'data-filter-options' => json_encode(['type' => 'date_period']),
+    //             // ],
+    //             'd' => [
+    //                 'filter-options' => json_encode(['type' => 'date_period']),
+    //                 'widget' => 'daterange'
+    //             ]
                 
-            ],
-            'approved' => [
-                'name' => 'approved',
-                'type' => 'input',
-                'setValue' => [
-                    'type' => 'settings',
-                    'query' => 'orders-filters-approved-value'
-                ],
-                'source' => [
-                    'type' => 'settings',
-                    'query' => 'orders-filters-dateRanges'
-                ],
-                'd' => [
-                    'filter-options' => json_encode(['type' => 'date_period']),
-                    'widget' => 'daterange'
-                ]
+    //         ],
+    //         'approved' => [
+    //             'name' => 'approved',
+    //             'type' => 'input',
+    //             'setValue' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'orders-filters-approved-value'
+    //             ],
+    //             'source' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'orders-filters-dateRanges'
+    //             ],
+    //             'd' => [
+    //                 'filter-options' => json_encode(['type' => 'date_period']),
+    //                 'widget' => 'daterange'
+    //             ]
                 
-            ],
-            'ways' => [
-                'name' => 'client.ways.id',
-                'label' => 'orders.label.filter.ways',
-                'source' => [
-                    'type' => 'entity',
-                    'query' => 'Ways',
-                ],
-                'attr' => [
-                    'multiple' => 'multiple'
-                ],
-                'd' => [
-                    'widget' => 'multiselect'
-                ]
-            ],
-            'not_package' => [
-                'name' => 'positions.package',
-                'type' => 'hidden',
-                'value' => $id == null ? null : [null, $id],
-            ],
-            'package' => [
-                'name' => 'positions.package',
-                'type' => 'hidden',
-                'value' => null,
-                'options' => ['not' => true]
-            ],
-            'not_production' => [
-                'name' => 'production',
-                'type' => 'hidden',
-                'value' => $id == null ? null : [null, $id],
-            ],
-            'production' => [
-                'name' => 'production',
-                'type' => 'hidden',
-                'value' => null,
-                'options' => ['not' => true]
-            ],
-            'not_shipment' => [
-                    'name' => 'shipment',
-                    'type' => 'hidden',
-                'value' => $id == null ? null : [null, $id],
-            ],
-            'shipment' => [
-                'name' => 'shipment',
-                'type' => 'hidden',
-                'value' => null,
-                'options' => ['not' => true]
-            ],
-            'notState' => [
-                'name' => 'status',
-                'type' => 'hidden',
-                'value' =>  Utils::deep_array_value('bannedStates', $options),
-                'options' => ['not' => true]
-            ],
-            'posSize' => [
-                'name' => 'positions.size',
-                'type' => 'hidden',
-                'value' => Utils::deep_array_value('size', $options)
-            ],
-            'posPackage' => [
-                'operator' => 'or',
-                'name' => "positions.package",
-                'type' => 'hidden',
-                'value' => Utils::deep_array_value('package', $options)
-            ],
-            'posNoPackage' => [
-                'name' => "positions.package",
-                'type' => 'hidden',
-                'value' => null
-            ]
-        ];
+    //         ],
+    //         'ways' => [
+    //             'name' => 'client.ways.id',
+    //             'label' => 'orders.label.filter.ways',
+    //             'source' => [
+    //                 'type' => 'entity',
+    //                 'query' => 'Ways',
+    //             ],
+    //             'attr' => [
+    //                 'multiple' => 'multiple'
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect'
+    //             ]
+    //         ],
+    //         'not_package' => [
+    //             'name' => 'positions.package',
+    //             'type' => 'hidden',
+    //             'value' => $id == null ? null : [null, $id],
+    //         ],
+    //         'package' => [
+    //             'name' => 'positions.package',
+    //             'type' => 'hidden',
+    //             'value' => null,
+    //             'options' => ['not' => true]
+    //         ],
+    //         'not_production' => [
+    //             'name' => 'production',
+    //             'type' => 'hidden',
+    //             'value' => $id == null ? null : [null, $id],
+    //         ],
+    //         'production' => [
+    //             'name' => 'production',
+    //             'type' => 'hidden',
+    //             'value' => null,
+    //             'options' => ['not' => true]
+    //         ],
+    //         'not_shipment' => [
+    //                 'name' => 'shipment',
+    //                 'type' => 'hidden',
+    //             'value' => $id == null ? null : [null, $id],
+    //         ],
+    //         'shipment' => [
+    //             'name' => 'shipment',
+    //             'type' => 'hidden',
+    //             'value' => null,
+    //             'options' => ['not' => true]
+    //         ],
+    //         'notState' => [
+    //             'name' => 'status',
+    //             'type' => 'hidden',
+    //             'value' =>  Utils::deep_array_value('bannedStates', $options),
+    //             'options' => ['not' => true]
+    //         ],
+    //         'posSize' => [
+    //             'name' => 'positions.size',
+    //             'type' => 'hidden',
+    //             'value' => Utils::deep_array_value('size', $options)
+    //         ],
+    //         'posPackage' => [
+    //             'operator' => 'or',
+    //             'name' => "positions.package",
+    //             'type' => 'hidden',
+    //             'value' => Utils::deep_array_value('package', $options)
+    //         ],
+    //         'posNoPackage' => [
+    //             'name' => "positions.package",
+    //             'type' => 'hidden',
+    //             'value' => null
+    //         ]
+    //     ];
         
-        switch ($type) {
-            case 'index' :
-                foreach (['client', 'status', 'express', 'created', 'approved'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-            break;
-            case 'productions_form' :
-                foreach (['client', 'approved', 'express'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-            break;
-            case 'client_index':
-            foreach (['status', 'express', 'created'] as $f) {
-                self::addFilter($filters, $fs[$f], $f);
-            }
-            break;
-            case 'table_client':
-                self::addFilter($filters, self::genFilter('client_hidden', $options), 'client');
-            break;
+    //     switch ($type) {
+    //         case 'index' :
+    //             foreach (['client', 'status', 'express', 'created', 'approved'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //         break;
+    //         case 'productions_form' :
+    //             foreach (['client', 'approved', 'express'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //         break;
+    //         case 'client_index':
+    //         foreach (['status', 'express', 'created'] as $f) {
+    //             self::addFilter($filters, $fs[$f], $f);
+    //         }
+    //         break;
+    //         case 'table_client':
+    //             self::addFilter($filters, self::genFilter('client_hidden', $options), 'client');
+    //         break;
         
-            case 'service' :
-                foreach (['status', 'express', 'created'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-            break;
-            case 'package' :
-                $fs['status']['banned']='orders-filters-status-banned-package';
-                foreach (['ways', 'approved', 'status', 'express' ] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-            break;
-            case 'packageHiddens' :
-                self::addFilter($filters, $fs['posNoPackage'], 'posNoPackage');
-                if ($fs['notState']['value']) {
-                    self::addFilter($filters, $fs['notState'], 'notState');
-                }
-                if ($fs['posSize']['value']) {
-                    self::addFilter($filters, $fs['posSize'], 'posSize');
-                }
-                if ($fs['posPackage']['value']) {
-                    self::addFilter($filters, $fs['posPackage'], 'posPackage');
-                }
-            break;
-            case 'production' :
-                foreach (['generated'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-            break;
-            case 'shipment' :
-                foreach (['generated', 'production', 'not_shipment'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-            break;
-            default :
-                foreach (['client', 'status', 'created'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-        }
-        return $filters;
-    }
+    //         case 'service' :
+    //             foreach (['status', 'express', 'created'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //         break;
+    //         case 'package' :
+    //             $fs['status']['banned']='orders-filters-status-banned-package';
+    //             foreach (['ways', 'approved', 'status', 'express' ] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //         break;
+    //         case 'packageHiddens' :
+    //             self::addFilter($filters, $fs['posNoPackage'], 'posNoPackage');
+    //             if ($fs['notState']['value']) {
+    //                 self::addFilter($filters, $fs['notState'], 'notState');
+    //             }
+    //             if ($fs['posSize']['value']) {
+    //                 self::addFilter($filters, $fs['posSize'], 'posSize');
+    //             }
+    //             if ($fs['posPackage']['value']) {
+    //                 self::addFilter($filters, $fs['posPackage'], 'posPackage');
+    //             }
+    //         break;
+    //         case 'production' :
+    //             foreach (['generated'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //         break;
+    //         case 'shipment' :
+    //             foreach (['generated', 'production', 'not_shipment'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //         break;
+    //         default :
+    //             foreach (['client', 'status', 'created'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //     }
+    //     return $filters;
+    // }
 
     public static function getActions($type = 'view', $options=[])
     {

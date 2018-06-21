@@ -14,45 +14,45 @@ class SettingsController extends AppController
 
     public $ownTemplate=['index'];
 
-    public static function getFilters($type='index', $options=[]){
-        $cid = Utils::deep_array_value('cid', $options);
-        $isClient=$cid != null;
-        $filters=[];
-        $fs = [
-            'client' => [
-                'name' => 'client',
-                'source' => [
-                    'type' => 'entity',
-                    'query' => 'Clients',
-                ],
-                'add' => [
-                    'start' => [
-                        ['v' => 'null', 'n' => 'globalnie']
-                    ]
-                ],
-                'attr' => [
-                    'multiple' => 'multiple'
-                ],
-                'd' => [
-                    'widget' => 'multiselect',
-                    'def-value' => ['null']               
-                ]
-            ]
-        ];
-        switch($type){
-            case 'index' :
-                foreach (['client'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-            break;
-            case 'table_client':
-                self::addFilter($filters, self::genFilter('client_hidden', $options), 'client');
-            break;
-            default:
+    // public static function getFilters($type='index', $options=[]){
+    //     $cid = Utils::deep_array_value('cid', $options);
+    //     $isClient=$cid != null;
+    //     $filters=[];
+    //     $fs = [
+    //         'client' => [
+    //             'name' => 'client',
+    //             'source' => [
+    //                 'type' => 'entity',
+    //                 'query' => 'Clients',
+    //             ],
+    //             'add' => [
+    //                 'start' => [
+    //                     ['v' => 'null', 'n' => 'globalnie']
+    //                 ]
+    //             ],
+    //             'attr' => [
+    //                 'multiple' => 'multiple'
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect',
+    //                 'def-value' => ['null']               
+    //             ]
+    //         ]
+    //     ];
+    //     switch($type){
+    //         case 'index' :
+    //             foreach (['client'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //         break;
+    //         case 'table_client':
+    //             self::addFilter($filters, self::genFilter('client_hidden', $options), 'client');
+    //         break;
+    //         default:
 
-        }
-        return $filters;
-    }
+    //     }
+    //     return $filters;
+    // }
 
     public static function getToolbarBtn($type='index', $options=[] )
     {

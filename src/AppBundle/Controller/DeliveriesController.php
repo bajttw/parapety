@@ -17,76 +17,76 @@ class DeliveriesController extends AppController
     const en = 'deliveries';
     const ec = 'Deliveries';
 
-    public static function getFilters($type = 'index', $options = [])
-    {
-        $id = Utils::deep_array_value('id', $options);
-        $cid = Utils::deep_array_value('cid', $options);
-        $isClient = $cid != null;
-        $filters = [];
-        $fs = [
-            'client' => [
-                'name' => 'client',
-                'source' => [
-                    'type' => 'entity',
-                    'query' => 'Clients',
-                ],
-                'attr' => [
-                    'multiple' => 'multiple'
-                ],
-                'd' => [
-                    'widget' => 'multiselect'                
-                ]
-            ],
-            'generated' => [
-                'name' => 'generated',
-                'type' => 'input',
-                'label' => 'deliveries.label.generated',
-                'setValue' => [
-                    'type' => 'settings',
-                    'query' => 'deliveries-filters-generated-value'
-                ],
-                'source' => [
-                    'type' => 'settings',
-                    'query' => 'deliveries-filters-dateRanges'
-                ],
-                'd' => [
-                    'filter-options' => json_encode(['type' => 'date_period']),
-                    'widget' => 'daterange'
-                ]
-            ],
-            'progress' => [
-                'name' => 'progress',
-                'label' => 'deliveries.label.progress',
-                'source' => [
-                    'type' => 'settings',
-                    'query' => 'deliveries-filters-progress-dic'
-                ],
-                'setValue' => [
-                    'type' => 'settings',
-                    'query' => 'deliveries-filters-progress-value'
-                ],
-                'attr' => [
-                ],
-                'd' => [
-                    'filter-options' => json_encode(['type' => 'between']),
-                    'widget' => 'combobox'
-                ]
-            ]
-        ];
-        switch ($type) {
-            case 'index':
-                foreach (['generated', 'progress'] as $f) {
-                    $filters[] = $fs[$f];
-                }
-            break;
-            case 'service':
-                foreach (['generated', 'progress'] as $f) {
-                    $filters[] = $fs[$f];
-                }
-            break;
-        }
-        return $filters;
-    }
+    // public static function getFilters($type = 'index', $options = [])
+    // {
+    //     $id = Utils::deep_array_value('id', $options);
+    //     $cid = Utils::deep_array_value('cid', $options);
+    //     $isClient = $cid != null;
+    //     $filters = [];
+    //     $fs = [
+    //         'client' => [
+    //             'name' => 'client',
+    //             'source' => [
+    //                 'type' => 'entity',
+    //                 'query' => 'Clients',
+    //             ],
+    //             'attr' => [
+    //                 'multiple' => 'multiple'
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect'                
+    //             ]
+    //         ],
+    //         'generated' => [
+    //             'name' => 'generated',
+    //             'type' => 'input',
+    //             'label' => 'deliveries.label.generated',
+    //             'setValue' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'deliveries-filters-generated-value'
+    //             ],
+    //             'source' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'deliveries-filters-dateRanges'
+    //             ],
+    //             'd' => [
+    //                 'filter-options' => json_encode(['type' => 'date_period']),
+    //                 'widget' => 'daterange'
+    //             ]
+    //         ],
+    //         'progress' => [
+    //             'name' => 'progress',
+    //             'label' => 'deliveries.label.progress',
+    //             'source' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'deliveries-filters-progress-dic'
+    //             ],
+    //             'setValue' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'deliveries-filters-progress-value'
+    //             ],
+    //             'attr' => [
+    //             ],
+    //             'd' => [
+    //                 'filter-options' => json_encode(['type' => 'between']),
+    //                 'widget' => 'combobox'
+    //             ]
+    //         ]
+    //     ];
+    //     switch ($type) {
+    //         case 'index':
+    //             foreach (['generated', 'progress'] as $f) {
+    //                 $filters[] = $fs[$f];
+    //             }
+    //         break;
+    //         case 'service':
+    //             foreach (['generated', 'progress'] as $f) {
+    //                 $filters[] = $fs[$f];
+    //             }
+    //         break;
+    //     }
+    //     return $filters;
+    // }
 
     public static function getActions($type = 'view', $options = [])
     {

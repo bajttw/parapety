@@ -33,22 +33,36 @@ class FilterHelper{
             'd' => [
                 'widget' => 'multiselect'                
             ]
+        ],
+        'hidden' => [
+            'active' => [
+                'name' => 'active',
+                'value' => '1'
+            ],
+            'client' => [
+                'name' => 'client',
+                'source' => [
+                    'type' => 'options',
+                    'query' => 'client'
+                ]
+            ]   
         ]
+
     ];
 
-    private $predefinedHidden=[
-        'active' => [
-            'name' => 'active',
-            'value' => '1'
-        ],
-        'client' => [
-            'name' => 'client',
-            'source' => [
-                'type' => 'options',
-                'query' => 'client'
-            ]
-        ]
-    ];
+    // private $predefinedHidden=[
+    //     'active' => [
+    //         'name' => 'active',
+    //         'value' => '1'
+    //     ],
+    //     'client' => [
+    //         'name' => 'client',
+    //         'source' => [
+    //             'type' => 'options',
+    //             'query' => 'client'
+    //         ]
+    //     ]
+    // ];
 
     private $sc;//serviceContainer
     private $eh;//entityHelper
@@ -63,20 +77,19 @@ class FilterHelper{
         $this->eh=$seviceContainer->get('helper.entity');
     }
 
+    private function getDefined(string $name, array &$definedFilters)
+    {
+        $filter=Utils::deep_array_value($name, $definedFilters);
+        if(is_array($filter) && strpos('hidden-', $name) === 0 ){
+            $filter['type']='hidden';
+        }
+        return $filter;
+    }
+
     private function getFilter($filter):?array
     {
         if(is_string($filter)){
-            $f=split('-', $filter);
-            if($f[0]=='hidden'){
-                if(array_key_exists($f[1], $this->predefinedHidden)){
-                    $filter=$this->predefinedHidden[$f[1]];
-                    $filter['type']='hidden';
-                }else{
-                    $filter= null;
-                }
-            }else{
-                $filter=array_key_exists($f[1], $this->predefined) ? $this->predefined[$f[1]] : null;
-            }
+            return $this->getDefined($filter,$this->predefined);
         }
         return $filter;
     }
@@ -93,7 +106,7 @@ class FilterHelper{
                 $value=$this->sh->getSettingValue($source['query']);
             break ;
             case 'options':
-                $value=Utils::deep_array_value('values-' . $source['query'], $this->options);
+                $value=Utils::deep_array_value(['values' , $source['query']], $this->options);
             break;
         }
         return $value;
@@ -161,19 +174,20 @@ class FilterHelper{
         return $d;
     }
 
-    private function choiceFilters(array &$defined, array $names):array
+    private function choiceFilters(array $names, array &$defined):array
     {
         $filters=[];
         foreach($names as $n){
-            $filters[$n]= $defined[$n];
+            $filter=$this->getDefined($n, $defined);
+            $filters[$n]= ($filter) ?: $n;
         }
         return $filters;
     }
 
-    private function getEntityFilters(string $type='index')
+    private function getEntityFilters(string $type='index'):array
     {
-        $getFunction='get'. $this->ecn. 'Filters';
-        return $this->$getFunction($type);
+        $getFunction='get'. $this->ecn. 'Filters';       
+        return method_exists($getFunction, $this) ? $this->$getFunction($type) : $this->getGenericFilters($type);
     }
 
     private function generateHiddenFilter($filterOptions):?array
@@ -220,7 +234,7 @@ class FilterHelper{
         ];
         foreach($this->getEntityFilters($type) as $name => $filter){
             $filter=$this->getFilter($filter);
-            $fname=Utils::deep_array_value('name', $filter, $name);
+            $fname= strpos('hidden-', $name) === false ? $name : substr($name, 7) ;
             if (Utils::deep_array_value('type', $filter) == 'hidden'){
                 $filters['hidden'][$fname] = $this->generateHiddenFilter($filter);
             }else{
@@ -230,11 +244,68 @@ class FilterHelper{
         return $filters;
     }
 
+    private function getGenericFilters(string $type='index'):array
+    {
+        $defined= [
+        ];
+        $filterTypes=[
+            'index' => ['active']
+        ];
+        $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
+        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+    }
+
+    public function getClientsFilters(string $type='index'):array
+    {
+        $defined= [
+            'active' => 'active',
+            'users' =>[
+                'name' => 'users.id',
+                'source' => [
+                    'type' => 'entity',
+                    'query' => 'Users',
+                    'options' => [
+                        'filters' => [
+                            'type' => [
+                                'condition' => 'gte',
+                                'value' => '2'
+                            ],
+                            'enabled' => [ 'value' => true]
+                        ]
+                        
+                    ]
+                ],
+                'attr' => [
+                    'multiple' => 'multiple'
+                ],
+                'd' => [
+                    'widget' => 'multiselect'                
+                ]
+            ],
+            'regular' =>[
+                'name' => 'regular',
+                'data' => [
+                    ['v' => '1', 'n' => 'stały'],
+                    ['v' => '0', 'n' => 'zwykły']
+                    ],
+                    'd' => [
+                        'widget' => 'multiselect'
+                    ],
+                    'attr' => [
+                        'multiple' => 'multiple'
+                    ]
+            ]
+        ];
+        $filterTypes=[
+            'index' => ['active', 'regular']
+        ];
+        $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
+        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+    }
+
     public function getOrdersFilters(string $type='index'):array
     {
         $id = Utils::deep_array_value('id', $this->options);
-        $cid = Utils::deep_array_value('cid', $this->options);
-        $isClient= !is_null($cid);
         $defined = [
             'client' => 'client',
             'status' => [
@@ -274,12 +345,8 @@ class FilterHelper{
                     'type' => 'settings',
                     'query' => 'orders-filters-dateRanges'
                 ],
-                // 'attr' => [
-                //     'data-daterange' => json_encode([]),
-                //     'data-filter-options' => json_encode(['type' => 'date_period']),
-                // ],
                 'd' => [
-                    'filter-options' => json_encode(['type' => 'date_period']),
+                    'filter-options' => '{"type" : "date_period"}',
                     'widget' => 'daterange'
                 ]
                 
@@ -296,7 +363,7 @@ class FilterHelper{
                     'query' => 'orders-filters-dateRanges'
                 ],
                 'd' => [
-                    'filter-options' => '{"type":"date_period"}', //json_encode(['type' => 'date_period']),
+                    'filter-options' => '{"type":"date_period"}',
                     'widget' => 'daterange'
                 ]
                 
@@ -351,7 +418,10 @@ class FilterHelper{
             'notState' => [
                 'name' => 'status',
                 'type' => 'hidden',
-                'value' =>  Utils::deep_array_value('bannedStates', $options),
+                'source' => [
+                    'type' => 'options',
+                    'query' => 'bannedStates'
+                ],
                 'options' => ['not' => true]
             ],
             'posSize' => [
@@ -387,10 +457,10 @@ class FilterHelper{
             'productions_form' => ['client', 'approved', 'express'],
             'service' => ['status', 'express', 'created'],
             'shipment' => ['generated', 'production', 'not_shipment'],
-            'table_client' => ['client_hidden'],
+            'table_client' => ['hidden-client'],
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'def';
-        $filters=$this->choiceFilters($defined, $filterTypes[$idx]); 
+        $filters=$this->choiceFilters($filterTypes[$idx], $defined); 
         switch($idx){//custumize filters
             case 'package':
                 $filters['status']['banned']='orders-filters-status-banned-package';
@@ -412,25 +482,125 @@ class FilterHelper{
         return $filters;
     }
 
-    public function getClientsFilters(string $type='index', array $options=[]):array
+    public function getSettingsFilters(string $type='index'):array
     {
         $defined= [
-            'active' => 'active',
-            'users' =>[
-                'name' => 'users.id',
+            'client' => [
+                'name' => 'client',
                 'source' => [
                     'type' => 'entity',
-                    'query' => 'Users',
-                    'options' => [
-                        'filters' => [
-                            'type' => [
-                                'condition' => 'gte',
-                                'value' => '2'
-                            ],
-                            'enabled' => [ 'value' => true]
-                        ]
-                        
+                    'query' => 'Clients',
+                ],
+                'add' => [
+                    'start' => [
+                        ['v' => 'null', 'n' => 'globalnie']
                     ]
+                ],
+                'attr' => [
+                    'multiple' => 'multiple'
+                ],
+                'd' => [
+                    'widget' => 'multiselect',
+                    'def-value' => ['null']               
+                ]
+            // ],
+            // 'hidden' => [
+            //     'client' => 'hidden-client'
+            ] 
+        ];
+        $filterTypes=[
+            'index' => ['client'],
+            'table_client' => ['hidden-client']
+        ];
+        $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
+        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+    }
+
+    public function getProductionsFilters(string $type='index'):array
+    {
+        $defined= [
+            'generated' => [
+                'name' => 'generated',
+                'type' => 'input',
+                'setValue' => [
+                    'type' => 'settings',
+                    'query' => 'productions-filters-generated-value'
+                ],
+                'source' => [
+                    'type' => 'settings',
+                    'query' => 'productions-filters-dateRanges'
+                ],
+                'd' => [
+                    'filter-options' => '{"type" : "date_period"}',
+                    'widget' => 'daterange'
+                ]
+            ],
+            'progress' => [
+                'name' => 'progress',
+                'label' => 'productions.label.progress',
+                'source' => [
+                    'type' => 'settings',
+                    'query' => 'productions-filters-progress-dic'
+                ],
+                'setValue' => [
+                    'type' => 'settings',
+                    'query' => 'productions-filters-progress-value'
+                ],
+                'attr' => [
+                ],
+                'd' => [
+                    'filter-options' => '{"type" : "between"}',
+                    'widget' => 'combobox'
+                ]
+            ]   
+        ];
+        $filterTypes=[
+            'index' => ['generated', 'progress']
+        ];
+        $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
+        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+    }
+
+    public function getPriceListsFilters(string $type='index'):array
+    {
+        $defined= [
+            'start' => [
+                'name' => 'start',
+                'type' => 'input',
+                'setValue' => [
+                    'type' => 'settings',
+                    'query' => 'pricelists-filters-start-value'
+                ],
+                'source' => [
+                    'type' => 'settings',
+                    'query' => 'pricelists-filters-dateRanges'
+                ],
+                'd' => [
+                    'filter-options' => '{"type" : "date_period"}',
+                    'widget' => 'daterange'
+                ]
+            ],
+            'end' => [
+                'name' => 'end',
+                'type' => 'input',
+                'setValue' => [
+                    'type' => 'settings',
+                    'query' => 'pricelists-filters-end-value'
+                ],
+                'source' => [
+                    'type' => 'settings',
+                    'query' => 'pricelists-filters-dateRanges'
+                ],
+                'd' => [
+                    'filter-options' => '{"type" : "date_period"}',
+                    'widget' => 'daterange'
+                ]
+            ],
+            'clients' => [
+                'name' => 'clients.id',
+                'source' => [
+                    'type' => 'entity',
+                    'query' => 'Clients',
                 ],
                 'attr' => [
                     'multiple' => 'multiple'
@@ -439,27 +609,223 @@ class FilterHelper{
                     'widget' => 'multiselect'                
                 ]
             ],
-            'regular' =>[
-                'name' => 'regular',
-                'data' => [
-                    ['v' => '1', 'n' => 'stały'],
-                    ['v' => '0', 'n' => 'zwykły']
-                    ],
-                    'd' => [
-                        'widget' => 'multiselect'
-                    ],
-                    'attr' => [
-                        'multiple' => 'multiple'
-                    ]
+            'clientsGroups' => [
+                'name' => 'clientsGroups.id',
+                'source' => [
+                    'type' => 'entity',
+                    'query' => 'ClientsGroups',
+                ],
+                'attr' => [
+                    'multiple' => 'multiple'
+                ],
+                'd' => [
+                    'widget' => 'multiselect'                
+                ]
+            ],
+            'hidden' => [
+                'client' => [
+                    'name' => 'clients.id'
+                ]   
+            ]
+                
+        ];
+        $filterTypes=[
+            'index' => ['start', 'end', 'clientsGroups','clients'],
+            'service' => ['start', 'end'],
+            'table_client' => ['hidden-client']
+        ];
+        $idx=array_key_exists($type, $filterTypes) ? $type : 'service';
+        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+    }
+
+    public function getDeliveriesFilters(string $type='index'):array
+    {
+        $defined= [
+            'client' => 'client',
+            'generated' => [
+                'name' => 'generated',
+                'type' => 'input',
+                'setValue' => [
+                    'type' => 'settings',
+                    'query' => 'deliveries-filters-generated-value'
+                ],
+                'source' => [
+                    'type' => 'settings',
+                    'query' => 'deliveries-filters-dateRanges'
+                ],
+                'd' => [
+                    'filter-options' => '{"type" : "date_period"}',
+                    'widget' => 'daterange'
+                ]
+            ],
+            'progress' => [
+                'name' => 'progress',
+                'label' => 'deliveries.label.progress',
+                'source' => [
+                    'type' => 'settings',
+                    'query' => 'deliveries-filters-progress-dic'
+                ],
+                'setValue' => [
+                    'type' => 'settings',
+                    'query' => 'deliveries-filters-progress-value'
+                ],
+                'attr' => [
+                ],
+                'd' => [
+                    'filter-options' => '{"type" : "between"}',
+                    'widget' => 'combobox'
+                ]
             ]
         ];
         $filterTypes=[
-            'index' => ['active', 'regular']
+            'index' => ['client', 'generated', 'progress'] ,
+            'service' => ['generated', 'progress'] ,
+            'table_client' => ['hidden-client']
+        ];
+        $idx=array_key_exists($type, $filterTypes) ? $type : 'service';
+        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+    }
+
+    public function getProductsFilters(string $type='index'):array
+    {
+        $defined= [
+            "cutTime" => [
+                'name' => 'cutTime',
+                'data' => [
+                    ['v' => 0, 'n' => 'przed'],
+                    ['v' => 1, 'n' => 'po'],
+                ],
+                'd' => [
+                    'widget' => 'multiselect',
+                    'filter-options' => '{ "type" : "set"}',
+                ],
+            ],
+            "packingTime" => [
+                'name' => 'packingTime',
+                'data' => [
+                    ['v' => 0, 'n' => 'przed'],
+                    ['v' => 1, 'n' => 'po'],
+                ],
+                'd' => [
+                    'widget' => 'multiselect',
+                    'filter-options' => '{ "type" : "set"}',
+                ],
+            ],
+            'hidden' => [
+                "production" => [
+                    "name" => 'production',
+                    'source' => [
+                        'type' => 'options',
+                        'query' => 'production'
+                    ]
+                ],
+                "delivery" => [
+                    "name" => 'delivery',
+                    'source' => [
+                        'type' => 'options',
+                        'query' => 'delivery'
+                    ]
+                ]
+            ]
+        ];
+        $filterTypes=[
+            'index' => ['active', 'regular'],
+            'productions_table' => ['hidden-production'],
+            'deliveries_table' => ['hidden-delivery']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
         return $this->choiceFilters($defined, $filterTypes[$idx]); 
     }
 
+    public function getInvoicesFilters(string $type='index'):array
+    {
+        $defined= [
+            'client' => 'client',
+            'created' => [
+                'name' => 'created',
+                'type' => 'input',
+                'setValue' => [
+                    'type' => 'settings',
+                    'query' => 'invoices-filters-created-value'
+                ],
+                'source' => [
+                    'type' => 'settings',
+                    'query' => 'invoices-filters-dateRanges'
+                ],
+                'd' => [
+                    'filter-options' => '{"type" : "date_period"}',
+                    'widget' => 'daterange'
+                ]
+                
+            ],
+            'term' => [
+                'name' => 'term',
+                'type' => 'input',
+                'setValue' => [
+                    'type' => 'settings',
+                    'query' => 'invoices-filters-term-value'
+                ],
+                'source' => [
+                    'type' => 'settings',
+                    'query' => 'invoices-filters-dateRanges'
+                ],
+                'd' => [
+                    'filter-options' => '{"type" : "date_period"}',
+                    'widget' => 'daterange'
+                ]
+                
+            ]
+        ];
+        $filterTypes=[
+            'index' => ['client', 'created', 'term'],
+            'service' => ['created', 'term'],
+            'table-client' => ['hidden-client']
+        ];
+        $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
+        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+    }
+
+    public function getPriceListItemsFilters(string $type='index'):array
+    {
+        $defined= [
+            'active' => 'active',
+            'size' => [
+                'name' => 'size.id',
+                'label' => 'pricelistitems.label.filter.size',
+                'source' => [
+                    'type' => 'entity',
+                    'query' => 'Sizes'
+                ],
+                'attr' => [
+                    'multiple' => 'multiple'
+                ],
+                'd' => [
+                    'widget' => 'multiselect'
+                ]
+            ],
+            'color' => [
+                'name' => 'color.id',
+                'label' => 'pricelistitems.label.filter.color',
+                'source' => [
+                    'type' => 'entity',
+                    'query' => 'Colors'
+                ],
+                'attr' => [
+                    'multiple' => 'multiple'
+                ],
+                'd' => [
+                    'widget' => 'multiselect'
+                ]
+            ]
+        ];
+        $filterTypes=[
+            'index' => ['active', 'size', 'color'],
+            'pricelists_form' => ['size', 'color'],
+            'def' => ['size', 'color']
+        ];
+        $idx=array_key_exists($type, $filterTypes) ? $type : '';
+        return $this->choiceFilters($defined, $filterTypes[$idx]); 
+    }
 
 
 }

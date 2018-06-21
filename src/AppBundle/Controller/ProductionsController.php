@@ -17,58 +17,58 @@ class ProductionsController extends AppController
     const en = 'productions';
     const ec = 'Productions';
 
-    public static function getFilters($type = 'index', $options = [])
-    {
-        $id = Utils::deep_array_value('id', $options);
-        $cid = Utils::deep_array_value('cid', $options);
-        $isClient = $cid != null;
-        $filters = [];
-        $fs = [
-            'generated' => [
-                'name' => 'generated',
-                'type' => 'input',
-                'label' => 'productions.label.generated',
-                'setValue' => [
-                    'type' => 'settings',
-                    'query' => 'productions-filters-generated-value'
-                ],
-                'source' => [
-                    'type' => 'settings',
-                    'query' => 'productions-filters-dateRanges'
-                ],
-                'd' => [
-                    'filter-options' => json_encode(['type' => 'date_period']),
-                    'widget' => 'daterange'
-                ]
-            ],
-            'progress' => [
-                'name' => 'progress',
-                'label' => 'productions.label.progress',
-                'source' => [
-                    'type' => 'settings',
-                    'query' => 'productions-filters-progress-dic'
-                ],
-                'setValue' => [
-                    'type' => 'settings',
-                    'query' => 'productions-filters-progress-value'
-                ],
-                'attr' => [
-                ],
-                'd' => [
-                    'filter-options' => json_encode(['type' => 'between']),
-                    'widget' => 'combobox'
-                ]
-            ]
-        ];
-        switch ($type) {
-            case 'index':
-                foreach (['generated', 'progress'] as $f) {
-                    $filters[] = $fs[$f];
-                }
-            break;
-        }
-        return $filters;
-    }
+    // public static function getFilters($type = 'index', $options = [])
+    // {
+    //     $id = Utils::deep_array_value('id', $options);
+    //     $cid = Utils::deep_array_value('cid', $options);
+    //     $isClient = $cid != null;
+    //     $filters = [];
+    //     $fs = [
+    //         'generated' => [
+    //             'name' => 'generated',
+    //             'type' => 'input',
+    //             'label' => 'productions.label.generated',
+    //             'setValue' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'productions-filters-generated-value'
+    //             ],
+    //             'source' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'productions-filters-dateRanges'
+    //             ],
+    //             'd' => [
+    //                 'filter-options' => json_encode(['type' => 'date_period']),
+    //                 'widget' => 'daterange'
+    //             ]
+    //         ],
+    //         'progress' => [
+    //             'name' => 'progress',
+    //             'label' => 'productions.label.progress',
+    //             'source' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'productions-filters-progress-dic'
+    //             ],
+    //             'setValue' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'productions-filters-progress-value'
+    //             ],
+    //             'attr' => [
+    //             ],
+    //             'd' => [
+    //                 'filter-options' => json_encode(['type' => 'between']),
+    //                 'widget' => 'combobox'
+    //             ]
+    //         ]
+    //     ];
+    //     switch ($type) {
+    //         case 'index':
+    //             foreach (['generated', 'progress'] as $f) {
+    //                 $filters[] = $fs[$f];
+    //             }
+    //         break;
+    //     }
+    //     return $filters;
+    // }
 
     public static function getActions($type = 'view', $options = [])
     {

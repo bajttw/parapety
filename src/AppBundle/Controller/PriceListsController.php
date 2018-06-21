@@ -18,97 +18,97 @@ class PriceListsController extends AppController
     const en = 'pricelists';
     const ec = 'PriceLists';
 
-    public static function getFilters($type = 'index', $options = [])
-    {
-        $id = Utils::deep_array_value('id', $options);
-        $cid = Utils::deep_array_value('cid', $options);
-        $isClient = $cid != null;
-        $filters = [];
-        $fs = [
-            'start' => [
-                'name' => 'start',
-                'type' => 'input',
-                'label' => 'pricelists.label.start',
-                'setValue' => [
-                    'type' => 'settings',
-                    'query' => 'pricelists-filters-start-value'
-                ],
-                'source' => [
-                    'type' => 'settings',
-                    'query' => 'pricelists-filters-dateRanges'
-                ],
-                'd' => [
-                    'filter-options' => json_encode(['type' => 'date_period']),
-                    'widget' => 'daterange'
-                ]
-            ],
-            'end' => [
-                'name' => 'end',
-                'type' => 'input',
-                'label' => 'pricelists.label.end',
-                'setValue' => [
-                    'type' => 'settings',
-                    'query' => 'pricelists-filters-end-value'
-                ],
-                'source' => [
-                    'type' => 'settings',
-                    'query' => 'pricelists-filters-dateRanges'
-                ],
-                'd' => [
-                    'filter-options' => json_encode(['type' => 'date_period']),
-                    'widget' => 'daterange'
-                ]
-            ],
-            'clients' => [
-                'name' => 'clients.id',
-                'source' => [
-                    'type' => 'entity',
-                    'query' => 'Clients',
-                ],
-                'attr' => [
-                    'multiple' => 'multiple'
-                ],
-                'd' => [
-                    'widget' => 'multiselect'                
-                ]
-            ],
-            'client_hidden' => [
-                'name' => 'clients.id',
-                'type' => 'hidden',
-                'value' => $isClient ? [ $cid ] : [],
-            ],
-            'clientsGroups' => [
-                'name' => 'clientsGroups.id',
-                'source' => [
-                    'type' => 'entity',
-                    'query' => 'ClientsGroups',
-                ],
-                'attr' => [
-                    'multiple' => 'multiple'
-                ],
-                'd' => [
-                    'widget' => 'multiselect'                
-                ]
-            ]
+    // public static function getFilters($type = 'index', $options = [])
+    // {
+    //     $id = Utils::deep_array_value('id', $options);
+    //     $cid = Utils::deep_array_value('cid', $options);
+    //     $isClient = $cid != null;
+    //     $filters = [];
+    //     $fs = [
+    //         'start' => [
+    //             'name' => 'start',
+    //             'type' => 'input',
+    //             'label' => 'pricelists.label.start',
+    //             'setValue' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'pricelists-filters-start-value'
+    //             ],
+    //             'source' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'pricelists-filters-dateRanges'
+    //             ],
+    //             'd' => [
+    //                 'filter-options' => json_encode(['type' => 'date_period']),
+    //                 'widget' => 'daterange'
+    //             ]
+    //         ],
+    //         'end' => [
+    //             'name' => 'end',
+    //             'type' => 'input',
+    //             'label' => 'pricelists.label.end',
+    //             'setValue' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'pricelists-filters-end-value'
+    //             ],
+    //             'source' => [
+    //                 'type' => 'settings',
+    //                 'query' => 'pricelists-filters-dateRanges'
+    //             ],
+    //             'd' => [
+    //                 'filter-options' => json_encode(['type' => 'date_period']),
+    //                 'widget' => 'daterange'
+    //             ]
+    //         ],
+    //         'clients' => [
+    //             'name' => 'clients.id',
+    //             'source' => [
+    //                 'type' => 'entity',
+    //                 'query' => 'Clients',
+    //             ],
+    //             'attr' => [
+    //                 'multiple' => 'multiple'
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect'                
+    //             ]
+    //         ],
+    //         'client_hidden' => [
+    //             'name' => 'clients.id',
+    //             'type' => 'hidden',
+    //             'value' => $isClient ? [ $cid ] : [],
+    //         ],
+    //         'clientsGroups' => [
+    //             'name' => 'clientsGroups.id',
+    //             'source' => [
+    //                 'type' => 'entity',
+    //                 'query' => 'ClientsGroups',
+    //             ],
+    //             'attr' => [
+    //                 'multiple' => 'multiple'
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect'                
+    //             ]
+    //         ]
                 
-        ];
-        switch ($type) {
-            case 'index':
-                foreach (['start', 'end', 'clientsGroups','clients'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-            break;
-            case 'service':
-                foreach (['start', 'end'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-            break;
-            case 'table_client':
-                self::addFilter($filters, self::genFilter('client_hidden', $options), 'client');
-            break;
-        }
-        return $filters;
-    }
+    //     ];
+    //     switch ($type) {
+    //         case 'index':
+    //             foreach (['start', 'end', 'clientsGroups','clients'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //         break;
+    //         case 'service':
+    //             foreach (['start', 'end'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //         break;
+    //         case 'table_client':
+    //             self::addFilter($filters, self::genFilter('client_hidden', $options), 'client');
+    //         break;
+    //     }
+    //     return $filters;
+    // }
 
     public static function getActions($type = 'view', $options = [])
     {

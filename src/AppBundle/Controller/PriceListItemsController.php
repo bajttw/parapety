@@ -53,63 +53,63 @@ class PriceListItemsController extends AppController
         return $btns;
     }
 
-    public static function getFilters($type = 'index', $options = [])
-    {
-        $id = Utils::deep_array_value('id', $options);
-        $filters = [];
-        $fs = [
-            'active' => self::$activeFilter,
-            'size' => [
-                'name' => 'size.id',
-                'label' => 'pricelistitems.label.filter.size',
-                'source' => [
-                    'type' => 'entity',
-                    'query' => 'Sizes'
-                ],
-                'attr' => [
-                    'multiple' => 'multiple'
-                ],
-                'd' => [
-                    'widget' => 'multiselect'
-                ]
-            ],
-            'color' => [
-                'name' => 'color.id',
-                'label' => 'pricelistitems.label.filter.color',
-                'source' => [
-                    'type' => 'entity',
-                    'query' => 'Colors'
-                ],
-                'attr' => [
-                    'multiple' => 'multiple'
-                ],
-                'd' => [
-                    'widget' => 'multiselect'
-                ]
-            ]
+    // public static function getFilters($type = 'index', $options = [])
+    // {
+    //     $id = Utils::deep_array_value('id', $options);
+    //     $filters = [];
+    //     $fs = [
+    //         'active' => self::$activeFilter,
+    //         'size' => [
+    //             'name' => 'size.id',
+    //             'label' => 'pricelistitems.label.filter.size',
+    //             'source' => [
+    //                 'type' => 'entity',
+    //                 'query' => 'Sizes'
+    //             ],
+    //             'attr' => [
+    //                 'multiple' => 'multiple'
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect'
+    //             ]
+    //         ],
+    //         'color' => [
+    //             'name' => 'color.id',
+    //             'label' => 'pricelistitems.label.filter.color',
+    //             'source' => [
+    //                 'type' => 'entity',
+    //                 'query' => 'Colors'
+    //             ],
+    //             'attr' => [
+    //                 'multiple' => 'multiple'
+    //             ],
+    //             'd' => [
+    //                 'widget' => 'multiselect'
+    //             ]
+    //         ]
         
-        ];
+    //     ];
 
-        switch ($type) {
-            case 'index':
-                foreach (['active', 'size', 'color'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-                break;
-            case 'pricelists_form':
-                foreach (['size', 'color'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
-                break;
-            default :
-                foreach (['size', 'color'] as $f) {
-                    self::addFilter($filters, $fs[$f], $f);
-                }
+    //     switch ($type) {
+    //         case 'index':
+    //             foreach (['active', 'size', 'color'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //             break;
+    //         case 'pricelists_form':
+    //             foreach (['size', 'color'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
+    //             break;
+    //         default :
+    //             foreach (['size', 'color'] as $f) {
+    //                 self::addFilter($filters, $fs[$f], $f);
+    //             }
 
-        }        
-        return $filters;
+    //     }        
+    //     return $filters;
 
-    }    
+    // }    
 
     //  <editor-fold defaultstate="collapsed" desc="Custom functions">
     public static function updateActive($entityManager, $size = null, $color = null)
