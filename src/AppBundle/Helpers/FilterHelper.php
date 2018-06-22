@@ -271,7 +271,8 @@ class FilterHelper{
             ]
         ];
         $filterTypes=[
-            'index' => ['active', 'regular']
+            'index' => ['active', 'regular'],
+            'table_service' => ['hidden-active']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
         return $this->choiceFilters($filterTypes[$idx], $defined); 
@@ -389,12 +390,14 @@ class FilterHelper{
             'client_index' => ['status', 'express', 'created'],
             'def' => ['status', 'express', 'created', 'approved'],
             'index' => ['client', 'status', 'express', 'created', 'approved'],
-            'package' => ['ways', 'approved', 'status', 'express' ],
-            'production' => ['generated'],
-            'productions_form' => ['client', 'approved', 'express'],
-            'productions_table' => ['hidden-toProduction'],
+            // 'production' => ['generated'],
+            'form_deliveries' => ['client', 'approved', 'express'],
+            'form_productions' => ['client', 'approved', 'express'],
+            'form_deliveries_table' => ['hidden-toProduction'],
+            'form_productions_table' => ['hidden-toProduction'],
             'service' => ['status', 'express', 'created'],
             'table_client' => ['hidden-client'],
+            'table_service' => ['hidden-client']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'def';
         $filters=$this->choiceFilters($filterTypes[$idx], $defined); 
@@ -444,7 +447,9 @@ class FilterHelper{
         ];
         $filterTypes=[
             'index' => ['client'],
-            'table_client' => ['hidden-client']
+            'service' => [],
+            'table_client' => ['hidden-client'],
+            'table_service' => ['hidden-client']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
         return $this->choiceFilters($filterTypes[$idx], $defined); 
@@ -570,7 +575,8 @@ class FilterHelper{
         $filterTypes=[
             'index' => ['start', 'end', 'clientsGroups','clients'],
             'service' => ['start', 'end'],
-            'table_client' => ['hidden-client']
+            'table_client' => ['hidden-client'],
+            'table_service' => ['hidden-client']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'service';
         return $this->choiceFilters($filterTypes[$idx], $defined);  
@@ -618,7 +624,8 @@ class FilterHelper{
         $filterTypes=[
             'index' => ['client', 'generated', 'progress'] ,
             'service' => ['generated', 'progress'] ,
-            'table_client' => ['hidden-client']
+            'table_client' => ['hidden-client'],
+            'table_service' => ['hidden-client']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'service';
         return $this->choiceFilters($filterTypes[$idx], $defined);  
@@ -668,8 +675,8 @@ class FilterHelper{
         ];
         $filterTypes=[
             'index' => ['active', 'regular'],
-            'productions_table' => ['hidden-production'],
-            'deliveries_table' => ['hidden-delivery']
+            'form_productions_table' => ['hidden-production'],
+            'form_deliveries_table' => ['hidden-delivery']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
         return $this->choiceFilters($filterTypes[$idx], $defined);  
@@ -717,7 +724,8 @@ class FilterHelper{
         $filterTypes=[
             'index' => ['client', 'created', 'term'],
             'service' => ['created', 'term'],
-            'table-client' => ['hidden-client']
+            'table_client' => ['hidden-client'],
+            'table_service' => ['hidden-client']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : 'index';
         return $this->choiceFilters($filterTypes[$idx], $defined);  
@@ -758,7 +766,7 @@ class FilterHelper{
         ];
         $filterTypes=[
             'index' => ['active', 'size', 'color'],
-            'pricelists_form' => ['size', 'color'],
+            'form_pricelists' => ['size', 'color'],
             'def' => ['size', 'color']
         ];
         $idx=array_key_exists($type, $filterTypes) ? $type : '';

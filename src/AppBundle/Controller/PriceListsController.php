@@ -209,7 +209,7 @@ class PriceListsController extends AppController
             'fieldtype' => 'ajson',
             'content' => $this->tmplPath('table', '', 'Modal', self::$bundleName),
             'toolbars' => [
-                $this->genFilterbar('pricelists_form', 'PriceListItems')
+                $this->genFilterbar('form_pricelists', 'PriceListItems')
             ],
             'buttons' => [
                 'add' => [

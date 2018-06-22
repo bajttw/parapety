@@ -18,13 +18,16 @@ use AppBundle\Helpers\TransHelper;
 use AppBundle\Helpers\EntityHelper;
 use AppBundle\Helpers\SettingsHelper;
 use AppBundle\Helpers\FilterHelper;
-
+use AppBundle\Helpers\RouteHelper;
 define("AppBundle", 'AppBundle');
 
 class AppController extends Controller
 {
     const en = 'clients';
     const ec = 'Clients';
+    
+    const emptyClientID = '__cid__';
+    const emptyEntityID = '__id__';
 
     protected $clientRoute = false;
 
@@ -107,9 +110,12 @@ class AppController extends Controller
 
  //  <editor-fold defaultstate="collapsed" desc="Helpers">
     protected $th;// TransHelper
+    protected $dth;// DataTableHelper
     protected $eh;//EntityHelper   
     protected $sh;//SettingsHelper
     protected $fh;//FilterHelper
+    protected $rh;//RouteHelper
+
     protected function getTransHelper():TransHelper
     {
         if(is_null($this->th)){
@@ -144,6 +150,14 @@ class AppController extends Controller
         return $this->fh;
     }
 
+    public function getRouteHelper():RouteHelper
+    {
+        if(is_null($this->rh)){
+            $this->rh=$this->get('helper.route');
+        }
+        return $this->rh;
+    }
+
     public function getEntityManager()
     {
         if (!$this->entityManager) {
@@ -168,6 +182,38 @@ class AppController extends Controller
         }
         return null;
     }
+
+    protected function getClientUrl(?string $routeSuffix = null, ?string $entityClassName = null, array $parameters = []):string
+    {
+        $def_param = [
+            'cid' => is_null($this->client) ? self::emptyClientID : $this->client->getId()
+        ];
+        if ($this->entityId > 0) {
+            $def_param['id'] = $this->entityId;
+        }
+        return $this->generateUrl(
+            $this->getRouteHelper()->getClientRoute($routeSuffix, $entityClassName),
+            array_replace_recursive($def_param, $parameters)
+        );
+    }
+
+    protected function getEmployeeUrl(?string $routeSuffix = null, ?string $entityClassName = null, array $parameters = []):string
+    {
+        $def_param = [];
+        if ($this->entityId > 0) {
+            $def_param['id'] = $this->entityId;
+        }
+        return $this->generateUrl(
+            $this->getRouteHelper()->getRoute($routeSuffix, $entityClassName),
+            array_replace_recursive($def_param, $parameters)
+        );
+    }
+
+    protected function getUrl(?string $routeSuffix = null, ?string $entityClassName = null, array $parameters = []):string
+    {
+        return $this->isClient() ? $this->getClientUrl($routeSuffix, $entityClassName, $parameters) : $this->getEmployeeUrl($routeSuffix, $entityClassName, $parameters);
+    }
+
     // public function getFromBase($condition, $entityClassName = null, $exeption=false)
     // {
     //     $repository = $this->getEntityManager()->getRepository($this->getEntityHelper()->getEntityNamespace($entityClassName));
@@ -559,41 +605,43 @@ class AppController extends Controller
 
 //  <editor-fold defaultstate="collapsed" desc="Routing">
 
-    protected function getRoute(?string $routeSuffix = null, ?string $entityClassName = null, ?bool $clientRoute = null):string
-    {
-        $route='';
-        if($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
-            $route='app_admin_';
-        }else if($this->get('security.authorization_checker')->isGranted('ROLE_USER')){
-            $route='app_employee_';
-        }else if($this->get('security.authorization_checker')->isGranted('ROLE_USER')){
-            $route='app_client_';
-        }
-        $route.=$this->getEntityName($entityClassName);
-        if ($this->isAdmin()) {
-            if ($clientRoute == true || (is_null($clientRoute) && $this->clientRoute && $this->isClient())) {
-                $route.='_client';
-            }
-        }        
-        $route.= isset($routeSuffix) ? '_' . $routeSuffix : '';
-        return $route;
-    }
+    
+
+    // protected function getRoute(?string $routeSuffix = null, ?string $entityClassName = null, ?bool $clientRoute = null):string
+    // {
+    //     $route='';
+    //     if($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
+    //         $route='app_admin_';
+    //     }else if($this->get('security.authorization_checker')->isGranted('ROLE_USER')){
+    //         $route='app_employee_';
+    //     }else if($this->get('security.authorization_checker')->isGranted('ROLE_USER')){
+    //         $route='app_client_';
+    //     }
+    //     $route.=$this->getEntityName($entityClassName);
+    //     if ($this->isAdmin()) {
+    //         if ($clientRoute == true || (is_null($clientRoute) && $this->clientRoute && $this->isClient())) {
+    //             $route.='_client';
+    //         }
+    //     }        
+    //     $route.= isset($routeSuffix) ? '_' . $routeSuffix : '';
+    //     return $route;
+    // }
 
 
-    protected function getUrl(?string $routeSuffix = null, ?string $entityClassName = null, ?bool $isClient = null, array $parameters = []):string
-    {
-        $def_param = [];
-        if ($this->isClient()) {
-            $def_param['cid'] = $this->client->getId();
-        }
-        if ($this->entityId > 0) {
-            $def_param['id'] = $this->entityId;
-        }
-        return $this->generateUrl(
-            $this->getRoute($routeSuffix, $entityClassName, $isClient),
-            array_replace_recursive($def_param, $parameters)
-        );
-    }
+    // protected function getUrl_old(?string $routeSuffix = null, ?string $entityClassName = null, ?bool $isClient = null, array $parameters = []):string
+    // {
+    //     $def_param = [];
+    //     if ($this->isClient()) {
+    //         $def_param['cid'] = $this->client->getId();
+    //     }
+    //     if ($this->entityId > 0) {
+    //         $def_param['id'] = $this->entityId;
+    //     }
+    //     return $this->generateUrl(
+    //         $this->getRoute($routeSuffix, $entityClassName, $isClient),
+    //         array_replace_recursive($def_param, $parameters)
+    //     );
+    // }
 
     protected function setReturnUrl()
     {
@@ -1065,10 +1113,12 @@ class AppController extends Controller
         $this->formOptions['form_admin'] = $this->admin;
         return $this->admin;
     }
+
     public function isClient()
     {
         return ($this->client != null);
     }
+
     public function checkPrivilages($onlyAdmin = true)
     {
         $this->user = $this->container->get('security.token_storage')->getToken()->getUser();
@@ -1256,76 +1306,20 @@ class AppController extends Controller
 
 // <editor-fold defaultstate="collapsed" desc="Generate functions">
 
-    public function genSubmitBtn($type)
+    protected function genElement(string $name, ?string $entityClassName=null):array
     {
+        $en=$this->getEntityHelper()->getEntityName($entityClassName);
         return [
+            'name' => $en,
+            'en' => $en,
+            'ecn' => $this->getEntityHelper()->getEntityClassName($entityClassName),
             'attr' => [
-                'value' => $type,
-                'title' => $this->getTransHelper()->btnTitle($type),
-                'class' => $type == 'remove' ? 'btn-danger' : 'btn-success',
-                'style' => $type == 'remove' ? "disabled:true" : ""
+                'id' => $en . '_' . $name
             ]
         ];
     }
 
-    protected function genActions( $actions = 'view', ?string $entityClassName = null, array $options = [])
-    {
-        $ens = $this->getEntityNameSpaces($entityClassName);
-        $en = $ens['name'];
-        if (!is_array($actions)) {
-            $actions = $this->controllerFunction('getActions', $entityClassName, [ $actions ] );
-        }
-        if (count($actions) == 0) {
-            return null;
-        }
-        $ac = [];
-        $urls = [];
-        foreach ($actions as $action) {
-            $an = $action['action'];
-            $action['attr']['class'] = 'btn-img btn-' . $an . (isset($action['attr']['class']) ? ' ' . $action['attr']['class'] : '');
-            if (!isset($action['attr']['title'])) {
-                $action['attr']['title'] = $this->getTransHelper()->btnTitle( $an, $en );
-            }
-            $type = Utils::deep_array_value('type', $action, 'f');
-            if ($type != 'f') {
-                $target = '#' . (!isset($action['target']) || $action['target'] == '1' ? 'my' : $action['target']) . '_';
-                switch ($type) {
-                    case 'm' :
-                        $action['d']['toggle'] = 'modal';
-                        $action['d']['target'] = $target . 'modal';
-                        break;
-                    case 'p' :
-                        $action['d']['target'] = $target . 'panel';
-                        break;
-                }
-            }
-            if (Utils::deep_array_value('browserAction', $action)) {
-                $action['d']['action'] = $an;
-                $src = Utils::deep_array_value('src', $action);
-                if (isset($src)) {
-                    $urls[$an] = is_array($src) ? $src['url'] : $this->getUrl($src, $entityClassName, false, ['id' => '__id__']);
-                }
-            }
-            else {
-                $action['attr']['href'] = $this->getUrl($an, $entityClassName, false, ['id' => '__id__', 'type' => $type]);
-                if($type == 'w'){
-                    $action['attr']['target']=Utils::deep_array_value('target', $action, '_blank');
-                }
-                $action['d']['url'] = $action['attr']['href'];
-            }
-            $ac[] = $action;
-        }
-        $default = [
-            'name' => $en,
-            'actions' => $ac
-        ];
-        return [
-            'urls' => $urls,
-            'tmpl' => $this->render($this->tmplPath('actions'), array_replace_recursive($default, $options))->getContent()
-        ];
-    }
-
-    protected function genFilterbar(string $filtersType = 'index', ?string $entityClassName = null, string $template = null, array $options = []):array
+    protected function genFilterbar(string $filtersType = 'index', ?string $entityClassName = null, array $options = []):array
     {
         $filters=$this->getFilterHelper()->generateFilters($filtersType, $entityClassName, $options);
         return array_replace_recursive(
@@ -1340,19 +1334,76 @@ class AppController extends Controller
         );
     }
 
-    protected function genElement(string $name, ?string $entityClassName=null):array
+    public function genSubmitBtn($type):array
     {
-        $en=$this->getEntityHelper()->getEntityName($entityClassName);
         return [
-            'name' => $en,
-            'en' => $en,
-            'ecn' => $this->getEntityHelper()->getEntityClassName($entityClassName),
             'attr' => [
-                'id' => $en . '_' . $name,
-                'class' => 'toolbar'
+                'value' => $type,
+                'title' => $this->getTransHelper()->btnTitle($type),
+                'class' => $type == 'remove' ? 'btn-danger' : 'btn-success',
+                'style' => $type == 'remove' ? "disabled:true" : ""
             ]
-        ]   ;
+        ];
     }
+
+    // protected function genActions( $actions = 'view', ?string $entityClassName = null, array $options = [])
+    // {
+    //     $ens = $this->getEntityNameSpaces($entityClassName);
+    //     $en = $ens['name'];
+    //     if (!is_array($actions)) {
+    //         $actions = $this->controllerFunction('getActions', $entityClassName, [ $actions ] );
+    //     }
+    //     if (count($actions) == 0) {
+    //         return null;
+    //     }
+    //     $ac = [];
+    //     $urls = [];
+    //     foreach ($actions as $action) {
+    //         $an = $action['action'];
+    //         $action['attr']['class'] = 'btn-img btn-' . $an . (isset($action['attr']['class']) ? ' ' . $action['attr']['class'] : '');
+    //         if (!isset($action['attr']['title'])) {
+    //             $action['attr']['title'] = $this->getTransHelper()->btnTitle( $an, $en );
+    //         }
+    //         $type = Utils::deep_array_value('type', $action, 'f');
+    //         if ($type != 'f') {
+    //             $target = '#' . (!isset($action['target']) || $action['target'] == '1' ? 'my' : $action['target']) . '_';
+    //             switch ($type) {
+    //                 case 'm' :
+    //                     $action['d']['toggle'] = 'modal';
+    //                     $action['d']['target'] = $target . 'modal';
+    //                     break;
+    //                 case 'p' :
+    //                     $action['d']['target'] = $target . 'panel';
+    //                     break;
+    //             }
+    //         }
+    //         if (Utils::deep_array_value('browserAction', $action)) {
+    //             $action['d']['action'] = $an;
+    //             $src = Utils::deep_array_value('src', $action);
+    //             if (isset($src)) {
+    //                 $urls[$an] = is_array($src) ? $src['url'] : $this->getUrl($src, $entityClassName, ['id' => self::emptyEntityID ]);
+    //             }
+    //         }
+    //         else {
+    //             $action['attr']['href'] = $this->getUrl($an, $entityClassName, ['id' => self::emptyEntityID, 'type' => $type]);
+    //             if($type == 'w'){
+    //                 $action['attr']['target']=Utils::deep_array_value('target', $action, '_blank');
+    //             }
+    //             $action['d']['url'] = $action['attr']['href'];
+    //         }
+    //         $ac[] = $action;
+    //     }
+    //     $default = [
+    //         'name' => $en,
+    //         'actions' => $ac
+    //     ];
+    //     return [
+    //         'urls' => $urls,
+    //         'tmpl' => $this->render($this->tmplPath('actions'), array_replace_recursive($default, $options))->getContent()
+    //     ];
+    // }
+
+
 
     protected function genToolbar(string $toolsType = 'index', ?string $entityClassName = null, array $options = [])
     {
@@ -1368,7 +1419,11 @@ class AppController extends Controller
                 $buttons[$i]['routeParam']['type'] = 'm';
             }
             if(!Utils::deep_array_key_exists('attr-href', $buttons[$i])){
-                $buttons[$i]['attr']['href'] = $this->getUrl($buttons[$i]['action'], $entityClassName, Utils::deep_array_value('isClient', $buttons[$i]), Utils::deep_array_value('routeParam', $buttons[$i], []));
+                if(Utils::deep_array_value('isClient', $buttons[$i])){
+                    $buttons[$i]['attr']['href'] = $this->getClientUrl($buttons[$i]['action'], $entityClassName, Utils::deep_array_value('routeParam', $buttons[$i], []));
+                }else{
+                    $buttons[$i]['attr']['href'] = $this->getUrl($buttons[$i]['action'], $entityClassName, Utils::deep_array_value('routeParam', $buttons[$i], []));
+                }   
             }
             Utils::deep_array_value_set('d-url', $buttons[$i], $buttons[$i]['attr']['href']);
             if (Utils::deep_array_value('tmpl', $options)) {
@@ -1402,7 +1457,7 @@ class AppController extends Controller
                     ],
                     'order' => [],
                     'entity-urls' => [
-                        'data' => $this->getUrl('data', $entityClassName, false, ['id' => '__id__'])
+                        'data' => $this->getUrl('data', $entityClassName, ['id' => self::emptyEntityID])
                     ]
                 ]
             ]

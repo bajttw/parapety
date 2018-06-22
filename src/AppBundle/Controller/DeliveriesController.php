@@ -180,16 +180,16 @@ class DeliveriesController extends AppController
         $this->renderOptions['products_panel'] = $this->genPanel($pns, [
             'content' => $this->tmplPath('index', '', 'Panel'),
             'toolbars' => [
-                $this->genFilterbar('deliveries_form', 'Products')
+                $this->genFilterbar('form_deliveries', 'Products')
             ],
             'table' => $this->genTable('delivery', 'Products',[
                 // 'actions' => true,
                 'export' => true,
                 'd' => [
                     'ajax' => [
-                        'url' => $this->getUrl('ajax', $pns, false, ['did' => $this->entityId])
+                        'url' => $this->getUrl('ajax_to_deliveries', $pns, false, ['did' => $this->entityId])
                     ],
-                    'filters' => $controller::getFilters('deliveries_table', ['did' => $this->entityId])
+                    // 'filters' => $controller::getFilters('deliveries_table', ['did' => $this->entityId])
                 ]
             ])
         ]);
@@ -202,7 +202,7 @@ class DeliveriesController extends AppController
             'fieldtype' => 'ajson',
             'content' => $this->tmplPath('table', '', 'Modal', self::$bundleName),
             'toolbars' => [
-                $this->genFilterbar('deliveries_form', 'Orders')
+                $this->genFilterbar('form_deliveries', 'Orders')
             ],
             'buttons' => [
                 'add' => [

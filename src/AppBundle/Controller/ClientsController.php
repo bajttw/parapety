@@ -165,13 +165,13 @@ class ClientsController extends AppController{
 
 // </editor-fold>   
 
-    private function genClientServicePanel(string $entityClassName, bool $active=false, $cid='__cid__'):array
+    private function genClientServicePanel(string $entityClassName, bool $active=false):array
     {
         return $this->genPanel($entityClassName, [
             'active' => $active,
             'content' => $this->tmplPath('index', '', 'Panel'),
             'toolbars' => [
-                $this->genToolbar( 'service', $entityClassName, [ 'tmpl' => true, "cid" => $cid ]),
+                $this->genToolbar( 'service', $entityClassName, [ 'tmpl' => true, "cid" => self::emptyClientID ]),
                 $this->genFilterbar( 'service', $entityClassName)
             ],
             'table' => $this->genTable('panel', $entityClassName, [
@@ -179,9 +179,9 @@ class ClientsController extends AppController{
                 'export' => true,
                 'd' => [
                     'ajax' => [
-                        'url' => $this->getUrl('ajax', $entityClassName, true, ["cid" => $cid])
+                        'url' => $this->getClientUrl('ajax', $entityClassName)
                     ],
-                    'filters' => $this->getFilterHelper()->generateFilters('table_client', $entityClassName, [ 'values' => ['client' => $cid ]]) 
+                    'filters' => $this->getFilterHelper()->generateFilters('table_service', $entityClassName, [ 'values' => ['client' => self::emptyClientID ]]) 
                 ]
             ])
         ]);
@@ -193,27 +193,25 @@ class ClientsController extends AppController{
         if (!$this->preAction($request, 0, ['checkPrivilages' => 1] )) {
             return $this->responseAccessDenied();
         }
-        $cns=$this->getEntityNameSpaces();
-        $cid='__cid__';
         $tabs=[];
         $tabsOpt=[];
         $i=0;
         foreach([ 'Orders','Deliveries', 'Invoices', 'PriceLists', 'Settings' ] as $tec){
             $ten=$this->getEntityHelper()->getEntityName($tec);
-            $tabs['client_'.$ten]=$this->genClientServicePanel($tec, $i==0, $cid);
+            $tabs['client_'.$ten]=$this->genClientServicePanel($tec, $i==0);
             $tabsOpt[$ten]=['ajax' => false];
             $this->addEntityModal($tec);
             $i++;
         }
         $tabsOpt['edit']=['ajax' => true];
-        $cEditUrl=$this->getUrl('edit', null, true, ["id" => $cid, "type" => "p"]);
+        $cEditUrl=$this->getUrl('edit', static::ec, ["id" => self::emptyClientID, "type" => "p"]);
         $tabs['client_edit'] = $this->genPanel(static::ec, [
             'label' => $this->getTransHelper()->labelText('edit'),
             'd' => [
                 'url' => json_encode([
                     'start' => $cEditUrl,
                     'edit' => $cEditUrl,
-                    'new' => $this->getUrl('new', null, true, [ "type" => "p"])
+                    'new' => $this->getUrl('new', static::ec, [ "type" => "p"])
                 ])               
             ],
             'attr' =>[
@@ -234,9 +232,9 @@ class ClientsController extends AppController{
                         'select' => 'single',
                         'd' => [
                             'ajax' => [
-                                'url' => $this->getUrl('ajax_details', static::ec, false)
+                                'url' => $this->getUrl('ajax_details', static::ec)
                             ],
-                            'filters' => [ 'active' => $this->getFilterHelper()->generateHidden('active') ]
+                            'filters' => $this->getFilterHelper()->generateFilters('table_service')
                         ]
                     ])
                 ] ),
