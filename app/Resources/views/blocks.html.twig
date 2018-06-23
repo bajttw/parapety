@@ -37,7 +37,7 @@
 {%- endblock access_denied -%}
 
 {%- block btn_action -%}
-    {% set attr=btn.attr -%}
+    {% set attr=btn.attr|default({})|add_class(['btn-img', 'btn-' ~ btn.action])|set_title('btn.' ~ btn.action, btn.en|default(en|default(''))) -%}
     {% set data_opt= btn.d|default({}) %}
     {% if attr.href is not defined %}
         {% set attr=attr|merge({ href: '#'}) %}
@@ -1043,42 +1043,60 @@
 
 
 {# datatable #}
+
+
+    {%- block datatable_actions -%}
+        {% for btn in tmpl.actions %}           
+            {{- block('btn_action') -}}
+        {% endfor %}
+    {%- endblock datatable_actions -%}
+ 
     {%- block datatable_column -%}
-            {% set attr= column.attr|default({}) %}
-            {% set column_name = column.label|default(column.data|default(''))|field_name(fields)  %}
-            {% set data_opt = column.d|default({}) %}
-            {% if column_name %}    
-                {% set attr= attr|set_array_value( 'title', table.name~'.title.'~column_name) %}
-            {% endif %}
+        {% set column_name = column.label|default(column.data|default(''))|field_name(fields)  %}
+        {% set attr= column.attr|default({}) %}
+        {% if column_name %}    
+            {% set attr= attr|set_array_value( 'title', table.name~'.title.'~column_name) %}
+        {% endif %}
+        {% set data_opt = column.d|default({}) %}
         <th {{ block('attributes') }} {{ block('data_options') }} >
             {% if column_name %}    
-                {{ (table.name~'.label.'~column_name)|trans }}
+                {{ column_name|gen_label(table.name) }}
             {% endif %}
         </th>
     {%- endblock datatable_column -%}
+
     {%- block datatable -%}
+    {{dump(table)}}
         {% set table_id= table.attr.id|default(table.name~"_table") %}
         {% set attr=table.attr|set_array_value('id', table_id)|add_class(['datatable', 'dataTable', 'table-hover', 'table-striped',  'table-bordered' ]) %}
         {% set data_opt= table.d|default({})
             |set_array_value('name', table.name)
             |set_array_value('en', table.name)
             |set_array_value('ecn', table.ecn)  %}
+        {# {% set columns=table.columns %} #}
+        {% for idx, column in data_opt.columns %}
+            {% set tmpl= column.tmpl|default(false) %}
+            {% if tmpl is iterable %}
+                {% set data_opt=data_opt|set_array_value(['columns', idx, 'tmpl'], block(tmpl.block), true) %}
+            {% endif %}
+        {% endfor %}       
+        {{dump(data_opt)}}
         {% set fields=entities_settings[table.ecn].fields|default({}) %}
-                <table style="width: 100%;" width="100" {{ block('attributes') }} {{ block('data_options') }} 
-                    data-detail-tmpl="{{  table.details.tmpl|default('') != '' ? block(table.details.tmpl|default(''))|e : '' }}"
-                    >
-                    <thead>
-                        {% set columns=table.d.columns %}
+            <table style="width: 100%;" width="100" {{ block('attributes') }} {{ block('data_options') }} 
+                data-detail-tmpl="{{  table.details.tmpl|default('') != '' ? block(table.details.tmpl|default(''))|e : '' }}"
+                >
+                <thead>
+                    {# {% set columns=table.d.columns %} #}
                         {#            {% if table.d.table.options.select|default(false) %}#}
                         {#                {% set columns=[{ data: 'sel', defaultContent : "<span>Edit</span>" }]|merge( columns) %}#}
                         {#            {% endif %}#}
-                        <tr>
-                            {% for column in columns %}
-                                {{ block('datatable_column') }}
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                </table>
+                    <tr>
+                        {% for column in data_opt.columns %}
+                            {{ block('datatable_column') }}
+                        {% endfor %}
+                    </tr>
+                </thead>
+            </table>
     {%- endblock datatable -%}
 
 {%- block show_diff -%}

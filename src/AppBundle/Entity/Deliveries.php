@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Deliveries extends AppEntity{
 	const en='deliveries';
 	const ec='Deliveries';
+    const emptyId = '__did__';
 
 //  <editor-fold defaultstate="collapsed" desc="Fields utils">    
 	public static $shortNames=[

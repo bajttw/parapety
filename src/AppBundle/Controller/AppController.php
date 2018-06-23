@@ -17,7 +17,7 @@ use AppBundle\Entity\Clients;
 use AppBundle\Helpers\TransHelper;
 use AppBundle\Helpers\EntityHelper;
 use AppBundle\Helpers\SettingsHelper;
-use AppBundle\Helpers\FilterHelper;
+use AppBundle\Helpers\FiltersGenerator;
 use AppBundle\Helpers\RouteHelper;
 define("AppBundle", 'AppBundle');
 
@@ -142,10 +142,10 @@ class AppController extends Controller
         return $this->sh;
     }
  
-    public function getFilterHelper():FilterHelper
+    public function getFilterHelper():FiltersGenerator
     {
         if(is_null($this->fh)){
-            $this->fh=$this->get('helper.filter');
+            $this->fh=$this->get('generator.filters');
         }
         return $this->fh;
     }
@@ -872,7 +872,7 @@ class AppController extends Controller
         if (!$this->preAction($request, $cid, ['entitySettings' => false])) {
             return $this->responseAccessDenied(true);
         }
-        $defaultFilters=$this->getFilterHelper()->generateFilters('table_client', static::ec, [ 'values' => [ 'client' => $cid ]  ]);
+        $defaultFilters=$this->getFilterHelper()->generate('table_client', static::ec, [ 'values' => [ 'client' => $cid ]  ]);
         $filters = $request->query->get('f');
         return new JsonResponse($this->getEntiesFromBase($request, 'getList', [ 
                 'filters' => isset($filters) ? array_replace_recursive($defaultFilters, json_decode($filters, true)) : $defaultFilters 
@@ -1321,7 +1321,7 @@ class AppController extends Controller
 
     protected function genFilterbar(string $filtersType = 'index', ?string $entityClassName = null, array $options = []):array
     {
-        $filters=$this->getFilterHelper()->generateFilters($filtersType, $entityClassName, $options);
+        $filters=$this->getFilterHelper()->generate($filtersType, $entityClassName, $options);
         return array_replace_recursive(
             $this->genElement('filterbar', $entityClassName),
             [
@@ -1346,62 +1346,62 @@ class AppController extends Controller
         ];
     }
 
-    // protected function genActions( $actions = 'view', ?string $entityClassName = null, array $options = [])
-    // {
-    //     $ens = $this->getEntityNameSpaces($entityClassName);
-    //     $en = $ens['name'];
-    //     if (!is_array($actions)) {
-    //         $actions = $this->controllerFunction('getActions', $entityClassName, [ $actions ] );
-    //     }
-    //     if (count($actions) == 0) {
-    //         return null;
-    //     }
-    //     $ac = [];
-    //     $urls = [];
-    //     foreach ($actions as $action) {
-    //         $an = $action['action'];
-    //         $action['attr']['class'] = 'btn-img btn-' . $an . (isset($action['attr']['class']) ? ' ' . $action['attr']['class'] : '');
-    //         if (!isset($action['attr']['title'])) {
-    //             $action['attr']['title'] = $this->getTransHelper()->btnTitle( $an, $en );
-    //         }
-    //         $type = Utils::deep_array_value('type', $action, 'f');
-    //         if ($type != 'f') {
-    //             $target = '#' . (!isset($action['target']) || $action['target'] == '1' ? 'my' : $action['target']) . '_';
-    //             switch ($type) {
-    //                 case 'm' :
-    //                     $action['d']['toggle'] = 'modal';
-    //                     $action['d']['target'] = $target . 'modal';
-    //                     break;
-    //                 case 'p' :
-    //                     $action['d']['target'] = $target . 'panel';
-    //                     break;
-    //             }
-    //         }
-    //         if (Utils::deep_array_value('browserAction', $action)) {
-    //             $action['d']['action'] = $an;
-    //             $src = Utils::deep_array_value('src', $action);
-    //             if (isset($src)) {
-    //                 $urls[$an] = is_array($src) ? $src['url'] : $this->getUrl($src, $entityClassName, ['id' => self::emptyEntityID ]);
-    //             }
-    //         }
-    //         else {
-    //             $action['attr']['href'] = $this->getUrl($an, $entityClassName, ['id' => self::emptyEntityID, 'type' => $type]);
-    //             if($type == 'w'){
-    //                 $action['attr']['target']=Utils::deep_array_value('target', $action, '_blank');
-    //             }
-    //             $action['d']['url'] = $action['attr']['href'];
-    //         }
-    //         $ac[] = $action;
-    //     }
-    //     $default = [
-    //         'name' => $en,
-    //         'actions' => $ac
-    //     ];
-    //     return [
-    //         'urls' => $urls,
-    //         'tmpl' => $this->render($this->tmplPath('actions'), array_replace_recursive($default, $options))->getContent()
-    //     ];
-    // }
+    protected function genActions( $actions = 'view', ?string $entityClassName = null, array $options = [])
+    {
+        $ens = $this->getEntityNameSpaces($entityClassName);
+        $en = $ens['name'];
+        if (!is_array($actions)) {
+            $actions = $this->controllerFunction('getActions', $entityClassName, [ $actions ] );
+        }
+        if (count($actions) == 0) {
+            return null;
+        }
+        $ac = [];
+        $urls = [];
+        foreach ($actions as $action) {
+            $an = $action['action'];
+            $action['attr']['class'] = 'btn-img btn-' . $an . (isset($action['attr']['class']) ? ' ' . $action['attr']['class'] : '');
+            if (!isset($action['attr']['title'])) {
+                $action['attr']['title'] = $this->getTransHelper()->btnTitle( $an, $en );
+            }
+            $type = Utils::deep_array_value('type', $action, 'f');
+            if ($type != 'f') {
+                $target = '#' . (!isset($action['target']) || $action['target'] == '1' ? 'my' : $action['target']) . '_';
+                switch ($type) {
+                    case 'm' :
+                        $action['d']['toggle'] = 'modal';
+                        $action['d']['target'] = $target . 'modal';
+                        break;
+                    case 'p' :
+                        $action['d']['target'] = $target . 'panel';
+                        break;
+                }
+            }
+            if (Utils::deep_array_value('browserAction', $action)) {
+                $action['d']['action'] = $an;
+                $src = Utils::deep_array_value('src', $action);
+                if (isset($src)) {
+                    $urls[$an] = is_array($src) ? $src['url'] : $this->getUrl($src, $entityClassName, ['id' => self::emptyEntityID ]);
+                }
+            }
+            else {
+                $action['attr']['href'] = $this->getUrl($an, $entityClassName, ['id' => self::emptyEntityID, 'type' => $type]);
+                if($type == 'w'){
+                    $action['attr']['target']=Utils::deep_array_value('target', $action, '_blank');
+                }
+                $action['d']['url'] = $action['attr']['href'];
+            }
+            $ac[] = $action;
+        }
+        $default = [
+            'name' => $en,
+            'actions' => $ac
+        ];
+        return [
+            'urls' => $urls,
+            'tmpl' => $this->render($this->tmplPath('actions'), array_replace_recursive($default, $options))->getContent()
+        ];
+    }
 
 
 
@@ -1477,14 +1477,19 @@ class AppController extends Controller
         if ($actions) {
             $actionsList = $this->controllerFunction('getActions',$entityClassName, [ $actions ]);
             $ac = $this->genActions($actionsList, $entityClassName);
+            $ac1=$this->get('AppBundle\Helpers\ActionsGenerator')->generate('index');
             $columns[] = array_replace_recursive(
                 [
+                    'tmpl' => [
+                        'actions' => $this->get('AppBundle\Helpers\ActionsGenerator')->generate('index'),
+                        'block' => 'datatable_actions'
+                    ],
                     'label' => 'actions',
                     'data' => null,
                     'className' => 'dt-actions',
                     'searchable' => false,
                     'orderable' => false,
-                    'tmpl' => $ac['tmpl'],
+                    // 'tmpl' => $ac['tmpl'],
                     'render' => 'actions'
                 ],
                 Utils::deep_array_value('column', $actions, [])
@@ -1555,7 +1560,7 @@ class AppController extends Controller
             $default['d']['ajax']['url'] = $this->getUrl('ajax_details', $entityClassName);
 
         }
-        return array_replace_recursive($default, ['d' => $settings], $options);
+        return array_replace_recursive($default, ['d' => $settings ], $options);
     }
 
     protected function genPanel(?string $entityClassName = null, array $options = []):array

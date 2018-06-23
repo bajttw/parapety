@@ -181,7 +181,7 @@ class ClientsController extends AppController{
                     'ajax' => [
                         'url' => $this->getClientUrl('ajax', $entityClassName)
                     ],
-                    'filters' => $this->getFilterHelper()->generateFilters('table_service', $entityClassName, [ 'values' => ['client' => self::emptyClientID ]]) 
+                    'filters' => $this->getFilterHelper()->generate('table_service', $entityClassName, [ 'values' => ['client' => self::emptyClientID ]]) 
                 ]
             ])
         ]);
@@ -234,7 +234,7 @@ class ClientsController extends AppController{
                             'ajax' => [
                                 'url' => $this->getUrl('ajax_details', static::ec)
                             ],
-                            'filters' => $this->getFilterHelper()->generateFilters('table_service')
+                            'filters' => $this->getFilterHelper()->generate('table_service')
                         ]
                     ])
                 ] ),

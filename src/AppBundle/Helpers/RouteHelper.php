@@ -2,14 +2,17 @@
 
 namespace AppBundle\Helpers;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Routing\RouterInterface;
 class RouteHelper
 {
 
     private $ac;// AuthorizationCheckerInterface
     private $eh;// EntityHelper
+    private $router;
 
-    public function __construct(AuthorizationCheckerInterface $autorizationChecker, EntityHelper $entityHelper){
+    public function __construct(AuthorizationCheckerInterface $autorizationChecker, RouterInterface $routerInterface, EntityHelper $entityHelper){
         $this->ac=$autorizationChecker;
+        $this->router=$routerInterface;
         $this->eh=$entityHelper;
     }
 
@@ -39,6 +42,9 @@ class RouteHelper
             .(isset($routeSuffix) ? '_' . $routeSuffix : '');
     }
    
-    
+    public function getUlr(?string $routeSuffix = null, ?string $entityClassName = null):string
+    {
+        $this->generate($this->get())
+    }
  
 }

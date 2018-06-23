@@ -8,6 +8,7 @@ class Products extends AppEntity
 {
     const en = 'products';
     const ec = 'Products';
+    const emptyId = '__pid__';
 
  //  <editor-fold defaultstate="collapsed" desc="Fields utils">    
     public static $shortNames = [

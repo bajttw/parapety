@@ -14,6 +14,7 @@ class Invoices extends AppEntity
 {
     const en = 'invoices';
     const ec = 'Invoices';
+    const emptyId = '__iid__';
 
 //  <editor-fold defaultstate="collapsed" desc="Fields utils">
     public static $shortNames = [

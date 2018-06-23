@@ -11,6 +11,7 @@ use AppBundle\Entity\Uploads;
 class Colors extends AppEntity{
     const en='colors';
     const ec='Colors';  
+    const emptyId = '__cid__';
     
  //  <editor-fold defaultstate="collapsed" desc="Fields utils">    
 	public static $dicNames=[

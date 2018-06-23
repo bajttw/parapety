@@ -12,6 +12,7 @@ class Trims extends AppEntity
 {
     const en='trims';
     const ec='Trims';  
+    const emptyId = '__tid__';
     
  //  <editor-fold defaultstate="collapsed" desc="Fields utils">    
     public static $dicNames=[

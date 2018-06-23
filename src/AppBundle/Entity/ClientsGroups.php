@@ -10,6 +10,7 @@ class ClientsGroups extends AppEntity
 {
     const en = 'clientsgroups';
     const ec = 'ClientsGroups';
+    const emptyId = '__cgid__';
 
  // <editor-fold defaultstate="collapsed" desc="Fields utils">    
     public static $dicNames = [

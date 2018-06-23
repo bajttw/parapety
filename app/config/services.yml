@@ -67,13 +67,14 @@ services:
         alias: AppBundle\Helpers\SettingsHelper
         public: true
     
-    helper.filter: 
-        alias: AppBundle\Helpers\FilterHelper
-        public: true
-    
     helper.route: 
         alias: AppBundle\Helpers\RouteHelper
         public: true
+
+    generator.filters: 
+        alias: AppBundle\Helpers\FiltersGenerator
+        public: true
+    
  
  
  

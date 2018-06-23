@@ -28,19 +28,24 @@ class Utils
         }
     }
 
-    public static function deep_array_key_exists($keys, $array, $separator = '-')
+    public static function deep_array_key_exists($keys, array $array, string $separator = '-'):bool
     {
         $result = false;
         if (!is_array($keys)) {
             $keys = explode($separator, $keys);
         }
-        if (is_array($array) && count($keys) > 0) {
+        if (count($keys) > 0) {
             $key = array_shift($keys);
             if (($result = array_key_exists($key, $array)) && count($keys) > 0) {
                 $result = static::deep_array_key_exists($keys, $array[$key]);
             }
         }
         return $result;
+    }
+
+    public static function array_keys_exists(array $keys, array $array):bool
+    {
+        return !array_diff_key(array_flip($keys), $array);
     }
 
     public static function deep_array_value($keys, $array, $default = null, $separator = '-')
@@ -112,7 +117,7 @@ class Utils
         return (is_array($array) && count(array_filter(array_keys($array), 'is_string')) == 0);
     }
 
-    public static function addClass(&$attr, $class, $keys_str = null)
+    public static function addClass(array &$attr, $class, ?string $keys_str = null):array
     {
         $current = &$attr;
         if ($keys_str) {

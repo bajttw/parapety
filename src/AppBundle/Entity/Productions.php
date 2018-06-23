@@ -13,6 +13,7 @@ class Productions extends AppEntity
 {
     const en = 'productions';
     const ec = 'Productions';
+    const emptyId = '__pid__';
 
 //  <editor-fold defaultstate="collapsed" desc="Fields utils">    
     public static $shortNames = [

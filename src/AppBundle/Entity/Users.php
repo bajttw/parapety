@@ -11,6 +11,7 @@ class Users extends BaseUser
 {
     const en = 'users';
     const ec = 'Users';
+    const emptyId = '__uid__';
 
 //  <editor-fold defaultstate="collapsed" desc="Fields utils">
     public static $dicNames = [

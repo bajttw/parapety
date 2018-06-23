@@ -2,38 +2,24 @@
 
 namespace AppBundle\Helpers;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-class DataTableHelper
+class DataTablesGenerator extends ElementsGenerator
 {
+    protected $genType='datatables';
+    protected $type='index';
 
     private $ac;// AuthorizationCheckerInterface
-    private $eh;// EntityHelper
-    private $sh;// SettingsHelper
     private $th;// TransHelper
+    private $fg;//FilterGenerator
 
-    private $options;
-    private $ecn;
-    private $en;
-    private $type;
-
-    public function __construct(AuthorizationCheckerInterface $autorizationChecker, EntityHelper $entityHelper, SettingsHelper $settingsHelper, TransHelper $transHelper){
+    
+    public function __construct(AuthorizationCheckerInterface $autorizationChecker, EntityHelper $entityHelper, SettingsHelper $settingsHelper, TransHelper $transHelper, FiltersGenerator $filtersGenerator){
         $this->ac=$autorizationChecker;
         $this->eh=$entityHelper;
         $this->sh=$settingsHelper;
         $this->th=$transHelper;
+        $this->fg=$filtersGenerator;
     }
-
-    private function getGenericActions(string $type='index'):array
-    {
-        return [];
-    }
-
-    private function getEntityActions(string $type='index'):array
-    {
-        $getFunction='get'. $this->ecn. 'Actions';       
-        return method_exists($this, $getFunction) ? $this->$getFunction($type) : $this->getGenericActions($type);
-    }
-
-    
+  
     private function genActions($actions):array
     {
         $en =$this->eh->getEntityName($entityClassName);
@@ -91,12 +77,14 @@ class DataTableHelper
         ];
     }
 
-    protected function genTable( string $tableType = 'index', ?string $entityClassName = null, array $options = [ 'actions' => 'index' ])
+    public function generate( ?string $type = 'index', ?string $entityClassName = null, array $options = [ 'actions' => 'index' ]):array
     {
-        $this->type = $tableType;
-        $this->options=$options;
-        $this->ecn=$this->eh->getEntityClassName($entityClassName);
-        $this->en=$this->eh->getEntityName($entityClassName);
+        parent::generate($type, $entityClassName, $options);
+        $table=[];
 
+
+
+        return $table;
     }
+
 }

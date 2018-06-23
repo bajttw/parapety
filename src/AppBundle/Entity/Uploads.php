@@ -15,6 +15,7 @@ class Uploads extends AppEntity
 {
     const en = 'uploads';
     const ec = 'Uploads';
+    const emptyId = '__uid__';
 
     public static $types=['tmp', 'colors', 'models', 'trims', 'clients', 'orders', 'positions'];
 
