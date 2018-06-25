@@ -1456,6 +1456,7 @@ class AppController extends Controller
 
     protected function genTable( string $tableType = 'index', ?string $entityClassName = null, array $options = [ ]){
         $table=$this->getDataTableGenerator()->generate($tableType, $entityClassName, $options);
+        return $table;
     }
 
     protected function genTable1( string $tableType = 'index', ?string $entityClassName = null, array $options = [ 'actions' => 'index' ])

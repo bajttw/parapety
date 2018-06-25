@@ -12,6 +12,26 @@
             "webRoot": "${workspaceRoot}"
         },
         {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Vagrant",
+            "url": "http://drakonew.local",
+            "webRoot": "${workspaceRoot}"
+        },
+        {
+            "name": "XDebug Homestead",
+            "type": "php",
+            "request": "launch",
+            "port": 9000,
+            "ignore": ["**/vendor/**/*.php"],
+            "xdebugSettings": {
+                "max_children": 256
+            },
+            "pathMappings": {
+                "/home/vagrant/htdocs/Drako_new": "${workspaceRoot}"
+            }
+        },        
+        {
             "name": "XDebug",
             "type": "php",
             "request": "launch",
