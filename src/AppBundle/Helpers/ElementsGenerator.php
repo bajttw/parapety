@@ -21,7 +21,6 @@ class ElementsGenerator{
     protected function getD(array $elementOptions):array
     {
         return Utils::deep_array_value('d', $elementOptions, []);
-        return $d;
     }
 
     protected function getPredefinedElement(string $name, array $predefined)
@@ -57,7 +56,7 @@ class ElementsGenerator{
     {
         return [
             'en' => $this->en,
-            'ec' => $this->ecn,
+            'ecn' => $this->ecn,
             'attr' => Utils::deep_array_value('attr', $elementOptions, []),
             'd' => $this->getD($elementOptions),
         ];

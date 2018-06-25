@@ -42,9 +42,20 @@ class RouteHelper
             .(isset($routeSuffix) ? '_' . $routeSuffix : '');
     }
    
-    public function getUlr(?string $routeSuffix = null, ?string $entityClassName = null):string
+    public function getClientUrl(?string $routeSuffix = null, ?string $entityClassName = null, array $parameters = []):string
     {
-        $this->generate($this->get())
+        return $this->router->generate(
+            $this->getClientRoute($routeSuffix, $entityClassName),
+            $parameters
+        );
+    }
+
+    public function getEmployeeUrl(?string $routeSuffix = null, ?string $entityClassName = null, array $parameters = []):string
+    {
+        return $this->router->generate(
+            $this->getRoute($routeSuffix, $entityClassName),
+            $parameters
+        );
     }
  
 }

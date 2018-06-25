@@ -18,6 +18,7 @@ use AppBundle\Helpers\TransHelper;
 use AppBundle\Helpers\EntityHelper;
 use AppBundle\Helpers\SettingsHelper;
 use AppBundle\Helpers\FiltersGenerator;
+use AppBundle\Helpers\DataTablesGenerator;
 use AppBundle\Helpers\RouteHelper;
 define("AppBundle", 'AppBundle');
 
@@ -110,7 +111,7 @@ class AppController extends Controller
 
  //  <editor-fold defaultstate="collapsed" desc="Helpers">
     protected $th;// TransHelper
-    protected $dth;// DataTableHelper
+    protected $dtg;// DataTablesGenerator
     protected $eh;//EntityHelper   
     protected $sh;//SettingsHelper
     protected $fh;//FilterHelper
@@ -148,6 +149,15 @@ class AppController extends Controller
             $this->fh=$this->get('generator.filters');
         }
         return $this->fh;
+
+    }
+
+    public function getDataTableGenerator():DataTablesGenerator
+    {
+        if(is_null($this->dtg)){
+            $this->dtg=$this->get('generator.datatables');
+        }
+        return $this->dtg;
     }
 
     public function getRouteHelper():RouteHelper
@@ -1346,62 +1356,62 @@ class AppController extends Controller
         ];
     }
 
-    protected function genActions( $actions = 'view', ?string $entityClassName = null, array $options = [])
-    {
-        $ens = $this->getEntityNameSpaces($entityClassName);
-        $en = $ens['name'];
-        if (!is_array($actions)) {
-            $actions = $this->controllerFunction('getActions', $entityClassName, [ $actions ] );
-        }
-        if (count($actions) == 0) {
-            return null;
-        }
-        $ac = [];
-        $urls = [];
-        foreach ($actions as $action) {
-            $an = $action['action'];
-            $action['attr']['class'] = 'btn-img btn-' . $an . (isset($action['attr']['class']) ? ' ' . $action['attr']['class'] : '');
-            if (!isset($action['attr']['title'])) {
-                $action['attr']['title'] = $this->getTransHelper()->btnTitle( $an, $en );
-            }
-            $type = Utils::deep_array_value('type', $action, 'f');
-            if ($type != 'f') {
-                $target = '#' . (!isset($action['target']) || $action['target'] == '1' ? 'my' : $action['target']) . '_';
-                switch ($type) {
-                    case 'm' :
-                        $action['d']['toggle'] = 'modal';
-                        $action['d']['target'] = $target . 'modal';
-                        break;
-                    case 'p' :
-                        $action['d']['target'] = $target . 'panel';
-                        break;
-                }
-            }
-            if (Utils::deep_array_value('browserAction', $action)) {
-                $action['d']['action'] = $an;
-                $src = Utils::deep_array_value('src', $action);
-                if (isset($src)) {
-                    $urls[$an] = is_array($src) ? $src['url'] : $this->getUrl($src, $entityClassName, ['id' => self::emptyEntityID ]);
-                }
-            }
-            else {
-                $action['attr']['href'] = $this->getUrl($an, $entityClassName, ['id' => self::emptyEntityID, 'type' => $type]);
-                if($type == 'w'){
-                    $action['attr']['target']=Utils::deep_array_value('target', $action, '_blank');
-                }
-                $action['d']['url'] = $action['attr']['href'];
-            }
-            $ac[] = $action;
-        }
-        $default = [
-            'name' => $en,
-            'actions' => $ac
-        ];
-        return [
-            'urls' => $urls,
-            'tmpl' => $this->render($this->tmplPath('actions'), array_replace_recursive($default, $options))->getContent()
-        ];
-    }
+    // protected function genActions( $actions = 'view', ?string $entityClassName = null, array $options = [])
+    // {
+    //     $ens = $this->getEntityNameSpaces($entityClassName);
+    //     $en = $ens['name'];
+    //     if (!is_array($actions)) {
+    //         $actions = $this->controllerFunction('getActions', $entityClassName, [ $actions ] );
+    //     }
+    //     if (count($actions) == 0) {
+    //         return null;
+    //     }
+    //     $ac = [];
+    //     $urls = [];
+    //     foreach ($actions as $action) {
+    //         $an = $action['action'];
+    //         $action['attr']['class'] = 'btn-img btn-' . $an . (isset($action['attr']['class']) ? ' ' . $action['attr']['class'] : '');
+    //         if (!isset($action['attr']['title'])) {
+    //             $action['attr']['title'] = $this->getTransHelper()->btnTitle( $an, $en );
+    //         }
+    //         $type = Utils::deep_array_value('type', $action, 'f');
+    //         if ($type != 'f') {
+    //             $target = '#' . (!isset($action['target']) || $action['target'] == '1' ? 'my' : $action['target']) . '_';
+    //             switch ($type) {
+    //                 case 'm' :
+    //                     $action['d']['toggle'] = 'modal';
+    //                     $action['d']['target'] = $target . 'modal';
+    //                     break;
+    //                 case 'p' :
+    //                     $action['d']['target'] = $target . 'panel';
+    //                     break;
+    //             }
+    //         }
+    //         if (Utils::deep_array_value('browserAction', $action)) {
+    //             $action['d']['action'] = $an;
+    //             $src = Utils::deep_array_value('src', $action);
+    //             if (isset($src)) {
+    //                 $urls[$an] = is_array($src) ? $src['url'] : $this->getUrl($src, $entityClassName, ['id' => self::emptyEntityID ]);
+    //             }
+    //         }
+    //         else {
+    //             $action['attr']['href'] = $this->getUrl($an, $entityClassName, ['id' => self::emptyEntityID, 'type' => $type]);
+    //             if($type == 'w'){
+    //                 $action['attr']['target']=Utils::deep_array_value('target', $action, '_blank');
+    //             }
+    //             $action['d']['url'] = $action['attr']['href'];
+    //         }
+    //         $ac[] = $action;
+    //     }
+    //     $default = [
+    //         'name' => $en,
+    //         'actions' => $ac
+    //     ];
+    //     return [
+    //         'urls' => $urls,
+    //         'tmpl' => $this->render($this->tmplPath('actions'), array_replace_recursive($default, $options))->getContent()
+    //     ];
+    // }
 
 
 
@@ -1443,7 +1453,12 @@ class AppController extends Controller
         );
     }
 
-    protected function genTable( string $tableType = 'index', ?string $entityClassName = null, array $options = [ 'actions' => 'index' ])
+
+    protected function genTable( string $tableType = 'index', ?string $entityClassName = null, array $options = [ ]){
+        $table=$this->getDataTableGenerator()->generate($tableType, $entityClassName, $options);
+    }
+
+    protected function genTable1( string $tableType = 'index', ?string $entityClassName = null, array $options = [ 'actions' => 'index' ])
     {
         $ens = $this->getEntityNameSpaces($entityClassName);
         $en = $this->getEntityHelper()->getEntityName($entityClassName);
@@ -1481,7 +1496,7 @@ class AppController extends Controller
             $columns[] = array_replace_recursive(
                 [
                     'tmpl' => [
-                        'actions' => $this->get('AppBundle\Helpers\ActionsGenerator')->generate('index'),
+                        'actions' => $ac1,
                         'block' => 'datatable_actions'
                     ],
                     'label' => 'actions',

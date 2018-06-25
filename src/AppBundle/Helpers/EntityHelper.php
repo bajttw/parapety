@@ -16,6 +16,7 @@ class EntityHelper{
    
     private $em;
     private $sh;
+    private $idPrototype='__id__';
 
     public function __construct(EntityManager $entityManager, SettingsHelper $settingsHelper){
         $this->sh=$settingsHelper;
@@ -66,7 +67,12 @@ class EntityHelper{
         return ($this->getEntityNamespace($entityClassName))::en;
     }
 
-    public function getEmptyId(?string $entityClassName=null, string $bundleName=null):string
+    public function getIdPrototype(?string $entityClassName=null, string $bundleName=null):string
+    {
+        return is_null($entityClassName) ? $this->idPrototype : $this->getEntityNamespace($entityClassName)::emptyId;
+    }
+
+    public function getEmptyId(?string $entityClassName=null, string $bundleName=null):string//deprected
     {
         return ($this->getEntityNamespace($entityClassName))::emptyId;
     }

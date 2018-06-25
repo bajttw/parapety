@@ -1066,7 +1066,7 @@
     {%- endblock datatable_column -%}
 
     {%- block datatable -%}
-    {{dump(table)}}
+         {{dump(table)}}
         {% set table_id= table.attr.id|default(table.name~"_table") %}
         {% set attr=table.attr|set_array_value('id', table_id)|add_class(['datatable', 'dataTable', 'table-hover', 'table-striped',  'table-bordered' ]) %}
         {% set data_opt= table.d|default({})
@@ -1080,7 +1080,7 @@
                 {% set data_opt=data_opt|set_array_value(['columns', idx, 'tmpl'], block(tmpl.block), true) %}
             {% endif %}
         {% endfor %}       
-        {{dump(data_opt)}}
+        {# {{dump(data_opt)}} #}
         {% set fields=entities_settings[table.ecn].fields|default({}) %}
             <table style="width: 100%;" width="100" {{ block('attributes') }} {{ block('data_options') }} 
                 data-detail-tmpl="{{  table.details.tmpl|default('') != '' ? block(table.details.tmpl|default(''))|e : '' }}"
