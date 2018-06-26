@@ -3,7 +3,8 @@ instalacje.txt
 /.sass-cache/
 /node_modules/
 /vendor/
-/web/
+/web/bundles/
+/web/uploads/
 /tests/
 /nbproject/
 /materialy/
