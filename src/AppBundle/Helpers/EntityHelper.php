@@ -367,6 +367,9 @@ class EntityHelper{
                             'filter-options' => '{"type" : "between"}',
                             'widget' => 'combobox'
                         ]
+                    ],
+                    'hidden' => [
+                        'client' => 'hidden-client'
                     ]
                 ],
                 'types' => [
@@ -413,6 +416,9 @@ class EntityHelper{
                             'filter-options' => '{"type" : "date_period"}',
                             'widget' => 'daterange'
                         ]
+                    ],
+                    'hidden' => [
+                        'client' => 'hidden-client'
                     ]
                 ],
                 'types' => [
@@ -501,6 +507,7 @@ class EntityHelper{
                         ]
                     ],
                     'hidden' => [
+                        'client' => 'hidden-client',
                         'toProduction' => [
                             'name' => 'production',
                             'source' => [

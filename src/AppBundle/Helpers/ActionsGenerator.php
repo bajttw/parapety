@@ -98,7 +98,7 @@ class ActionsGenerator extends ElementsGenerator
         $this->clientId=Utils::deep_array_value('clientId', $options);
         $this->entityId=Utils::deep_array_value('entityId', $options, '__id__' );
         $actions=[];
-        foreach($this->getEntityElements() as $name => $action){
+        foreach($this->choicePredefinedElements($this->getEntityElements()) as $name => $action){
             $action=$this->getElement($action);
             $actions[$name]=$this->generateAction($action);
         }

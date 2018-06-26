@@ -73,7 +73,7 @@ class ElementsGenerator{
         if(is_null($elements)){
             return $this->getGenericElements();
         }
-        return $this->choicePredefinedElements($elements);
+        return $elements;
     }
 
     public function generate(?string $type=null,  ?string $entityClassName=null, array $options=[]):array

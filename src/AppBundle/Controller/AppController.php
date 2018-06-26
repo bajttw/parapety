@@ -909,10 +909,11 @@ class AppController extends Controller
         if (!$this->preAjaxAction($request, $cid)){
             return $this->responseAccessDenied(true);
         }
-        $defaultFilters=$this->getFiltersGenerator()->generate('table_client', static::ec, [ 'values' => [ 'client' => $this->getClientId() ]  ]);
+        // $defaultFilters=$this->getFiltersGenerator()->generate('table_client', static::ec, [ 'values' => [ 'client' => $this->getClientId() ]  ]);
+      
         $filters = $request->query->get('f');
+        $defaultFilters= ['client' => $this->getFiltersGenerator()->generateClientFilter(static::ec, $this->getClientId())];
         return new JsonResponse($this->getEntiesFromBase($request, 'getList', [ 
-            'clientId' => $this->getClientId(),
             'filters' => isset($filters) ? array_replace_recursive($defaultFilters, json_decode($filters, true)) : $defaultFilters 
             // 'filters' => is_set($filters) ? json_decode($filters, true) : [] 
             ])
