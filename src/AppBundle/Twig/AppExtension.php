@@ -40,6 +40,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('dic_val', array($this, 'getDicVal')),
             new \Twig_SimpleFilter('add_class', array($this, 'addClass')),
             new \Twig_SimpleFilter('set_attr', array($this, 'setAttribute')),
+            new \Twig_SimpleFilter('add_attr', array($this, 'addAttributes')),
             new \Twig_SimpleFilter('set_label', array($this, 'setLabel')),
             new \Twig_SimpleFilter('gen_label', array($this, 'genLabel')),
             new \Twig_SimpleFilter('set_title', array($this, 'setTitle')),
@@ -161,8 +162,21 @@ class AppExtension extends \Twig_Extension
         return $this->setAttribute($attr, 'title', $this->genTitle($title, $entityName), $overwrite);
     }
 
+    public function addAttributes(array $attr, array $add, bool $overwrite = false):array
+    {
+        $attributes = &$attr;
+        if (array_key_exists('attr', $attr)) {
+            $attributes = &$attr['attr'];
+        }
+        Utils::array_values_set($attributes, $add, $overwrite);
+        return $attr;
+    }
+
     public function setAttribute($attr, $name, $value, $overwrite = false)
     {
+        if(is_array($name)){
+            return $this->addAttributes($attr, array_combine($name, $value));
+        }
         $attributes = &$attr;
         if (array_key_exists('attr', $attr)) {
             $attributes = &$attr['attr'];
@@ -177,7 +191,7 @@ class AppExtension extends \Twig_Extension
     {
 
         Utils::deep_array_value_set($keys, $array, $value, $overwrite, $separator);
-//        $current=&$array;
+        //        $current=&$array;
         //        $keys = explode(".", $keys_str);
         //        foreach( $keys as $key){
         //                if (!array_key_exists($key, $current)){

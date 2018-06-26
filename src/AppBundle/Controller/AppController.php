@@ -18,6 +18,7 @@ use AppBundle\Helpers\TransHelper;
 use AppBundle\Helpers\EntityHelper;
 use AppBundle\Helpers\SettingsHelper;
 use AppBundle\Helpers\FiltersGenerator;
+use AppBundle\Helpers\FilterbarGenerator;
 use AppBundle\Helpers\DataTablesGenerator;
 use AppBundle\Helpers\RouteHelper;
 define("AppBundle", 'AppBundle');
@@ -114,7 +115,8 @@ class AppController extends Controller
     protected $dtg;// DataTablesGenerator
     protected $eh;//EntityHelper   
     protected $sh;//SettingsHelper
-    protected $fh;//FilterHelper
+    protected $fg;//FiltersGenerator
+    protected $fbg;//FilterbarGenerator
     protected $rh;//RouteHelper
 
     protected function getTransHelper():TransHelper
@@ -143,22 +145,32 @@ class AppController extends Controller
         return $this->sh;
     }
  
-    public function getFilterHelper():FiltersGenerator
+    public function getFiltersGenerator():FiltersGenerator
     {
-        if(is_null($this->fh)){
-            $this->fh=$this->get('generator.filters');
+        if(is_null($this->fg)){
+            $this->fg=$this->get('generator.filters');
         }
-        return $this->fh;
+        return $this->fg;
 
     }
 
-    public function getDataTableGenerator():DataTablesGenerator
+    public function getFilterbarGenerator():FilterbarGenerator
+    {
+        if(is_null($this->fbg)){
+            $this->fbg=$this->get('generator.filterbar');
+        }
+        return $this->fbg;
+    }
+    
+    public function getDTGenerator():DataTablesGenerator
     {
         if(is_null($this->dtg)){
             $this->dtg=$this->get('generator.datatables');
         }
         return $this->dtg;
     }
+
+    
 
     public function getRouteHelper():RouteHelper
     {
@@ -791,7 +803,22 @@ class AppController extends Controller
 
     }
 
-    protected function preAction(Request $request, $cid = 0, $options = [])
+    protected function preAjaxAction(Request $request, $cid = 0, $privileges = true):bool
+    {
+        
+        if ($cid == 0) {
+            $cid = $request->query->get('cid');
+        }
+        if ($cid != 0) {
+            $this->findClient($cid);
+        }
+        if (!$this->checkPrivilages($privileges)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected function preAction(Request $request, $cid = 0, array $options = []):bool
     {
         $default = [
             'checkPrivilages' => 0,
@@ -827,9 +854,9 @@ class AppController extends Controller
             'title' => $this->getTransHelper()->titleText('index'),
             'toolbars' => [
                 $this->genToolbar(),
-                $this->genFilterbar()
+                $this->getFilterbarGenerator()->generate('index')
             ],
-            'table' => $this->genTable('index')
+            'table' => $this->getDTGenerator()->generate('index')
         ])
             ->addEntityModal();
         return $this->renderSystem();
@@ -871,7 +898,7 @@ class AppController extends Controller
 
     public function ajaxListAction(Request $request, $cid = 0)
     {
-        if (!$this->preAction($request, $cid, ['entitySettings' => false])) {
+        if (!$this->preAjaxAction($request, $cid)) {
             return $this->responseAccessDenied(true);
         }
         return new JsonResponse($this->getEntiesFromBase($request, 'getList'));
@@ -879,13 +906,15 @@ class AppController extends Controller
 
     public function clientAjaxListAction(Request $request, $cid = 0)
     {
-        if (!$this->preAction($request, $cid, ['entitySettings' => false])) {
+        if (!$this->preAjaxAction($request, $cid)){
             return $this->responseAccessDenied(true);
         }
-        $defaultFilters=$this->getFilterHelper()->generate('table_client', static::ec, [ 'values' => [ 'client' => $cid ]  ]);
+        $defaultFilters=$this->getFiltersGenerator()->generate('table_client', static::ec, [ 'values' => [ 'client' => $this->getClientId() ]  ]);
         $filters = $request->query->get('f');
         return new JsonResponse($this->getEntiesFromBase($request, 'getList', [ 
-                'filters' => isset($filters) ? array_replace_recursive($defaultFilters, json_decode($filters, true)) : $defaultFilters 
+            'clientId' => $this->getClientId(),
+            'filters' => isset($filters) ? array_replace_recursive($defaultFilters, json_decode($filters, true)) : $defaultFilters 
+            // 'filters' => is_set($filters) ? json_decode($filters, true) : [] 
             ])
         );
     }
@@ -1129,6 +1158,11 @@ class AppController extends Controller
         return ($this->client != null);
     }
 
+    
+    protected function getClientId(){
+        return $this->isClient() ? $this->client->getId() : 0;
+    }
+
     public function checkPrivilages($onlyAdmin = true)
     {
         $this->user = $this->container->get('security.token_storage')->getToken()->getUser();
@@ -1329,20 +1363,20 @@ class AppController extends Controller
         ];
     }
 
-    protected function genFilterbar(string $filtersType = 'index', ?string $entityClassName = null, array $options = []):array
-    {
-        $filters=$this->getFilterHelper()->generate($filtersType, $entityClassName, $options);
-        return array_replace_recursive(
-            $this->genElement('filterbar', $entityClassName),
-            [
-                'filters' => $filters['visible'],
-                'd' => [
-                    'options' => json_encode(['hiddenFilters' => $filters['hidden']])
-                ]
-            ], 
-            $options
-        );
-    }
+    // protected function genFilterbar(string $filtersType = 'index', ?string $entityClassName = null, array $options = []):array
+    // {
+    //     $filters=$this->getFilterHelper()->generate($filtersType, $entityClassName, $options);
+    //     return array_replace_recursive(
+    //         $this->genElement('filterbar', $entityClassName),
+    //         [
+    //             'filters' => $filters['visible'],
+    //             'd' => [
+    //                 'options' => json_encode(['hiddenFilters' => $filters['hidden']])
+    //             ]
+    //         ], 
+    //         $options
+    //     );
+    // }
 
     public function genSubmitBtn($type):array
     {
@@ -1454,10 +1488,10 @@ class AppController extends Controller
     }
 
 
-    protected function genTable( string $tableType = 'index', ?string $entityClassName = null, array $options = [ ]){
-        $table=$this->getDataTableGenerator()->generate($tableType, $entityClassName, $options);
-        return $table;
-    }
+    // protected function genTable( string $tableType = 'index', ?string $entityClassName = null, array $options = [ ]){
+    //     $table=$this->getDataTableGenerator()->generate($tableType, $entityClassName, $options);
+    //     return $table;
+    // }
 
     protected function genTable1( string $tableType = 'index', ?string $entityClassName = null, array $options = [ 'actions' => 'index' ])
     {

@@ -16,7 +16,7 @@
             "Tests\\": "tests/"
         },
         "files": [
-            "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
+            "/home/vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
         ]
     },
     "require": {
@@ -55,7 +55,9 @@
         ]
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "bin-dir": "bin",
+        "vendor-dir": "/home/vendor"
     },
     "extra": {
         "symfony-app-dir": "app",

@@ -54,7 +54,8 @@ class ElementsGenerator{
 
     protected function generateElement(array $elementOptions):array
     {
-        return [
+        return [  
+            'name' => Utils::deep_array_value('name', $elementOptions, $this->en),         
             'en' => $this->en,
             'ecn' => $this->ecn,
             'attr' => Utils::deep_array_value('attr', $elementOptions, []),

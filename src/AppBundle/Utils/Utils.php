@@ -74,6 +74,14 @@ class Utils
         return $value ? static::deep_array_value($keys, $array) == $value : static::deep_array_key_exists($keys, $array, $separator);
     }
 
+    public static function array_values_set(array &$array, array $values, $overwrite = false){
+        foreach($values as $key => $value){
+            if ($overwrite || !array_key_exists($key, $array)) {
+                $array[$key] = $value;
+            }          
+        }
+    }
+
     public static function deep_array_value_set($keys, &$array, $value, $overwrite = false, $separator = '-')
     {
         if (!is_array($keys)) {

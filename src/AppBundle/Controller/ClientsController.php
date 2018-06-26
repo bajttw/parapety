@@ -165,24 +165,28 @@ class ClientsController extends AppController{
 
 // </editor-fold>   
 
-    private function genClientServicePanel(string $entityClassName, bool $active=false):array
+    private function genClientServicePanel(string $entityClassName, string $clientIdPrototype,  $active=false ):array
     {
         return $this->genPanel($entityClassName, [
             'active' => $active,
             'content' => $this->tmplPath('index', '', 'Panel'),
             'toolbars' => [
-                $this->genToolbar( 'service', $entityClassName, [ 'tmpl' => true, "cid" => self::emptyClientID ]),
-                $this->genFilterbar( 'service', $entityClassName)
+                $this->genToolbar( 'service', $entityClassName, [ 'tmpl' => true, "cid" => $clientIdPrototype ]),
+                $this->getFilterbarGenerator()->generate( 'service', $entityClassName)
             ],
-            'table' => $this->genTable('panel', $entityClassName, [
+            'table' => $this->getDTGenerator()->generate('panel', $entityClassName, [
                 'actions' => true,
                 'export' => true,
-                'd' => [
-                    'ajax' => [
-                        'url' => $this->getClientUrl('ajax', $entityClassName)
-                    ],
-                    'filters' => $this->getFilterHelper()->generate('table_service', $entityClassName, [ 'values' => ['client' => self::emptyClientID ]]) 
+                'clientId' => $clientIdPrototype,
+                'ajax' =>[
+                    'filtersType' => 'table_service'
                 ]
+                // 'd' => [
+                //     'ajax' => [
+                //         'url' => $this->getRouteHelper()->getClientUrl('ajax', $entityClassName, ['cid' => $clientIdPrototype ])
+                //     ],
+                //     'filters' => $this->getFilterHelper()->generate('table_service', $entityClassName, [ 'values' => ['client' => $clientIdPrototype ]]) 
+                // ]
             ])
         ]);
     }
@@ -196,15 +200,16 @@ class ClientsController extends AppController{
         $tabs=[];
         $tabsOpt=[];
         $i=0;
+        $clientIdPrototype=$this->getEntityHelper()->getIdPrototype(static::ec);
         foreach([ 'Orders','Deliveries', 'Invoices', 'PriceLists', 'Settings' ] as $tec){
             $ten=$this->getEntityHelper()->getEntityName($tec);
-            $tabs['client_'.$ten]=$this->genClientServicePanel($tec, $i==0);
+            $tabs['client_'.$ten]=$this->genClientServicePanel($tec, $clientIdPrototype, $i==0);
             $tabsOpt[$ten]=['ajax' => false];
             $this->addEntityModal($tec);
             $i++;
         }
         $tabsOpt['edit']=['ajax' => true];
-        $cEditUrl=$this->getUrl('edit', static::ec, ["id" => self::emptyClientID, "type" => "p"]);
+        $cEditUrl=$this->getUrl('edit', static::ec, ["id" => $clientIdPrototype, "type" => "p"]);
         $tabs['client_edit'] = $this->genPanel(static::ec, [
             'label' => $this->getTransHelper()->labelText('edit'),
             'd' => [
@@ -225,17 +230,20 @@ class ClientsController extends AppController{
                     'content' => $this->tmplPath('panel', null),
                     'toolbars' => [
                         $this->genToolbar(),
-                        $this->genFilterbar('service')
+                        $this->getFilterbarGenerator()->generate('service', static::ec)
                     ],
-                    'table' => $this->genTable('panel', null, [
+                    'table' => $this->getDTGenerator()->generate('panel', static::ec, [
                         'actions' => true, 
                         'select' => 'single',
-                        'd' => [
-                            'ajax' => [
-                                'url' => $this->getUrl('ajax_details', static::ec)
-                            ],
-                            'filters' => $this->getFilterHelper()->generate('table_service')
+                        'ajax' => [
+                            'urlType' => 'ajax_details'
                         ]
+                        // 'd' => [
+                        //     'ajax' => [
+                        //         'url' => $this->getUrl('ajax_details', static::ec)
+                        //     ],
+                        //     'filters' => $this->getFiltersGenerator()->generate('table_service')
+                        // ]
                     ])
                 ] ),
                 'panel_right' => [

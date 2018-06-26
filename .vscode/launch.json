@@ -16,7 +16,7 @@
             "request": "launch",
             "name": "Vagrant",
             "url": "http://drakonew.local",
-            "webRoot": "${workspaceRoot}"
+            "webRoot": "${workspaceRoot}/web"
         },
         {
             "name": "XDebug Homestead",

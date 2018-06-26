@@ -32,8 +32,8 @@ class DataTablesGenerator extends ElementsGenerator
 
     private function getUrl(string $type, array $parameters):string
     {
-        return $this->clientId ? $this->rh->getClientUrl($type, $this->ecn, $parameters) 
-                : $this->rh->getEmployeeUrl($type, $this->ecn, array_replace($parameters, [ 'cid' => $this->clientId]));
+        return $this->clientId ? $this->rh->getClientUrl($type, $this->ecn, array_replace($parameters, [ 'cid' => $this->clientId])) 
+                : $this->rh->getEmployeeUrl($type, $this->ecn, $parameters);
     }
 
     private function setAjax(array &$table):void

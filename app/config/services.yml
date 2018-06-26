@@ -75,6 +75,10 @@ services:
         alias: AppBundle\Helpers\FiltersGenerator
         public: true
 
+    generator.filterbar: 
+        alias: AppBundle\Helpers\FilterbarGenerator
+        public: true
+
     generator.datatables: 
         alias: AppBundle\Helpers\DataTablesGenerator
         public: true

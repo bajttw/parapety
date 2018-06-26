@@ -2,7 +2,8 @@
 
 namespace AppBundle\Helpers;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+// use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Settings;
 use AppBundle\Entity\Clients;
 use AppBundle\Entity\Users;
@@ -15,7 +16,7 @@ class SettingsHelper{
     private $clientCached=[];
     private $userCached=[];
 
-    public function __construct(EntityManager $entityManager){
+    public function __construct(EntityManagerInterface $entityManager){
         $this->em = $entityManager;
         $this->repository=$this->em->getRepository( Settings::class );
     }

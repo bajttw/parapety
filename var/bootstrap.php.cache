@@ -141,18 +141,26 @@ return $first ? null : array();
 return $first ? $default : array($default);
 }
 if ($first) {
-return count($headers[$key]) ? $headers[$key][0] : $default;
+return \count($headers[$key]) ? $headers[$key][0] : $default;
 }
 return $headers[$key];
 }
 public function set($key, $values, $replace = true)
 {
 $key = str_replace('_','-', strtolower($key));
-$values = array_values((array) $values);
+if (\is_array($values)) {
+$values = array_values($values);
 if (true === $replace || !isset($this->headers[$key])) {
 $this->headers[$key] = $values;
 } else {
 $this->headers[$key] = array_merge($this->headers[$key], $values);
+}
+} else {
+if (true === $replace || !isset($this->headers[$key])) {
+$this->headers[$key] = array($values);
+} else {
+$this->headers[$key][] = $values;
+}
 }
 if ('cache-control'=== $key) {
 $this->cacheControl = $this->parseCacheControl(implode(', ', $this->headers[$key]));
@@ -627,7 +635,7 @@ $content;
 }
 public function overrideGlobals()
 {
-$this->server->set('QUERY_STRING', static::normalizeQueryString(http_build_query($this->query->all(), null,'&')));
+$this->server->set('QUERY_STRING', static::normalizeQueryString(http_build_query($this->query->all(),'','&')));
 $_GET = $this->query->all();
 $_POST = $this->request->all();
 $_SERVER = $this->server->all();
@@ -672,7 +680,7 @@ return self::$trustedHeaderSet;
 public static function setTrustedHosts(array $hostPatterns)
 {
 self::$trustedHostPatterns = array_map(function ($hostPattern) {
-return sprintf('#%s#i', $hostPattern);
+return sprintf('{%s}i', $hostPattern);
 }, $hostPatterns);
 self::$trustedHosts = array();
 }
@@ -1069,6 +1077,16 @@ public function isMethodCacheable()
 {
 return in_array($this->getMethod(), array('GET','HEAD'));
 }
+public function getProtocolVersion()
+{
+if ($this->isFromTrustedProxy()) {
+preg_match('~^(HTTP/)?([1-9]\.[0-9]) ~', $this->headers->get('Via'), $matches);
+if ($matches) {
+return'HTTP/'.$matches[2];
+}
+}
+return $this->server->get('SERVER_PROTOCOL');
+}
 public function getContent($asResource = false)
 {
 $currentContentIsResource = is_resource($this->content);
@@ -1260,11 +1278,11 @@ return rtrim($baseUrl,'/'.DIRECTORY_SEPARATOR);
 }
 protected function prepareBasePath()
 {
-$filename = basename($this->server->get('SCRIPT_FILENAME'));
 $baseUrl = $this->getBaseUrl();
 if (empty($baseUrl)) {
 return'';
 }
+$filename = basename($this->server->get('SCRIPT_FILENAME'));
 if (basename($baseUrl) === $filename) {
 $basePath = dirname($baseUrl);
 } else {
@@ -1277,7 +1295,6 @@ return rtrim($basePath,'/');
 }
 protected function preparePathInfo()
 {
-$baseUrl = $this->getBaseUrl();
 if (null === ($requestUri = $this->getRequestUri())) {
 return'/';
 }
@@ -1287,11 +1304,12 @@ $requestUri = substr($requestUri, 0, $pos);
 if (''!== $requestUri &&'/'!== $requestUri[0]) {
 $requestUri ='/'.$requestUri;
 }
-$pathInfo = substr($requestUri, strlen($baseUrl));
-if (null !== $baseUrl && (false === $pathInfo ||''=== $pathInfo)) {
-return'/';
-} elseif (null === $baseUrl) {
+if (null === ($baseUrl = $this->getBaseUrl())) {
 return $requestUri;
+}
+$pathInfo = substr($requestUri, strlen($baseUrl));
+if (false === $pathInfo ||''=== $pathInfo) {
+return'/';
 }
 return (string) $pathInfo;
 }
@@ -1389,4 +1407,4 @@ return $clientIps ? array_reverse($clientIps) : array($firstTrustedIp);
 }
 }
 }
-namespace {require __DIR__.'/../vendor/symfony/symfony/src/Symfony/Component/ClassLoader/ClassCollectionLoader.php';}
+namespace {require __DIR__.'/../../../../vendor/symfony/symfony/src/Symfony/Component/ClassLoader/ClassCollectionLoader.php';}

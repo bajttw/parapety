@@ -2,7 +2,8 @@
 
 namespace AppBundle\Helpers;
 
-use Doctrine\ORM\EntityManager;
+// use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 // use Symfony\Component\DependencyInjection\ContainerInterface ;
 use AppBundle\Utils\Utils;
 
@@ -18,7 +19,7 @@ class EntityHelper{
     private $sh;
     private $idPrototype='__id__';
 
-    public function __construct(EntityManager $entityManager, SettingsHelper $settingsHelper){
+    public function __construct(EntityManagerInterface $entityManager, SettingsHelper $settingsHelper){
         $this->sh=$settingsHelper;
         $this->em=$entityManager;
     }
