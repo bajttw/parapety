@@ -9,7 +9,7 @@ class Prices extends AppEntity
 {
     const en = 'Prices';
     const ec = 'prices';
-    const emptyId = '__pid__';
+    const idPrototype = '__pid__';
 
 //  <editor-fold defaultstate="collapsed" desc="Fields utils">
     public static $shortNames = [

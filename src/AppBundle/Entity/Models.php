@@ -11,7 +11,7 @@ use AppBundle\Entity\Uploads;
 class Models extends AppEntity{
     const en='models';
     const ec='Models';  
-    const emptyId = '__mid__';
+    const idPrototype = '__mid__';
     
  //  <editor-fold defaultstate="collapsed" desc="Fields utils">    
     public static $dicNames=[
@@ -111,11 +111,6 @@ class Models extends AppEntity{
 		*/
     private $upload;
  // </editor-fold>       
-
-    public function __construct($options=[]){
-        parent::__construct($options);
-        $this->setSequence($options['controller']->getEntityCount() + 1 );
-    }
 
  // <editor-fold defaultstate="collapsed" desc="Fields functions"> 
     /**

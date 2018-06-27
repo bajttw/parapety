@@ -14,7 +14,7 @@ class Orders extends AppEntity
 {
     const en = 'orders';
     const ec = 'Orders';
-    const emptyId = '__oid__';
+    const idPrototype = '__oid__';
 
     const numerate = false;
  //  <editor-fold defaultstate="collapsed" desc="Fields utils">

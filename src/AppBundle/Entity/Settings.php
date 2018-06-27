@@ -12,7 +12,7 @@ class Settings extends AppEntity
 {
     const en = 'settings';
     const ec = 'Settings';
-    const emptyId = '__sid__';
+    const idPrototype = '__sid__';
 
     //  <editor-fold defaultstate="collapsed" desc="Fields">
     public static $shortNames = [

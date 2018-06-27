@@ -19,6 +19,7 @@ use AppBundle\Helpers\EntityHelper;
 use AppBundle\Helpers\SettingsHelper;
 use AppBundle\Helpers\FiltersGenerator;
 use AppBundle\Helpers\FilterbarGenerator;
+use AppBundle\Helpers\ToolbarGenerator;
 use AppBundle\Helpers\DataTablesGenerator;
 use AppBundle\Helpers\RouteHelper;
 define("AppBundle", 'AppBundle');
@@ -117,6 +118,7 @@ class AppController extends Controller
     protected $sh;//SettingsHelper
     protected $fg;//FiltersGenerator
     protected $fbg;//FilterbarGenerator
+    protected $tbg;//ToolbarGenerator
     protected $rh;//RouteHelper
 
     protected function getTransHelper():TransHelper
@@ -160,6 +162,14 @@ class AppController extends Controller
             $this->fbg=$this->get('generator.filterbar');
         }
         return $this->fbg;
+    }
+
+    public function getToolbarGenerator():ToolbarGenerator
+    {
+        if(is_null($this->tbg)){
+            $this->tbg=$this->get('generator.toolbar');
+        }
+        return $this->tbg;
     }
     
     public function getDTGenerator():DataTablesGenerator
@@ -443,49 +453,49 @@ class AppController extends Controller
 //  <editor-fold defaultstate="collapsed" desc="Translations">
     
 
-    public static function gen_trans_text($str, $type, $entityName = null)
-    {
-        return $str ?
-            Utils::gen_trans_text($str, $type, $entityName === '' ? '' : self::getEntityName($entityName) )
-            : '';
-    }
+    // public static function gen_trans_text($str, $type, $entityName = null)
+    // {
+    //     return $str ?
+    //         Utils::gen_trans_text($str, $type, $entityName === '' ? '' : self::getEntityName($entityName) )
+    //         : '';
+    // }
 
-    public static function filterLabel($str, $entityName=null){
-        return self::gen_trans_text('filter.'.$str, 'label', $entityName );
-    }
+    // public static function filterLabel($str, $entityName=null){
+    //     return self::gen_trans_text('filter.'.$str, 'label', $entityName );
+    // }
     
-    public static function filterTitle($str, $entityName=null){
-        return self::gen_trans_text('filter.'.$str, 'title', $entityName );
-    }
+    // public static function filterTitle($str, $entityName=null){
+    //     return self::gen_trans_text('filter.'.$str, 'title', $entityName );
+    // }
 
 
-    public function trans($str, $include=[])
-    {
-        if(is_null($str) || $str == ''){
-            return '';
-        }
-        $trans=function($s, $include){
-            $s = $this->get('translator')->trans($s);
-            if($count=count($include)){
-                $search=[];
-                for($i=1; $i<=$count; $i++){
-                    $search[]='%'.$i;
-                }
-                $s=str_replace($search, $include, $s);
-            }
-            return $s;
-        };
-        if (is_array($str)) {
-            $t = [];
-            foreach ($str as $s) {
-                $t[]=$trans($s, $include);
-            }
-            return implode(' ', $t);
-        }
-        else {
-            return $trans($str, $include);
-        }
-    }
+    // public function trans($str, $include=[])
+    // {
+    //     if(is_null($str) || $str == ''){
+    //         return '';
+    //     }
+    //     $trans=function($s, $include){
+    //         $s = $this->get('translator')->trans($s);
+    //         if($count=count($include)){
+    //             $search=[];
+    //             for($i=1; $i<=$count; $i++){
+    //                 $search[]='%'.$i;
+    //             }
+    //             $s=str_replace($search, $include, $s);
+    //         }
+    //         return $s;
+    //     };
+    //     if (is_array($str)) {
+    //         $t = [];
+    //         foreach ($str as $s) {
+    //             $t[]=$trans($s, $include);
+    //         }
+    //         return implode(' ', $t);
+    //     }
+    //     else {
+    //         return $trans($str, $include);
+    //     }
+    // }
 // </editor-fold>   
 
 //  <editor-fold defaultstate="collapsed" desc="Entity service">
@@ -844,6 +854,32 @@ class AppController extends Controller
         return true;
     }
 
+    public function clientIndexAction(Request $request, $cid){
+        if (!$this->preAction($request, $cid)) {
+            return $this->responseAccessDenied();
+        }
+        $this->setTemplate('index');
+        $this->setRenderOptions([
+            'title' => $this->getTransHelper()->titleTex('client_index'),
+            'toolbars' => [
+                $this->getToolbarGenerator()->generate('client_index', static::ec, [
+                    "clientId" => $this->getClientId()
+                ]),
+                $this->getFilterbarGenerator()->generate('client_index')
+            ],
+            'table' => $this->getDTGenerator()->generate('client_index', static::ec, [ 
+                'clientId' => $this->getClienId(),
+                'actions' => 'client_index',
+                'ajax' =>[
+                    'filtersType' => 'table_client'
+                ]
+            ])
+        ])
+            ->addEntityModal();
+        return $this->renderSystem();
+    }
+
+
     public function indexAction(Request $request, $cid = 0)
     {
         if (!$this->preAction($request, $cid)) {
@@ -853,10 +889,10 @@ class AppController extends Controller
         $this->setRenderOptions([
             'title' => $this->getTransHelper()->titleText('index'),
             'toolbars' => [
-                $this->genToolbar(),
-                $this->getFilterbarGenerator()->generate('index')
+                $this->getToolbarGenerator()->generate(),
+                $this->getFilterbarGenerator()->generate()
             ],
-            'table' => $this->getDTGenerator()->generate('index')
+            'table' => $this->getDTGenerator()->generate()
         ])
             ->addEntityModal();
         return $this->renderSystem();
@@ -912,7 +948,8 @@ class AppController extends Controller
         // $defaultFilters=$this->getFiltersGenerator()->generate('table_client', static::ec, [ 'values' => [ 'client' => $this->getClientId() ]  ]);
       
         $filters = $request->query->get('f');
-        $defaultFilters= ['client' => $this->getFiltersGenerator()->generateClientFilter(static::ec, $this->getClientId())];
+        $clientFilter=$this->getFiltersGenerator()->generateClientFilter(static::ec, $this->getClientId());
+        $defaultFilters= count($clientFilter) > 0 ?  ['client' => $clientFilter ] :[] ;
         return new JsonResponse($this->getEntiesFromBase($request, 'getList', [ 
             'filters' => isset($filters) ? array_replace_recursive($defaultFilters, json_decode($filters, true)) : $defaultFilters 
             // 'filters' => is_set($filters) ? json_decode($filters, true) : [] 
@@ -1450,7 +1487,7 @@ class AppController extends Controller
 
 
 
-    protected function genToolbar(string $toolsType = 'index', ?string $entityClassName = null, array $options = [])
+    protected function genToolbar1(string $toolsType = 'index', ?string $entityClassName = null, array $options = [])
     {
         $ens = $this->getEntityNameSpaces($entityClassName);
         $en = $ens['name'];
@@ -1886,25 +1923,25 @@ class AppController extends Controller
     //     return $filters;
     // }
 
-    public static function getActions($type = 'index', $options=[])
-    {
-        $actions = [
-            ['action' => 'edit', 'type' => 'm', 'target' => static::en],
-            ['action' => 'delete', 'type' => 'm', 'target' => static::en]
-        ];
-        return $actions;
-    }
+    // public static function getActions($type = 'index', $options=[])
+    // {
+    //     $actions = [
+    //         ['action' => 'edit', 'type' => 'm', 'target' => static::en],
+    //         ['action' => 'delete', 'type' => 'm', 'target' => static::en]
+    //     ];
+    //     return $actions;
+    // }
 
-    public static function getToolbarBtn($type='index', $options=[] )
-    {
-        return [
-            [
-                'action' => 'new',
-                'modal' => static::en,
-                'attr' => ['class' => 'btn-primary']
-            ]
-        ];
-    }
+    // public static function getToolbarBtn($type='index', $options=[] )
+    // {
+    //     return [
+    //         [
+    //             'action' => 'new',
+    //             'modal' => static::en,
+    //             'attr' => ['class' => 'btn-primary']
+    //         ]
+    //     ];
+    // }
 
 
 }

@@ -70,13 +70,13 @@ class EntityHelper{
 
     public function getIdPrototype(?string $entityClassName=null, string $bundleName=null):string
     {
-        return is_null($entityClassName) ? $this->idPrototype : $this->getEntityNamespace($entityClassName)::emptyId;
+        return is_null($entityClassName) ? $this->idPrototype : $this->getEntityNamespace($entityClassName)::idPrototype;
     }
 
-    public function getEmptyId(?string $entityClassName=null, string $bundleName=null):string//deprected
-    {
-        return ($this->getEntityNamespace($entityClassName))::emptyId;
-    }
+    // public function getEmptyId(?string $entityClassName=null, string $bundleName=null):string//deprected
+    // {
+    //     return ($this->getEntityNamespace($entityClassName))::emptyId;
+    // }
 
     public function getEntityShortNames(?string $entityClassName=null, string $bundleName=null):array
     {
@@ -143,7 +143,7 @@ class EntityHelper{
         $this->entitiesSettings[$entityClassName]=array_merge($this->sh->getSettingsValues($en), [
             'en' => $en,
             'ecn' => $entityClassName,
-            'eid' => $this->getEmptyId($entityClassName),
+            'eid' => $this->getIdPrototype($entityClassName),
             'fields' => $this->getEntityShortNames($entityClassName)
         ]);
         $genCustom='custom'.$entityClassName.'Settings';
@@ -311,24 +311,63 @@ class EntityHelper{
                     'def' => ['active', 'regular'],
                     'table_service' => ['hidden-active']
                 ]
-            ],
-            'actions' => [
-                'predefined' => [
-                    'edit' => [ 
-                        'action' => 'edit', 
-                        'type' => 'm', 
-                        'target' => 'clients'
-                    ],
-                    'delete' => [ 
-                        'action' => 'delete',
-                        'type' => 'm',
-                        'target' => 'clients'
-                    ]
-                ],
-                'types'=>[
-                    'index' => ['edit', 'delete']
-                ]
+            // ],
+            // 'actions' => [
+            //     'predefined' => [
+            //         'edit' => [ 
+            //             'action' => 'edit', 
+            //             'type' => 'm'
+            //         ],
+            //         'delete' => [ 
+            //             'action' => 'delete',
+            //             'type' => 'm'
+            //         ]
+            //     ],
+            //     'types'=>[
+            //         'index' => ['edit', 'delete']
+            //     ]
             ]
+        ],
+        'Colors' =>[
+            'filters' => [
+                'predefined' => [
+                ],
+                'types' => [
+                    'index' => ['active'],
+                    'def' => ['active']
+                ]
+            ],
+            // 'actions' => [
+            //     'predefined' => [               
+            //         'edit' => [ 
+            //             'action' => 'edit', 
+            //             'type' => 'm', 
+            //             'target' => 'colors'
+            //         ],
+            //         'delete' => [ 
+            //             'action' => 'delete',
+            //             'type' => 'm',
+            //             'target' => 'colors'
+            //         ]
+            //     ],
+            //     'types'=>[
+            //         'index' => ['edit', 'delete'],
+            //         'def' => ['edit', 'delete']
+            //     ]
+            // ],
+            // 'tools' => [
+            //     'predefined' => [               
+            //         'new' => [ 
+            //             'action' => 'new', 
+            //             'type' => 'm', 
+            //             'target' => 'colors'
+            //         ]
+            //     ],
+            //     'types'=>[
+            //         'index' => ['new'],
+            //         'def' => ['new']
+            //     ]
+            // ]
         ],
         'Deliveries' => [
             'filters' => [
@@ -429,6 +468,34 @@ class EntityHelper{
                     'table_service' => ['hidden-client']
                 ]
             ]   
+        ],
+        'Models' =>[
+            'filters' => [
+                'predefined' => [
+                ],
+                'types' => [
+                    'index' => ['active'],
+                    'def' => ['active']
+                ]
+            // ],
+            // 'actions' => [
+            //     'predefined' => [
+            //         'edit' => [ 
+            //             'action' => 'edit', 
+            //             'type' => 'm', 
+            //             'target' => 'models'
+            //         ],
+            //         'delete' => [ 
+            //             'action' => 'delete',
+            //             'type' => 'm',
+            //             'target' => 'models'
+            //         ]
+            //     ],
+            //     'types'=>[
+            //         'index' => ['edit', 'delete'],
+            //         'def' => ['edit', 'delete']
+            //     ]
+            ]
         ],
         'Orders' => [
             'filters' => [
@@ -763,7 +830,15 @@ class EntityHelper{
                     'form_productions_table' => ['hidden-production'],
                     'form_deliveries_table' => ['hidden-delivery']
                 ]
-            ]    
+            ],
+            'actions' => [
+                'predefined' => [               
+                ],
+                'types'=>[
+                    'index' => ['show'],
+                    'def' => ['show']
+                ]
+            ]
         ],
         'Settings' => [
             'filters' => [
@@ -786,7 +861,10 @@ class EntityHelper{
                             'widget' => 'multiselect',
                             'def-value' => ['null']               
                         ]
-                    ] 
+                    ],
+                    'hidden' => [
+                        'client' => 'hidden-client'
+                    ]
                 ],
                 'types' => [
                     'index' => ['client'],
@@ -794,6 +872,62 @@ class EntityHelper{
                     'table_client' => ['hidden-client'],
                     'table_service' => ['hidden-client']
                 ]            
+            ]
+        ],
+        'Sizes' =>[
+            'filters' => [
+                'predefined' => [
+                ],
+                'types' => [
+                    'index' => ['active'],
+                    'def' => ['active']
+                ]
+            // ],
+            // 'actions' => [
+            //     'predefined' => [
+            //         'edit' => [ 
+            //             'action' => 'edit', 
+            //             'type' => 'm', 
+            //             'target' => 'sizes'
+            //         ],
+            //         'delete' => [ 
+            //             'action' => 'delete',
+            //             'type' => 'm',
+            //             'target' => 'sizes'
+            //         ]
+            //     ],
+            //     'types'=>[
+            //         'index' => ['edit', 'delete'],
+            //         'def' => ['edit', 'delete']
+                // ]
+            ]
+        ],
+        'Trims' =>[
+            'filters' => [
+                'predefined' => [
+                ],
+                'types' => [
+                    'index' => ['active'],
+                    'def' => ['active']
+                ]
+            // ],
+            // 'actions' => [
+            //     'predefined' => [
+            //         'edit' => [ 
+            //             'action' => 'edit', 
+            //             'type' => 'm', 
+            //             'target' => 'trims'
+            //         ],
+            //         'delete' => [ 
+            //             'action' => 'delete',
+            //             'type' => 'm',
+            //             'target' => 'trims'
+            //         ]
+            //     ],
+            //     'types'=>[
+            //         'index' => ['edit', 'delete'],
+            //         'def' => ['edit', 'delete']
+            //     ]
             ]
         ]
     ];

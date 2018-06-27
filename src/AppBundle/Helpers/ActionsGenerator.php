@@ -1,38 +1,19 @@
 <?php
 namespace AppBundle\Helpers;
 use AppBundle\Utils\Utils;
-// use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-class ActionsGenerator extends ElementsGenerator
+
+class ActionsGenerator extends ClientElementsGenerator
 {
 
-    // private $ac;// AuthorizationCheckerInterface
-    private $th;// TransHelper
-    private $rh;// RouterHelper
-    // private $twig;
-    
-    protected $genType='actions';
-    protected $type='index';
+    protected $renderType="m";
 
-    private $clientId;
-    private $entityId;
-
-    public function __construct( EntityHelper $entityHelper, RouteHelper $routeHelper){
-        // $this->ac=$autorizationChecker;
+    public function __construct( EntityHelper $entityHelper, RouteHelper $routeHelper, TransHelper $transHelper){
         $this->eh=$entityHelper;
         $this->rh=$routeHelper;
-        // $this->twig=$twigEnviroment;
-        // $this->sh=$settingsHelper;
-        // $this->th=$transHelper;
+        $this->th=$transHelper;
     }
   
-    private function getUrl(string $name, array $parameters=[]):string
-    {
-        $parameters['id'] = $this->eh->getIdPrototype();
-        return $this->clientId ? $this->rh->getClientUrl($name, $this->ecn, $parameters) 
-            : $this->rh->getEmployeeUrl($name, $this->ecn, array_replace($parameters, [ 'cid' => $this->clientId]));
-    }
-
-    private function setActionUrl(array &$action, string $type, array $actionOptions):void
+    protected function setActionUrl(array &$action, array $actionOptions):void
     {
         $urlOptions=Utils::deep_array_value('url', $actionOptions );
         $name=$action['name'];
@@ -47,8 +28,8 @@ class ActionsGenerator extends ElementsGenerator
         }else if(is_string($urlOptions)){
             $name=$urlOptions;
         }
-        if($type != 'f'){
-            $parameters['type']=$type;
+        if($actionOptions['renderType'] != 'f'){
+            $parameters['type']= $actionOptions['renderType'];
         }
         if (Utils::deep_array_value('browserAction', $actionOptions)) {
             $action['d']['action'] = $name;
@@ -64,16 +45,16 @@ class ActionsGenerator extends ElementsGenerator
         }
     }
 
-    private function setActionTarget(array &$action, string $type, array $actionOptions):void
+    protected function setActionTarget(array &$action, array $actionOptions):void
     {
         $target = Utils::deep_array_value('target', $actionOptions);
-        switch ($type) {
+        switch ($actionOptions['renderType']) {
             case 'm' :
                 $action['d']['toggle'] = 'modal';
-                $action['d']['target'] = '#'.(is_null($target) || $target == '1' ? 'my' : $target ).'_modal';
+                $action['d']['target'] = $this->getSelector($target, 'modal');
             break;
             case 'p' :
-                $action['d']['target'] = '#'.(is_null($target) || $target == '1' ? 'my' : $target ).'_panel';
+                $action['d']['target'] = $this->getSelector($target, 'panel');;
             break;
             case 'w':
                 $action['attr']['target']= ($target) ?: '_blank';
@@ -81,26 +62,26 @@ class ActionsGenerator extends ElementsGenerator
         }       
     }
 
-    private function generateAction(array $actionOptions):array
+    protected function generateAction(array $actionOptions):array
     {
+        Utils::deep_array_value_set('renderType', $actionOptions, $this->renderType);
         $action=$this->generateElement($actionOptions);
         $action['action']=$actionOptions['action'];
         $action['name']=$actionOptions['action'];
-        $type = Utils::deep_array_value('type', $actionOptions, 'f');
-        $this->setActionUrl($action, $type, $actionOptions);
-        $this->setActionTarget($action, $type, $actionOptions);
+        $this->setActionUrl($action, $actionOptions);
+        $this->setActionTarget($action, $actionOptions);
+        $this->setLabel($action);
+        $this->setTitle($action);
         return $action;
     }
 
+
     public function generate(?string $type=null,  ?string $entityClassName=null, array $options=[]):array
     {
-        parent::generate($type, $entityClassName, $options);
-        $this->clientId=Utils::deep_array_value('clientId', $options);
-        $this->entityId=Utils::deep_array_value('entityId', $options, '__id__' );
+        $this->init($type, $entityClassName, $options);
         $actions=[];
         foreach($this->choicePredefinedElements($this->getEntityElements()) as $name => $action){
-            $action=$this->getElement($action);
-            $actions[$name]=$this->generateAction($action);
+            $actions[$name]=$this->generateAction($this->getElement($action));
         }
         return $actions;
     }

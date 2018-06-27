@@ -76,37 +76,6 @@ class SettingsController extends AppController
         return $btns;
     }
     
-    public function clientIndexAction(Request $request, $cid){
-        if (!$this->preAction($request, $cid)) {
-            return $this->responseAccessDenied();
-        }
-        $this->setTemplate('index');
-        $this->setRenderOptions([
-            'title' => $this->getTransHelper()->titleTex('client_index'),
-            'toolbars' => [
-                $this->genToolbar('client_index', [
-                    "cid" => $cid
-                ])
-            ],
-            'table' => $this->genTable('index', null, [
-                'actions' => 'index',
-                'd' => [
-                    'ajax' => [
-                        'url' => $this->getUrl('ajax', null, true, [
-                            "cid" => $cid
-                        ]),
-                        'dataSrc' => ''
-                    ]
-                ],            
-                'filters' => $this->getFilters('table_client', [
-                    'cid' => $cid
-                ])
-            ])
-        ])
-            ->addEntityModal();
-        return $this->renderSystem();
-    }
-
     public function clientAjaxDataAction(Request $request, $id, $cid = 0)
     {
         if (!$this->preAction($request, $cid, ['entitySettings' => false])) {

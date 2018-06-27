@@ -11,7 +11,7 @@ class Notes extends AppEntity
 {
     const en = 'notes';
     const ec = 'Notes';
-    const emptyId = '__nid__';
+    const idPrototype = '__nid__';
 
     // <editor-fold defaultstate="collapsed" desc="Fields utils">
     public static $shortNames = [

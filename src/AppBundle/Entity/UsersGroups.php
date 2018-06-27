@@ -8,7 +8,7 @@ class UsersGroups extends AppEntity
 {
     const en='usersgroups';
     const ec='UsersGroups';
-    const emptyId = '__ugid__';
+    const idPrototype = '__ugid__';
     
  // <editor-fold defaultstate="collapsed" desc="Fields utils">    
     public static $dicNames=[

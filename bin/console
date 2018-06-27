@@ -12,8 +12,8 @@ use Symfony\Component\Debug\Debug;
 
 set_time_limit(0);
 
-require '/home/vendor/autoload.php';
-// require __DIR__.'/../vendor/autoload.php';
+// require '/home/vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 $input = new ArgvInput();
 $env = $input->getParameterOption(['--env', '-e'], getenv('SYMFONY_ENV') ?: 'dev');

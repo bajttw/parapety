@@ -9,7 +9,7 @@ class InvoiceItems extends AppEntity
 {
     const en = 'invoiceitems';
     const ec = 'InvoiceItems';
-    const emptyId = '__iiid__';
+    const idPrototype = '__iiid__';
 
  //  <editor-fold defaultstate="collapsed" desc="Fields utils">
 

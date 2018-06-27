@@ -11,7 +11,7 @@ class AppEntity
 
     const numerate=false;
 
-    protected $controller = null;
+    // protected $controller = null;
 
     protected $oldValues=[];
 

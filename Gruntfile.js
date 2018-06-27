@@ -7,6 +7,7 @@ module.exports = function(grunt) {
     // Project configuration.
     var projectPath = 'src/';
     var webPath = 'web/bundles/';
+    var ramPath = 'w:/htdocs/Drako_new/';
     var bundlePath = function(type, name) {
         var n = name ? name.toLowerCase() : '',
             path = '';
@@ -186,6 +187,57 @@ module.exports = function(grunt) {
             }
         },
         copy: {
+            ram:{
+                expand: true,
+                cwd: '',
+                src: [
+                    'composer.*',
+                    'app/**',
+                    'bin/**',
+                    'web/**',
+                    'src/**',
+                    'tests/**',
+                    '!**/CSS_JS/**',
+                    '!**/public/**'
+                ],
+                dest: ramPath
+            },
+            ram_app:{
+                expand: true,
+                cwd: '',
+                src: [
+                    'app/**',
+                    'tests/**'
+                ],
+                dest: ramPath
+            },
+            ram_web:{
+                expand: true,
+                cwd: '',
+                src: [
+                    'web/**'
+                ],
+                dest: ramPath
+            },
+            ram_appbundle:{
+                expand: true,
+                cwd: 'src/AppBundle/',
+                src: [
+                    '**',
+                    '!CSS_JS/**',
+                    '!Resources/**'
+                ],
+                dest: ramPath+'src/AppBundle/'
+            },
+            ram_resources:{
+                expand: true,
+                cwd: 'src/AppBundle/Resources/',
+                src: [
+                    '**',
+                    '!public/**'
+                ],
+                dest: ramPath+'src/AppBundle/Resources/'
+            },
             public: {
                 expand: true,
                 cwd: paths.dist,
@@ -447,6 +499,22 @@ module.exports = function(grunt) {
             }
         },
         watch: {
+            ram_app:{
+                files: ['app/**', 'tests/**'],
+                tasks: ['newer:copy:ram_app']
+            },
+            ram_web:{
+                files: ['web/**'],
+                tasks: ['newer:copy:ram_web']
+            },
+            ram_appbundle:{
+                files: ['src/AppBundle/**', '!src/AppBundle/Resources/**', '!src/AppBundle/CSS_JS/**' ],
+                tasks: ['newer:copy:ram_appbundle']
+            },
+            ram_resources:{
+                files: ['src/AppBundle/Resources/**', '!src/AppBundle/Resources/public/**'],
+                tasks: ['newer:copy:ram_resources']
+            },
             images:{
                 files: [paths.CSS_JS + 'images/*.*'],
                 tasks: ['newer:copy:images', 'never:copy:webApp']
@@ -492,6 +560,7 @@ module.exports = function(grunt) {
     grunt.registerTask('clean_dist', 'Clean dist folders', ['clean:dist', 'clean:distApp']);
     grunt.registerTask('clean_var', 'Clean var folders', ['clean:var']);
     grunt.registerTask('copy_public', 'Copy public', ['newer:copy:public', 'newer:copy:publicApp']);
+    grunt.registerTask('copy_ram', 'Copy RamDisk', ['newer:copy:ram']);
     grunt.registerTask('compile_js', 'compile all js', [ 
         'concat:js',
         'concat:jsApp',

@@ -429,11 +429,11 @@
 
     {% block filter_control %}
         {% set en = ffilter.en|default(en|default('')) %}
-        {% set text = 'filter.' ~ ffilter.name %}
-        {% set title = text|gen_title( en ) %}
+        {# {% set text = 'filter.' ~ ffilter.name %} #}
+        {# {% set title = text|gen_title( en ) %} #}
         <div>
             {% set attr = {
-                title: title,
+                title: ffilter.attr.title,
                 class: 'form-group'
             } %}    
             <div {{ block('attributes') }}  >
@@ -443,12 +443,12 @@
                         class: 'control-label'
                     }
                 } %}
-                {% if ffilter.label is defined %}
-                    {% set label = label|array_replace( ffilter.label is iterable ? ffilter.label : { label: ffilter.label|trans } ) %}
-                {% endif %}
-                {% set label = label|set_label( text, en) %}
+                {% set label = ffilter.fieldLabel|default({ label: ( 'filters.' ~ ffilter.name )|gen_label( en ) }) %}
+                {# {% if ffilter.label is defined %}
+                {% endif %} #}
+                {# {% set label = label|set_label( text, en) %} #}
                 {{ block('label') }}
-                {% set ffilter = ffilter|set_attr( 'title', title )|add_class('form-control', 'attr') %}
+                {% set ffilter = ffilter|add_class('form-control', 'attr') %}
                 {{ block('filter_field') }}
             </div>
         </div>
@@ -456,18 +456,15 @@
 
     {% block filterbar %}
         {% set en = bar.en|default(en|default('')) %}
-        {% set attr = bar.attr|default({})
-            |set_attr('id', bar.name|default(en) ~ '_filterbar' )
-            |add_class( ['bar', 'filterbar'] )
-        %}
+        {% set attr = bar.attr|default({})|add_class( ['bar', 'filterbar'] ) %}
         {% set data_opt = bar.d|default({}) %} 
         <div {{ block('attributes') }} {{ block('data_options') }} >
             <div class="filters">
                 {% for ffilter in bar.filters %}
-                    {% set ffilter=ffilter|add_attr({ 
+                    {# {% set ffilter=ffilter|add_attr({ 
                         id: attr.id ~ '_' ~ ffilter.name,
                         name: attr.id ~ '[' ~ ffilter.name ~ ']'
-                    } ) %}
+                    } ) %} #}
                     {% if ffilter.type|default('1') != 'hidden' %}
                         {{ block('filter_control') }}
                     {% else %}   
@@ -485,11 +482,7 @@
 {# bars #}
     {% block bar_element %}
         {% if element.type == 'btn' %}
-            {% set btn = {
-                }
-                |array_replace(element)
-                |set_label('btn.' ~ element.action, element.en|default(btn_en|default('')))            
-            %}
+            {% set btn = element %}      
             {{ block("button") }}
         {% else %}
             
@@ -497,16 +490,14 @@
     {% endblock bar_element %}
 
     {% block bar %}
-        {% set div = {
-            attr: bar.attr|default({})|add_class('bar'), 
-            d: bar.d|default({})
-        } %}
-        {% set btn_en = bar.en|default(en|default('')) %}
-        {{ block("begin_div") }}
+        {% set en = bar.en|default(en|default('')) %}      
+        {% set attr = bar.attr|default({})|add_class('bar') %} 
+        {% set data_opt = bar.d|default({}) %} 
+        <div {{ block('attributes') }} {{ block('data_options') }} >
             {% for element in bar.elements %}
                 {{ block("bar_element") }}
             {% endfor %}    
-        {{ block("close_div") }}
+        </div>
     {% endblock bar %}
 
     {% block toolbar %}

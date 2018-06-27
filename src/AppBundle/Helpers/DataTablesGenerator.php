@@ -1,40 +1,30 @@
 <?php
 
 namespace AppBundle\Helpers;
-// use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use AppBundle\Utils\Utils;
 
-
-class DataTablesGenerator extends ElementsGenerator
+class DataTablesGenerator extends ClientElementsGenerator
 {
     private $ac;// AuthorizationCheckerInterface
-    private $th;// TransHelper
-    private $rh;// RouteHelper
     private $fg;//FilterGenerator
-    private $ag;//ActionsGenerator
+    private $eag;//EntityActionsGenerator
 
     protected $genType='datatables';
-    protected $type='index';
-
-    private $clientId;
-
     
-    public function __construct( EntityHelper $entityHelper, SettingsHelper $settingsHelper, TransHelper $transHelper, FiltersGenerator $filtersGenerator, ActionsGenerator $actionsGenerator, RouteHelper $routeHelper){
-        // $this->ac=$autorizationChecker;
+    public function __construct( EntityHelper $entityHelper, SettingsHelper $settingsHelper, TransHelper $transHelper, FiltersGenerator $filtersGenerator, EntityActionsGenerator $entityActionsGenerator, RouteHelper $routeHelper){
         $this->eh=$entityHelper;
         $this->rh=$routeHelper;
         $this->sh=$settingsHelper;
         $this->th=$transHelper;
         $this->fg=$filtersGenerator;
-        $this->ag=$actionsGenerator;
+        $this->eag=$entityActionsGenerator;
     }
-  
 
-    private function getUrl(string $type, array $parameters):string
-    {
-        return $this->clientId ? $this->rh->getClientUrl($type, $this->ecn, array_replace($parameters, [ 'cid' => $this->clientId])) 
-                : $this->rh->getEmployeeUrl($type, $this->ecn, $parameters);
-    }
+    // private function getUrl(string $type, array $parameters):string
+    // {
+    //     return $this->clientId ? $this->rh->getClientUrl($type, $this->ecn, array_replace($parameters, [ 'cid' => $this->clientId])) 
+    //             : $this->rh->getEmployeeUrl($type, $this->ecn, $parameters);
+    // }
 
     private function setAjax(array &$table):void
     {
@@ -81,7 +71,8 @@ class DataTablesGenerator extends ElementsGenerator
                 ]
             ],
             $this->eh->getSettingsValue('tables-options', $this->ecn) ?: [],
-            Utils::deep_array_value('d', $elementOptions, [])
+            Utils::deep_array_value('d', $elementOptions, []),
+            $this->sh->getTableSettings( $this->en, $this->type) ?: [] 
         );
     }
 
@@ -97,7 +88,7 @@ class DataTablesGenerator extends ElementsGenerator
         }else{
             $tActions=$oActions;
         }
-        $actions=$this->ag->generate($tActions);
+        $actions=$this->eag->generate($tActions, $this->ecn);
         foreach($actions as $a){
             if(array_key_exists('url', $a )){
                 $table['d']['entity-urls'][$a['name']]=$a['url'];
@@ -121,48 +112,76 @@ class DataTablesGenerator extends ElementsGenerator
 
     private function setSelect(array &$table):void
     {
-        $oSelect= Utils::deep_array_value('select', $this->options );
-        if(!$oSelect){
+        $select= Utils::deep_array_value('select', $this->options );
+        if(!$select){
             return ;
         }
-        if(is_array($oSelect)){
-            $tActions=Utils::deep_array_value('type', $oActions, $this->type);
-            $cActions=Utils::deep_array_value('column', $oActions);
-        }else{
-            $tActions=$oActions;
+        if (!is_array($select)) {
+            $select = is_string($select) ? ['options' => ['style' => $select]] : [];
         }
-        $table['d']['columns'][]=\array_replace_recursive([
-            'tmpl' => [
-                'actions' => $actions,
-                'block' => 'datatable_actions'
-            ],
-            'label' => 'actions',
-            'data' => null,
-            'className' => 'dt-actions',
-            'searchable' => false,
-            'orderable' => false,
-            'render' => 'actions'
-        ],
-        isset($cActions) ? $cActions : []
-    );
+        $oSelect=Utils::deep_array_value('options', $select, []);
+        Utils::array_values_set($oSelect, [
+            'style' => 'single',
+            'selector' => 'tr'
+        ]);
+        if (array_key_exists('column', $select)) {
+            $cSelect = array_replace_recursive(
+                [
+                    'data' => 'sel',
+                    'className' => 'dt-select',
+                    'searchable' => false,
+                    'orderable' => false,
+                    'defaultContent' => "",
+                    'render' => "sel"
+                ],
+                is_array($select['column']) ? $select['column'] : []
+            );
+            if ($oSelect['selector'] == 'td') {
+                $oSelect['selector'] = 'td.' . $cSelect['className'];
+            }
+            \array_unshift($table['d']['columns'], $cSelect);
+        }
+        $table['d']['select'] = $oSelect;
+    }
 
+    private function setDetails(array &$table):void
+    {
+        $details = Utils::deep_array_value('details', $this->options);
+        if(!$details){
+            return;
+        }
+        if (!is_array($details)) {
+            $details = is_string($details) ? ['options' => ['render' => $details]] : [];
+        }
+        $oDetails = Utils::deep_array_value('options', $details, []);
+        Utils::deep_array_value_set('render', $oDetails, $this->en);
+        $column = Utils::deep_array_value('column', $details, true);
+        if ($column) {
+            array_unshift($columns, array_replace_recursive([
+                    'label' => 'det',
+                    'data' => null,
+                    'className' => 'dt-detail',
+                    'searchable' => false,
+                    'orderable' => false,
+                    'defaultContent' => ""
+                ],
+                is_array($column) ? $column : []
+            ));
+        }
+        $default['d']['details'] = $oDetails;
+        $default['d']['ajax']['url'] = $this->getUrl('ajax_details');     
     }
 
     public function generate( ?string $type = 'index', ?string $entityClassName = null, array $options = [ ]):array
     {
-        parent::generate($type, $entityClassName, $options);
-        $this->clientId=Utils::deep_array_value('clientId', $options);
+        $this->init($type, $entityClassName, $options);
         $table=$this->generateElement($options);
-        $table['name']=Utils::deep_array_value('name', $options, $this->en);
-        $table['d']=array_replace_recursive(
-            $table['d'],
-            $this->sh->getTableSettings( $this->en, $type) ?: [] 
-        );
+        $this->setId($table);
         $this->setAjax($table);
         $this->setEntityUrls($table);
         $this->setActions($table);
-        $columns=&$table['d']['columns'];
-
+        $this->setSelect($table);
+        $this->setDetails($table);
         return $table;
     }
 

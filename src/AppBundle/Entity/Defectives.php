@@ -8,7 +8,7 @@ namespace AppBundle\Entity;
 class Defectives extends AppEntity{
     const en='defectives';
     const ec='Defectives';
-    const emptyId = '__did__';
+    const idPrototype = '__did__';
 
     public static $shortNames=[
         'id' => 'id',

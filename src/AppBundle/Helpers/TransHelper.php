@@ -94,4 +94,33 @@ class TransHelper
         return $this->titleText('btn'.$str, $entityName );
     }
 
+    private function translate(string $str, array $include=[]):string
+    {
+        $s = $this->translator->trans($str);
+        if($count=count($include)){
+            $search=[];
+            for($i=1; $i<=$count; $i++){
+                $search[]='%'.$i;
+            }
+            $s=str_replace($search, $include, $s);
+        }
+        return $s;
+    }
+
+    public function trans($str, array $include=[]):string
+    {
+        if(is_null($str) || $str == ''){
+            return '';
+        }
+        if (is_array($str)) {
+            $t = [];
+            foreach ($str as $s) {
+                $t[]=$this->translate($s, $include);
+            }
+            return implode(' ', $t);
+        }
+        else {
+            return $this->translate($str, $include);
+        }
+    }
 }

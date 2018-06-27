@@ -12,7 +12,7 @@ class Trims extends AppEntity
 {
     const en='trims';
     const ec='Trims';  
-    const emptyId = '__tid__';
+    const idPrototype = '__tid__';
     
  //  <editor-fold defaultstate="collapsed" desc="Fields utils">    
     public static $dicNames=[
@@ -112,11 +112,6 @@ class Trims extends AppEntity
 		*/
     private $upload;
  // </editor-fold>       
-
-    public function __construct($options=[]){
-        parent::__construct($options);
-        $this->setSequence($options['controller']->getEntityCount() + 1 );
-    }
 
  // <editor-fold defaultstate="collapsed" desc="Fields functions"> 
     /**

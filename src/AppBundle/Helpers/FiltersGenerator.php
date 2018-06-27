@@ -8,7 +8,6 @@ use AppBundle\Utils\Utils;
 class FiltersGenerator extends ElementsGenerator{
 
     protected $genType='filters';
-    protected $type='index';
     
     protected $predefined=[
         'active' => [
@@ -52,9 +51,23 @@ class FiltersGenerator extends ElementsGenerator{
     ];
 
 
-    public function __construct(EntityHelper $entityHelper, SettingsHelper $settingsHelper){
+    public function __construct(EntityHelper $entityHelper, SettingsHelper $settingsHelper, TransHelper $transHelper){
         $this->eh=$entityHelper;
         $this->sh=$settingsHelper;
+        $this->th=$transHelper;
+    }
+
+    protected function getGenericElements():array
+    {
+        $elements=[
+            'predefined' => [
+                'active' => 'active'
+            ],
+            'types' => [
+                'def' => ['active']
+            ]
+        ];
+        return $this->choicePredefinedElements($elements); 
     }
 
     protected function getPredefinedElement(string $name, array $defined)
@@ -166,6 +179,7 @@ class FiltersGenerator extends ElementsGenerator{
     {
         $filter=$this->generateElement($filterOptions);
         $filter['type'] = Utils::deep_array_value('type', $filterOptions, 'select');
+        $this->setFieldAttr($filter, $filterOptions);
         $filter['data'] = $this->getData($filterOptions);
         if(count($filter['data']) > 0){
             $filter['d']['dic']=$filter['data'];
@@ -175,7 +189,7 @@ class FiltersGenerator extends ElementsGenerator{
 
     public function generateClientFilter(?string $entityClassName=null, int $clientId=0):array
     {
-        parent::generate('hidden-client', $entityClassName, [ 'values' => ['client' => $clientId]]);
+        $this->init('hidden-client', $entityClassName, [ 'values' => ['client' => $clientId]]);
         $filter=$this->getPredefinedElement('hidden-client', $this->getEntityElements()['predefined']);
         if(isset($filter)){
             return $this->genHiddenFilter($this->getElement($filter));
@@ -185,7 +199,7 @@ class FiltersGenerator extends ElementsGenerator{
 
     public function generateTableFilters(?string $type, ?string $entityClassName=null, array $options=[]):array
     {
-        parent::generate('table_' . $type, $entityClassName, $options);
+        $this->init('table_' . $type, $entityClassName, $options);
         $filters=[
         ];
         foreach($this->choicePredefinedElements($this->getEntityElements()) as $name => $filter){
@@ -198,7 +212,7 @@ class FiltersGenerator extends ElementsGenerator{
 
     public function generate(?string $type=null,  ?string $entityClassName=null, array $options=[]):array
     {
-        parent::generate($type, $entityClassName, $options);
+        $this->init($type, $entityClassName, $options);
         $filters=[
             'visible' => [],
             'hidden' => []
@@ -208,25 +222,13 @@ class FiltersGenerator extends ElementsGenerator{
             $fname= strpos($name, 'hidden-') === false ? $name : substr($name, 7) ;
             if (Utils::deep_array_value('type', $filter) == 'hidden'){
                 $filters['hidden'][$fname] = $this->genHiddenFilter($filter);
-            }else{
+            }else{       
                 $filters['visible'][$fname] = $this->genFilter($filter);
             }
         }
         return $filters;
     }
 
-    protected function getGenericElements():array
-    {
-        $elements=[
-            'predefined' => [
-                'active' => 'active'
-            ],
-            'types' => [
-                'def' => ['active']
-            ]
-        ];
-        return $this->choicePredefinedElements($elements); 
-    }
 
 
 

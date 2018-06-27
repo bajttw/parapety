@@ -9,7 +9,7 @@ class Clients extends AppEntity
 {
     const en = 'clients';
     const ec = 'Clients';
-    const emptyId = '__cid__';
+    const idPrototype = '__cid__';
 
     //  <editor-fold defaultstate="collapsed" desc="Fields utils">
     public static $dicNames = [

@@ -1,10 +1,16 @@
 clients:
     label:
+        eactions:
+            edit: ""
+            delete: ""
+            show: ""
         account: Moje konto
         actions: Akcje
         active: Status
         active_no: nieaktywny
         active_yes: aktywny
+        tools:
+            new: Dodaj
         btn:
             add: Dodaj
             cancel: Anuluj
@@ -22,7 +28,7 @@ clients:
             save: Zapisz
             submit: Zapisz
             update: Zapisz
-        choice: '-- wybierz klienta --'
+        choice: "-- wybierz klienta --"
         city: Miejscowość
         client: Klient
         clientGroups: Grupy klientów
@@ -32,11 +38,7 @@ clients:
         code: Kod kl.
         contact: Kontakt
         description: Opis
-        det: ''
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
+        det: ""
         edit: Edycja klienta
         email: Adres e-mail
         filters:
@@ -58,13 +60,11 @@ clients:
         regular: Stały klient
         regular_no: nie
         regular_yes: tak
-        sel: ''
+        sel: ""
         service: Obsługa klientów
         settings: Ustawienia
         street: Ulica
         tel: Telefon
-        tools:
-            new: Dodaj
         update: Aktualizuj
         uploads: Załączniki
         users: Użytkownicy
@@ -78,6 +78,8 @@ clients:
     title:
         actions: Akcje
         active: Status aktywności
+        tools:
+            new: Dodaj
         btn:
             add: Dodaj
             cancel: Anuluj
@@ -103,10 +105,6 @@ clients:
         contact: Osoba kontaktowa
         create: Nowy klient
         delete: Usuwanie klienta
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Edycja klienta
         email: Adres e-mail do klienta
         error:
@@ -117,7 +115,6 @@ clients:
             orders:
                 status: Status zamówienia
             regular: Stały klient
-        id: ID
         index: Klienci
         list: Lista klientów
         mobile: Drugi telefon do klienta
@@ -127,8 +124,6 @@ clients:
         service: Obsługa klientów
         street: Ulica
         tel: Telefon do klienta
-        tools:
-            new: Dodaj
         update: Aktualizacja
         user_added: Dodano nowego użytkownika dla klienta
         user_created: Utworzono użytkownika dla klienta
@@ -138,6 +133,8 @@ clients:
 clientsgroups:
     label:
         actions: Akcje
+        tools:
+            new: Dodaj
         btn:
             add: Dodaj
             cancel: Anuluj
@@ -158,22 +155,16 @@ clientsgroups:
         code: Kod
         create: Utwórz
         description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters: []
         id: ID
         index: Grupy klientów
         name: Nazwa
         new: Dodaj
-        tools:
-            new: Dodaj
         update: Aktualizuj
     message:
         no_orders: Brak poprawnych zamówień
     title:
-        actions: Akcje
+        tools:
+            new: Dodaj
         btn:
             add: Dodaj
             cancel: Anuluj
@@ -195,21 +186,17 @@ clientsgroups:
             update: Zapisz
         choice: wybierz grupę klientów
         delete: Usuwanie grupy klientów
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Edycja grupy klientów
-        filters: []
-        id: ID
         index: Grupy klientów
         new: Nowa grupa klientów
-        tools:
-            new: Dodaj
-    warning: []
 colors:
     label:
-        '': Nazwa
+        tools:
+            new: Dodaj
+        eactions:
+            edit: ""
+            delete: ""
+            show: ""
         actions: Akcje
         active: Status
         active_no: nieaktywny
@@ -223,37 +210,32 @@ colors:
             confirm: Zatwierdź
             create: Utwórz
             default: Domyślnie
+            remove: Usuń
             delete: Usuń
             edit: Edytuj
             filter: Filtruj
             info: Szczegóły
             new: Dodaj
-            remove: Usuń
-            save: Zapisz
             show: Pokaż
-            submit: Zapisz
             update: Zapisz
             upload: Dodaj
             upload_delete: Usuń
         colors: Kolory parapetów
-        correct_values: 'Dostępne kolory: '
+        correct_values: "Dostępne kolory: "
         d: Opis
         delete: Usuń
         description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         edit: Edycja
         file:
             desc: Opis
             original: Nazwa pliku
             size: Rozmiar pliku
-        filters:
+        filters: 
             active: Filtruj
         id: ID
         index: Kolory parapetów
-        message: ''
+        message: ""
+        n: Nazwa
         name: Nazwa
         new: Dodaj
         pdf: Generuj pdf
@@ -262,8 +244,6 @@ colors:
         show: Pokaż
         sq: Kolejnosć
         symbol: Symbol
-        tools:
-            new: Dodaj
         update: Aktualizuj
         updated: Zaktualizowano
         upload: Obraz
@@ -274,58 +254,46 @@ colors:
         title:
             color: Wybór koloru parapetu
     title:
-        actions: Akcje
-        active: Status aktywności
+        id: Id w bazie
+        tools:
+            new: Dodaj
         btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
             change_off: Edycja zablokowana
             change_on: Edycja
-            clear: Wyczyść
             close: Zamknij
-            confirm: Zatwierdź
-            create: Zapisz
-            default: Domyślnie
             delete: Usuń
             edit: Edytuj
             filter: Filtruj
             new: Dodaj
-            remove: Usuń
-            save: Zapisz
             show: Pokaż
-            submit: Zapisz
             update: Zapisz
             upload: Wstaw rysunek
             upload_delete: Usuń rysunek
         delete: Usuń
-        description: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Edycja
         file:
             desc: Opis
             original: Nazwa pliku
             size: Rozmiar pliku
-        filters:
-            active: Aktywny
-        id: Id w bazie
         index: Kolory parapetów
         models: Kolory parapetów
-        name: Nazwa
+        update: Aktualizacja koloru
         new: Dodaj
         pdf: Generuj pdf
-        sequence: Kolejność
         show: Pokaż
-        tools:
-            new: Dodaj
-        update: Aktualizacja koloru
+        filters:
+            active: Aktywny
+        sequence: Kolejność
+        name: Nazwa
+        description: Opis
+        active: Status aktywności
+        actions: Akcje
     warning:
         not_found: brak w bazie
 deliveries:
     label:
+        tools:
+            new: Dodaj
         actions: Akcje
         addOrders: Dodaj zamówienia
         basic_data: Podstawowe dane
@@ -343,7 +311,7 @@ deliveries:
             edit: Edytuj
             exp_xls: Eksport do Excel
             filter: Filtruj
-            import: ''
+            import: ""
             new: Dodaj
             remove: Usuń
             save: Zapisz
@@ -351,19 +319,12 @@ deliveries:
             update: Aktualizuj
             upload_delete: Usuń
         choiceClient: Wybierz klienta
-        client:
+        client: 
             code: Kod klienta
             name: Nazwa klienta
         clientCode: Kod klienta
         clientName: Nazwa klienta
         deliveries: Wysyłki
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters:
-            generated: Wygenerowana
-            progress: Kompletowanie
         generated: Utworzona
         id: ID
         index: Wysyłki
@@ -371,13 +332,17 @@ deliveries:
         orders: Zamówienia
         products: Produkty
         progress: Postęp
-        tools:
-            new: Dodaj
+        filters:
+            generated: Wygenerowana
+            progress: Kompletowanie
     message:
         create: Utworzono wysyłkę o numerze %1 do klienta %2
         update: Zaktualizowano wysyłkę o numerze %1 do klienta %2
     title:
+        tools:
+            new: Dodaj
         actions: Akcje
+        delete: Usuwanie wysyłki
         btn:
             add: Dodaj
             cancel: Anuluj
@@ -390,7 +355,7 @@ deliveries:
             delete: Usuń
             edit: Edytuj
             filter: Filtruj
-            import: ''
+            import: ""
             new: Dodaj
             remove: Usuń
             save: Zapisz
@@ -400,12 +365,7 @@ deliveries:
             upload_delete: Usuń
             xls: Eksport do Excel
         create: Tworzenie wysyłki
-        delete: Usuwanie wysyłki
         deliveries: Wysyłki
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Edycja wysyłki
         filters:
             generated: Utworzona
@@ -416,9 +376,6 @@ deliveries:
         new: Nowa wysyłka
         number: Numer wysyłki
         progress: Postęp
-        tools:
-            new: Dodaj
-    warning: []
 error:
     base: Błąd bazy danych
     server: Błąd serwera
@@ -429,32 +386,24 @@ import:
         title: Import pozycji
 invoices:
     label:
+        tools:
+            new: Dodaj
         actions: Akcje
         btn:
             add: Dodaj
-            cancel: Anuluj
             change: Zmień
-            clear: Wyczyść
             close: Zamknij
-            confirm: Zatwierdź
             create: Utwórz
-            default: Domyślnie
-            delete: ''
-            details: ''
-            edit: Edycja
+            delete: ""
+            details: ""
             filter: Filtruj
             info: Szczegóły
             new: Nowa faktura
             remove: Usuń
             save: Zapisz
-            submit: Zapisz
             update: Aktualizuj
         clientCode: Kod klienta
         created: Utworzona
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         filters:
             client: Kient
             clientCode: Klient
@@ -466,70 +415,55 @@ invoices:
         invoices: Faktury
         number: Numer
         term: Termin
+    title:
         tools:
             new: Dodaj
-    message: []
-    title:
         actions: Akcje
         btn:
             add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
+            show: Pokaż
             copy: Kopiuj
-            create: Utwórz
-            default: Domyślnie
-            delete: ''
-            details: ''
+            pdf: pdf
             edit: Edycja
+            change: Zmień
+            close: Zamknij
+            create: Utwórz
+            delete: ""
+            details: ""
             filter: Filtruj
             info: Szczegóły
             new: Nowa faktura
-            pdf: pdf
             remove: Usuń
             save: Zapisz
-            show: Pokaż
-            submit: Zapisz
             update: Aktualizuj
         clientCode: Kod klienta
         created: Utworzona
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
+        id: ID
+        index: Faktury
         filters:
             client: Filtrowanie wg. klienta
             clientCode: Filtrowanie wg. klienta
             clientName: Filtrowanie wg. klienta
             created: Filtrowanie wg. daty utworzenia
             term: Filtrowanie wg. terminu
-        id: ID
-        index: Faktury
         invoices: Faktury
         number: Numer
         term: Termin
-        tools:
-            new: Dodaj
-    warning: []
 invoicesitems:
     label:
-        actions: Akcje
         tools:
             new: Dodaj
-    title:
+        actions: Akcje
+    title: 
         tools:
             new: Dodaj
 label:
-    '': Nie
-    '1': Tak
     active: Status
     active_no: nieaktywny
     active_yes: aktywny
     add: Dodaj
     approved: Zatwierdzone
-    auto: '- auto -'
+    auto: "- auto -"
     base_error: Błąd bazy danych
     btn:
         add: Dodaj
@@ -543,18 +477,18 @@ label:
         delete: Usuń
         edit: Edytuj
         filter: Filtruj
-        import: ''
+        import: ""
         new: Dodaj
         remove: Usuń
         save: Zapisz
         submit: Zapisz
         update: Aktualizuj
         upload_delete: Usuń
-    choice: '--- wybierz ---'
+    choice: "--- wybierz ---"
     confirm: potwierdzam
     confirm_remove: potwierdzam usunięcie
     email: Adres e-mail
-    empty: '----'
+    empty: "----"
     exp_copy: Export do schowka
     exp_pdf: Export PDF
     exp_xls: Export Excel
@@ -562,6 +496,7 @@ label:
     lp: Lp.
     name: Nazwa
     new: Dodaj
+    no: Nie
     record_id: Identyfikator
     remove: Usuń
     reports: Raporty
@@ -572,6 +507,7 @@ label:
     summary: Podsumowanie
     update: Aktualizuj
     warnings: Uwagi
+    yes: Tak
 message:
     access_denied: Dostęp zabroniony. Brak uprawnień.
     base_error: Błąd bazy danych
@@ -587,9 +523,9 @@ modal:
         deliveries_show: Podgląd wysyłki
         exp: Eksport
         import: Import pozycji zamówienia
-        invoices_exp: Eksport faktury
         invoices_show: Podgląd faktury
-        my_modal: ''
+        invoices_exp: Eksport faktury
+        my_modal: ""
         orders_confirm: Zatwierdzanie zamówień
         orders_exp: Eksport zamówienia
         orders_show: Podgląd zamówienia
@@ -600,7 +536,8 @@ modal:
         trims: Opcje wykończenia
 models:
     label:
-        '': Nazwa
+        tools:
+            new: Dodaj
         a: Status
         actions: Akcje
         active: Status
@@ -630,10 +567,6 @@ models:
         d: Opis
         delete: Usuń
         description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         edit: Edycja
         file:
             desc: Opis
@@ -644,6 +577,7 @@ models:
         id: ID
         index: Modele parapetów
         models: Modele parapetów
+        n: Nazwa
         name: Nazwa
         new: Dodaj
         pdf: Generuj pdf
@@ -653,18 +587,18 @@ models:
         show: Pokaż
         sq: Kolejność
         symbol: Symbol
-        tools:
-            new: Dodaj
         update: Aktualizuj
         upload: Obraz
     message:
-        correct_values: 'Dostępne modele: '
+        correct_values: "Dostępne modele: "
         updated: Zaktualizowano
         wrong_value: Nieprawidłowy model parapetu.
     modal:
         title:
             model: Wybór modelu parapetu
     title:
+        tools:
+            new: Dodaj
         actions: Akcje
         active: Status
         btn:
@@ -674,7 +608,6 @@ models:
             change_off: Edycja zablokowana
             change_on: Edycja
             clear: Wyczyść
-            close: Zamknij
             confirm: Zatwierdź
             create: Utwórz
             default: Domyślnie
@@ -683,19 +616,12 @@ models:
             edit: Edytuj
             filter: Filtruj
             new: Dodaj
-            remove: Usuń
-            save: Zapisz
             show: Pokaż
-            submit: Zapisz
             update: Zapisz
             upload: Wstaw rysunek
             upload_delete: Usuń rysunek
         delete: Usuń
         description: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Edycja
         file:
             desc: Opis
@@ -711,33 +637,27 @@ models:
         sequence: Kolejność
         show: Pokaż
         symbol: Symbol
-        tools:
-            new: Dodaj
     warning:
         not_found: brak w bazie
 orders:
     label:
+        tools:
+            new: Dodaj
         actions: Akcje
         actualState: Status
         approved: Zatwierdzone
-        area: 'Pow. [m2]'
+        area: "Pow. [m2]"
         areaLack: Pow. lak.
         basic: Podstawowe dane
         basic_data: Podstawowe dane
         basic_parameters: Domyślne parametry
         btn:
-            add: Dodaj
-            addPosition: Dodaj pozycję
-            cancel: Anuluj
-            change: Zmień
             clear: Domyślne
             clientComment: K
             close: Zamknij
-            confirm: Zatwierdź
             create: Utworz
-            default: Domyślnie
-            delete: ''
-            details: ''
+            delete: ""
+            details: ""
             edit: Edycja
             exp_excel: Excel
             exp_export: Eksport
@@ -746,12 +666,11 @@ orders:
             import: Import
             info: Szczegóły
             new: Dodaj
+            addPosition: Dodaj pozycję
             orderComment: U
             prodComment: P
             production: Produkcja
-            remove: Usuń
             save: Zapisz
-            submit: Zapisz
             update: Aktualizuj
         choiceClient: wybierz klienta
         client: Klient
@@ -765,12 +684,8 @@ orders:
         created: Utworzone
         cutter: Frez
         delete: Usuń
-        det: ''
+        det: ""
         doubleSide: DW
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         express: Tryb
         filters:
             approved: Zatwierdzone
@@ -805,7 +720,7 @@ orders:
         prodComment: Komentarz producenta
         progress: Postęp
         quantity: Sztuk
-        sel: ''
+        sel: ""
         shipment: Wysyłka
         show: Pokaż
         side1: jednostronnie
@@ -818,12 +733,10 @@ orders:
         sizes: Grubości
         status: Status
         submit: Zapisz
-        sum_area: 'Łączna powierzchnia [m2]'
+        sum_area: "Łączna powierzchnia [m2]"
         sum_quantity: Łącznie sztuk
         summary: Podsumowanie
         term: Termin
-        tools:
-            new: Dodaj
         total: Łącznie
         trims: Wykończenie
         update: Aktualizuj
@@ -852,6 +765,8 @@ orders:
             orders_exp: Eksport zamówienia
             orders_to_production: Zamówienie gotowe do produkcji
     title:
+        tools:
+            new: Dodaj
         actions: Polecenia
         actualState: Status
         approved: Czas zatwierdzenia zamówienia
@@ -859,19 +774,14 @@ orders:
         areaLack: Powierzchnia lakierowania
         array: Powierzchnia w m2
         btn:
-            add: Dodaj
-            addPosition: Dodaj pozycję
-            cancel: Anuluj
-            change: Zmień
             clear: Domyślne
             clientComment: Komentarz własny klienta
             close: Zamknij
-            confirm: Zatwierdź
             copy: Kopiuj
             create: Utworz
-            default: Domyślnie
             delete: Usuń
             details: Szczegoly
+            addPosition: Dodaj pozycję
             edit: Edycja
             exp_excel: Excel
             exp_export: Eksport
@@ -884,10 +794,8 @@ orders:
             pdf: Generuj pdf
             prodComment: Komentarz własny producenta
             production: Produkcja
-            remove: Usuń
             save: Zapisz
             show: Pokaż
-            submit: Zapisz
             update: Aktualizuj
             xls: Excel
         client: Kod klienta
@@ -904,10 +812,6 @@ orders:
         det: Szczegóły zamówienia
         details: Szczegóły zamówienia
         doubleSide: Opcja dwustronna
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Edycja
         error:
             create: Błąd zapisu zamówienia
@@ -950,8 +854,6 @@ orders:
         sizes: Grubości występujące w zamówieniu
         status: Status zamówienia
         term: Termin realizacji zamówienia
-        tools:
-            new: Dodaj
         trims: Wykończenie
         update: Aktualizacja zamówienia
         value: Wartość
@@ -960,50 +862,40 @@ orders:
 positions:
     label:
         actions: Akcje
+        tools:
+            new: Dodaj
         add: Nowa pozycja
-        area: 'Pow. [m2]'
-        areaLack: 'Pow. lak. [m2]'
+        area: "Pow. [m2]"
+        areaLack: "Pow. lak. [m2]"
         btn:
             add: Dodaj
-            cancel: Anuluj
             change: Zmień
-            clear: Wyczyść
             clientComment: K
             close: Zamknij
             confirm: Zatwierdź
             create: Utwórz
-            default: Domyślnie
-            delete: ''
-            details: ''
-            edit: Edycja
-            filter: Filtruj
+            delete: ""
+            details: ""
             info: Szczegóły
-            new: Dodaj
             positionComment: U
             positionLackers: K
             prodComment: P
             remove: Usuń
             save: Zapisz
-            submit: Zapisz
             update: Aktualizuj
         clientComment: Komentarz własny
         color: Kolor
         comments: Uwagi
         cutter: Frez
-        det: ''
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters: []
+        det: ""
         handle: Uchwyt
-        height: 'Wys. [mm]'
+        height: "Wys. [mm]"
         id: id
         import: Import pozycji
         import_area: Pole importu
         import_view: Podgląd importu
-        length: 'Dł. [mm]'
-        lengthcm: 'Dł. [cm]'
+        length: "Dł. [mm]"
+        lengthcm: "Dł. [cm]"
         lp: Lp.
         model: Model
         nr: Lp.
@@ -1017,19 +909,17 @@ positions:
         prodComment: Komentarz producenta
         production: Produkcja
         quantity: Ilość
-        sel: ''
+        sel: ""
         sig:
             clientComment: K
             positionComment: U
             positionLackers: K
             prodComment: P
         size: Grubość
-        tools:
-            new: Dodaj
         trims: Wykończenie
         uploads: Załączniki
-        width: 'Szer. [mm]'
-        widthcm: 'Szer. [cm]'
+        width: "Szer. [mm]"
+        widthcm: "Szer. [cm]"
     message:
         import_length_error: Długość %1 jest błędna.
         import_length_warning: Długość %1 jest przyjęta z ostrzeżeniem.
@@ -1042,44 +932,33 @@ positions:
         import_widthcm_warning: Szerokość %1 jest przyjęta z ostrzeżeniem.
     title:
         actions: Akcje
+        tools:
+            new: Dodaj
         addAttach: Zalącznik
         area: Powierzchnia
         btn:
             add: Dodaj
-            cancel: Anuluj
             change: Zmień
-            clear: Wyczyść
             clientComment: Komentarz własny klienta
             close: Zamknij
             confirm: Zatwierdź
             create: Utwórz
-            default: Domyślnie
             delete: Usuń
             details: Szczegóły
-            edit: Edycja
-            filter: Filtruj
-            new: Dodaj
             positionComment: Komentarz do pozycji
             positionLackers: Lakiery pozycji
             prodComment: Komentarz własny producenta
             remove: Usuń
             save: Zapisz
-            submit: Zapisz
             update: Aktualizuj
         clientComment: Komentarz własny
         color: Kolor parapetu
         comments: Uwagi
         cutter: Frez
         doubleSide: Lakierowanie dwustronne
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        filters: []
         handle: Wybór uchwytu
         handles: Uchwyt frontu
         height: Wysokość w mm
-        id: ID
         length: Długość w mm
         lengthcm: Długość w cm
         model: Wybór modelu
@@ -1091,15 +970,15 @@ positions:
         quantity: Ilosć
         size: Wybór grubości
         status: Status zamówienia
-        tools:
-            new: Dodaj
         trims: Wykończenie
         uploads: Załączniki do pozycji zamówienia
         width: Szerokość w mm
         widthcm: Szerokość w cm
-    warning: []
 pricelistitems:
     label:
+        tools:
+            new: Dodaj
+        sel: ""
         actions: Akcje
         active: Status
         active_no: nieaktywna
@@ -1114,7 +993,7 @@ pricelistitems:
             confirm: Zatwierdź
             create: Utwórz
             default: Domyślnie
-            delete: ''
+            delete: ""
             edit: Edytuj
             filter: Filtruj
             generate: Generuj
@@ -1127,16 +1006,12 @@ pricelistitems:
         color: Kolor
         delete: Usuń
         description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         edit: Edycja
         end: Do
         filters:
             active: aktywne
-            color: Kolor
             size: Grubość
+            color: Kolor
         id: ID
         index: Pozycje cennika
         name: Nazwa
@@ -1144,27 +1019,30 @@ pricelistitems:
         parameters: Parametry
         pdf: PDF
         positions: Pozycje
-        price: Domyślna cena
         remove: Usuń
         s_n: Grubość
-        sel: ''
         show: Pokaż
         size: Grubość
         symbol: Symbol
         title: Nazwa
-        tools:
-            new: Dodaj
         update: Aktualizuj
+        price: Domyślna cena
     message:
         add: Dodano %1 z %2 pozycji cennika
         notFound: Nie odnaleziono cennika
     modal:
-        title:
+        title: 
             to_pricelist: Pozycje do cennika
     title:
+        tools:
+            new: Dodaj
         actions: Akcje
-        active: Status
         add: Dodawanie pozycji cennika
+        s_n: Grubość
+        c_n: Kolor
+        active: Status
+        sel: ""
+        id: ID
         btn:
             add: Dodaj
             cancel: Anuluj
@@ -1183,47 +1061,38 @@ pricelistitems:
             save: Zapisz
             submit: Zapisz
             update: Aktualizuj
-        c_n: Kolor
         clients: Klienci
         clientsGroups: Grupy klientów
         color: Kolor
         delete: Usuń
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Edycja
+        filters:
+            active: aktywne
+            size: Grubość
+            color: Kolor
         error:
             add: Błąd dodawania pozycji cennika
             create: Błąd tworzenia pozycji cennika
-        filters:
-            active: aktywne
-            color: Kolor
-            size: Grubość
         generate: Generowanie pozycji cennika
-        id: ID
         index: Cenniki
         name: Nazwa
         new: Dodaj
-        price: Domyślna cena
         pricelists: cenniki
-        s_n: Grubość
-        sel: ''
         show: Pokaż
         size: Grubość
         symbol: Symbol
-        tools:
-            new: Dodaj
-    warning: []
+        price: Domyślna cena
 pricelists:
     label:
+        tools:
+            new: Dodaj
         actions: Akcje
         addPrices: Dodaj pozycje
         basic: Podstawowe
         basic_data: Podstawowe dane
+        pricelists: Cenniki
         btn:
             add: Dodaj
-            addPriceListItems: Dodaj
             cancel: Anuluj
             change: Zmień
             clear: Wyczyść
@@ -1239,28 +1108,24 @@ pricelists:
             save: Zapisz
             submit: Zapisz
             update: Aktualizuj
+            addPriceListItems: Dodaj
+        filters:
+            start: Data początkowa
+            end: Data końcowa
+            clients: Klienci
+            clientsGroups: Grupy klientów
         clients: Klienci
         clientsGroups: Grupy klientów
         delete: Usuń
         description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         edit: Edycja
         end: Do
-        filters:
-            clients: Klienci
-            clientsGroups: Grupy klientów
-            end: Data końcowa
-            start: Data początkowa
         id: ID
         importServiceOptions: Importuj pozycje
         importServices: Importuj pozycje
         index: Cenniki
         new: Dodaj
         pdf: PDF
-        pricelists: Cenniki
         prices: Ceny
         remove: Usuń
         serviceCatalog: Cennik usług
@@ -1268,20 +1133,19 @@ pricelists:
         show: Pokaż
         start: Od
         title: Nazwa
-        tools:
-            new: Dodaj
         update: Aktualizuj
     message:
-        create: Utworzono cennik %1 obowiązujący od %2
         notFound: Nie odnaleziono cennika
+        create: Utworzono cennik %1 obowiązujący od %2
     modal:
-        pricelists_show: Podgląd cennika
         title: Wybór cennika
+        pricelists_show: Podgląd cennika
     title:
-        actions: Akcje
+        tools:
+            new: Dodaj
+        title: Cenniki
         btn:
             add: Dodaj
-            addPriceListItems: Dodaj
             cancel: Anuluj
             change: Zmień
             clear: Wyczyść
@@ -1296,36 +1160,34 @@ pricelists:
             remove: Usuń
             save: Zapisz
             show: Pokaż
+            xls: Excel
             submit: Zapisz
             update: Aktualizuj
-            xls: Excel
-        clients: Klienci
-        clientsGroups: Grupy klientów
-        create: Tworzenie nowego cennika
-        delete: Usuń
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja
-        end: Data końcowa
+            addPriceListItems: Dodaj
         filters:
+            start: Data początkowa
+            end: Data końcowa
             clients: Klienci
             clientsGroups: Grupy klientów
-            end: Data końcowa
-            start: Data początkowa
         id: ID
+        actions: Akcje
+        clients: Klienci
+        create: Tworzenie nowego cennika
+        clientsGroups: Grupy klientów
+        delete: Usuń
+        edit: Edycja
+        end: Data końcowa
         index: Cenniki
         new: Dodaj
         pricelists: cenniki
         show: Pokaż
         start: Data początkowa
-        title: Cenniki
-        tools:
-            new: Dodaj
-    warning: []
 prices:
-    label:
+    label: 
+        tools:
+            new: Dodaj
+        priceListItem: Pozycja cennika
+        value: Cena
         actions: Akcje
         btn:
             add: Dodaj
@@ -1336,7 +1198,7 @@ prices:
             confirm: Zatwierdź
             create: Utwórz
             default: Domyślnie
-            delete: ''
+            delete: ""
             edit: Edytuj
             filter: Filtruj
             generate: Generuj
@@ -1345,18 +1207,11 @@ prices:
             save: Zapisz
             submit: Zapisz
             update: Aktualizuj
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters: []
-        id: ID
-        priceListItem: Pozycja cennika
-        tools:
-            new: Dodaj
-        value: Cena
-    message: []
     title:
+        tools:
+            new: Dodaj
+        priceListItem: Pozycja cennika
+        value: Cena
         actions: Akcje
         btn:
             add: Dodaj
@@ -1367,7 +1222,7 @@ prices:
             confirm: Zatwierdź
             create: Utwórz
             default: Domyślnie
-            delete: ''
+            delete: ""
             edit: Edytuj
             filter: Filtruj
             generate: Generuj
@@ -1376,19 +1231,10 @@ prices:
             save: Zapisz
             submit: Zapisz
             update: Aktualizuj
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        filters: []
-        id: ID
-        priceListItem: Pozycja cennika
-        tools:
-            new: Dodaj
-        value: Cena
-    warning: []
 productions:
     label:
+        tools:
+            new: Dodaj
         actions: Akcje
         addOrders: Dodaj zamówienia
         basic_data: Podstawowe dane produkcji
@@ -1413,24 +1259,18 @@ productions:
             update: Aktualizuj
         create: Uworzono produkcję
         delete: Usuwanie
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         filters:
             generated: Wygenerowana
             progress: Postęp
         generated: Wygenerowana
         id: ID
         index: Produkcje
-        message: ''
+        message: ""
         new: Nowa produkcja
         number: Numer
         orders: Zamówienia
         products: Produkty
         progress: Postęp
-        tools:
-            new: Dodaj
     message:
         create: Utworzono produkcję o numerze
         no_orders: Brak poprawnych zamówień
@@ -1440,6 +1280,8 @@ productions:
         title:
             generate: Generowanie produkcji
     title:
+        tools:
+            new: Dodaj
         actions: Akcje
         btn:
             add: Dodaj
@@ -1462,10 +1304,6 @@ productions:
             update: Aktualizuj
         create: Tworzenie produkcji
         delete: Usuwanie produkcji
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Edycja produkcji
         error:
             create: Błąd tworzenia produkcji
@@ -1478,10 +1316,7 @@ productions:
         new: Nowa produkcja
         number: Numer
         progress: Postęp produkcji
-        tools:
-            new: Dodaj
         update: Aktutalizacja produkcji
-    warning: []
 products:
     label:
         actions: Akcje
@@ -1508,10 +1343,6 @@ products:
         clientLabel: Etykieta klienta
         comment: Uwagi
         cutTime: Cięcie
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         filters:
             cutTime: Proces cięcia
             packingTime: Proces pakowania
@@ -1521,9 +1352,6 @@ products:
         label: Etykieta
         number: Numer
         packingTime: Pakowanie
-        tools:
-            new: Dodaj
-    message: []
     title:
         actions: Akcje
         barcode: Kod Paskowy
@@ -1549,10 +1377,6 @@ products:
         clientLabel: Etykieta klienta
         comment: Uwagi
         cutTime: Cięcie
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         filters:
             cutTime: Proces cięcia
             packingTime: Proces pakowania
@@ -1562,15 +1386,14 @@ products:
         label: Etykieta
         number: Numer
         packingTime: Pakowanie
-        tools:
-            new: Dodaj
-    warning: []
 security:
     title:
         login: Logowanie do systemu
         resetting: Resetowanie hasła
 settings:
     label:
+        tools:
+            new: Dodaj
         actions: Akcje
         btn:
             add: Dodaj
@@ -1595,23 +1418,19 @@ settings:
         client: Klient
         create: Zapisz
         description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         filters:
             client: Klient
         id: ID
         index: Ustawienia
         name: Nazwa
         settings: Ustawienia
-        tools:
-            new: Dodaj
         value: Wartość
     message:
         create: Utworzono
         update: Zaktualizowano
     title:
+        tools:
+            new: Dodaj
         actions: Akcje
         btn:
             add: Dodaj
@@ -1635,10 +1454,6 @@ settings:
         cl_n: Klient
         complited: Zakończone
         description: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Edycja ustawienia
         filters:
             client: Klient
@@ -1647,13 +1462,13 @@ settings:
         name: Nazwa
         new: Nowe ustawienie
         settings: Ustawienia
-        tools:
-            new: Dodaj
         value: Wartość
     warning:
         not_found: brak w bazie
 shipments:
     label:
+        tools:
+            new: Dodaj
         actions: Akcje
         add_pos: Do wysyłki
         area: Powierzchnia
@@ -1684,9 +1499,9 @@ shipments:
         send: Wysłane
         sent: Wysłano
         shipments: Wysyłka
+    title:
         tools:
             new: Dodaj
-    title:
         btn:
             add: Dodaj
             cancel: Anuluj
@@ -1708,10 +1523,10 @@ shipments:
         edit: Edycja wysyłki
         index: Lista wysyłek
         new: Nowa wysyłka
-        tools:
-            new: Dodaj
 sizes:
     label:
+        tools:
+            new: Dodaj
         actions: Akcje
         active: Aktywny
         active_no: nie
@@ -1738,10 +1553,6 @@ sizes:
             upload_delete: Usuń
         delete: Usuń
         description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         edit: Edycja
         file:
             desc: Opis
@@ -1760,19 +1571,21 @@ sizes:
         sizes: Grubości parapetów
         sq: Kolejność
         symbol: Symbol
-        tools:
-            new: Dodaj
         update: Aktualizuj
     message:
-        correct_values: 'Dostępne grubości: '
+        correct_values: "Dostępne grubości: "
         notFound: Nie odnaleziono grubości
         wrong_value: Nieprawidłowa grubość parapetu.
     modal:
         title:
             size: Wybór grubości parapetu
     title:
+        tools:
+            new: Dodaj
         actions: Akcje
         active: Status
+        symbol: Symbol
+        name: Nazwa
         btn:
             add: Dodaj
             cancel: Anuluj
@@ -1797,10 +1610,6 @@ sizes:
             upload_delete: Usuń rysunek
         delete: Usuń
         description: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Edycja
         file:
             desc: Opis
@@ -1810,15 +1619,11 @@ sizes:
             active: Status
         id: ID
         index: Grubości parapetów
-        name: Nazwa
         new: Dodaj
         pdf: Generuj pdf
         sequence: Kolejność
         show: Pokaż
         sizes: Grubości parapetów
-        symbol: Symbol
-        tools:
-            new: Dodaj
     warning:
         not_found: brak w bazie
 title:
@@ -1840,39 +1645,28 @@ title:
     update: Aktualizacja
 trims:
     label:
-        '': Nazwa
+        tools:
+            new: Dodaj
         a: Status
         actions: Akcje
         active: Status
         active_no: nieaktywny
         active_yes: aktywny
         btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Edytuj
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
             create: Utwórz
-            default: Domyślnie
+            change: Edytuj
+            close: Zamknij
             delete: Usuń
             edit: Edytuj
             filter: Filtruj
             new: Dodaj
-            remove: Usuń
-            save: Zapisz
             show: Pokaż
-            submit: Zapisz
             update: Zapisz
             upload: Dodaj
             upload_delete: Usuń
         d: Opis
         delete: Usuń
         description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         edit: Edycja
         file:
             desc: Opis
@@ -1882,6 +1676,7 @@ trims:
             active: Status
         id: ID
         index: Wykończenie parapetów
+        n: Nazwa
         name: Nazwa
         new: Dodaj
         pdf: Generuj pdf
@@ -1890,21 +1685,26 @@ trims:
         show: Pokaż
         sq: Kolejność
         symbol: Symbol
-        tools:
-            new: Dodaj
         trims: Wykończenia parapetów
         update: Aktualizuj
         upload: Obraz
     message:
-        correct_values: 'Dostępne opcje wykończenia: '
+        correct_values: "Dostępne opcje wykończenia: "
         notFound: Nie odnaleziono grubości
         wrong_value: Nieprawidłowa opcja wykończenia parapetu.
     modal:
         title:
             trims: Wybór wykonania parapetu
     title:
-        actions: Akcje
+        tools:
+            new: Dodaj
+        id: Id w bazie
+        sequence: Kolejność
+        name: Nazwa
+        symbol: Symbol
+        description: Opis
         active: Status aktywności
+        actions: Akcje
         btn:
             add: Dodaj
             cancel: Anuluj
@@ -1928,11 +1728,6 @@ trims:
             upload: Wstaw rysunek
             upload_delete: Usuń rysunek
         delete: Usuń
-        description: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Edycja
         file:
             desc: Opis
@@ -1940,22 +1735,15 @@ trims:
             size: Rozmiar pliku
         filters:
             active: Status
-        id: Id w bazie
         index: Wykończenia parapetów
-        name: Nazwa
         new: Dodaj
         pdf: Generuj pdf
-        sequence: Kolejność
         show: Pokaż
-        symbol: Symbol
-        tools:
-            new: Dodaj
         trims: Wykończenia parapetów
     warning:
         not_found: brak w bazie
 uploads:
     label:
-        actions: Akcje
         btn:
             add: Dodaj
             cancel: Anuluj
@@ -1977,27 +1765,17 @@ uploads:
             upload: Wstaw
             upload_delete: Usuń
         desc: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         file:
             desc: Opis
             original: Nazwa pliku
             size: Rozmiar pliku
-        filters: []
-        id: ID
         name: Nazwa pliku
         original: Nazwa pliku
         sig:
             desc: U
         size: Rozmiar
-        tools:
-            new: Dodaj
         uploading: Wysylam
-    message: []
     title:
-        actions: Akcje
         btn:
             add: Dodaj
             cancel: Anuluj
@@ -2021,25 +1799,18 @@ uploads:
             upload: Załącznik
         delete: Usuń
         desc: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         file:
             desc: Opis
             original: Nazwa pliku
             size: Rozmiar pliku
-        filters: []
-        id: ID
         original: Nazwa
         size: Rozmiar
-        tools:
-            new: Dodaj
         upload: Wstaw
         upload_delete: Usuń
-    warning: []
 users:
     label:
+        tools:
+            new: Dodaj
         actions: Akcje
         active_no: nieaktywny
         active_yes: aktywny
@@ -2062,10 +1833,6 @@ users:
             submit: Zapisz
             update: Aktualizuj
         clients: Klienci
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
         email: Adres e-mail
         enabled: Status
         enabled_no: nieaktywny
@@ -2086,8 +1853,6 @@ users:
         role_super_admin: administrator
         role_user: klient
         roles: Uprawnienia
-        tools:
-            new: Dodaj
         type: Typ
         userGroups: Grupy użytkowników
         username: Nazwa użytkownika
@@ -2096,10 +1861,12 @@ users:
         added: Dodano użytkownika o danych logowania
         email_exist: Podany adres e-mail znajduje się już w bazie
         error_create: Błąd utworzenia użytkownika
-        login: 'Nazwa logowania: %1'
-        password: 'Hasło: %1'
+        login: "Nazwa logowania: %1"
+        password: "Hasło: %1"
         updated: Zaktualizowano użytkownika
     title:
+        tools:
+            new: Dodaj
         actions: Akcje
         btn:
             add: Dodaj
@@ -2119,10 +1886,6 @@ users:
             submit: Zapisz
             update: Zapisz
         delete: Usuwanie użytkownika
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Modyfikacja użytkownika
         enabled: Status
         filters:
@@ -2132,14 +1895,13 @@ users:
         lastLogin: Ostatnie logowanie
         new: Nowy użytkownik
         roles: Uprawnienia
-        tools:
-            new: Dodaj
         userGroups: Grupy użytkowników
         username: Nazwa użytkownika
         usernameCanonical: Nazwa użytkownika kanononiczna
-    warning: []
 usersgroups:
     label:
+        tools:
+            new: Dodaj
         actions: Akcje
         btn:
             add: Dodaj
@@ -2161,19 +1923,13 @@ usersgroups:
         code: Kod
         create: Utwórz
         description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters: []
         id: ID
         index: Grupy użytkowników
         name: Nazwa
+        update: Aktualizuj
+    title:
         tools:
             new: Dodaj
-        update: Aktualizuj
-    message: []
-    title:
         actions: Akcje
         btn:
             add: Dodaj
@@ -2195,16 +1951,8 @@ usersgroups:
         code: Kod
         delete: Usuwanie grupy klientów
         description: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
         edit: Edycja grupy użytkowników
-        filters: []
         id: ID
         index: Grupy użytkowników
         name: Nazwa
         new: Nowa grupa użytkowników
-        tools:
-            new: Dodaj
-    warning: []

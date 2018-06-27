@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Positions extends AppEntity{
 	const en='positions';
 	const ec='Positions';
-    const emptyId = '__pid__';
+    const idPrototype = '__pid__';
 
 //  <editor-fold defaultstate="collapsed" desc="Fields">    
     public static $shortNames=[

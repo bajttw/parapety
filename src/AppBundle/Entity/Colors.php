@@ -11,7 +11,7 @@ use AppBundle\Entity\Uploads;
 class Colors extends AppEntity{
     const en='colors';
     const ec='Colors';  
-    const emptyId = '__cid__';
+    const idPrototype = '__cid__';
     
  //  <editor-fold defaultstate="collapsed" desc="Fields utils">    
 	public static $dicNames=[
@@ -118,10 +118,6 @@ class Colors extends AppEntity{
    
  // </editor-fold>       
 
-    public function __construct($options=[]){
-        parent::__construct($options);
-        $this->setSequence($options['controller']->getEntityCount() + 1 );
-    }
 
  // <editor-fold defaultstate="collapsed" desc="Fields functions"> 
     /**

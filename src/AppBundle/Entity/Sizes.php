@@ -12,7 +12,7 @@ class Sizes extends AppEntity
 {
     const en='sizes';
     const ec='Sizes';  
-    const emptyId = '__sid__';
+    const idPrototype = '__sid__';
     
  //  <editor-fold defaultstate="collapsed" desc="Fields utils">    
     public static $dicNames=[
@@ -89,11 +89,6 @@ class Sizes extends AppEntity
 
     
  // </editor-fold>   
-    
-    public function __construct($options=[]){
-        parent::__construct($options);
-        $this->setSequence($options['controller']->getEntityCount() + 1 );
-    }
     
  // <editor-fold defaultstate="collapsed" desc="Fields functions"> 
     /**

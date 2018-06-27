@@ -14,7 +14,7 @@ class PriceLists extends AppEntity
 {
     const en = 'pricelists';
     const ec = 'PriceLists';
-    const emptyId = '__plid__';
+    const idPrototype = '__plid__';
 
 //  <editor-fold defaultstate="collapsed" desc="Fields utils">
     public static $dicNames = [
