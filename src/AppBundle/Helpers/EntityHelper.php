@@ -38,6 +38,9 @@ class EntityHelper{
     }
 
     public function getEntityClassName(?string $entityClassName=null){
+        if($entityClassName === ''){
+            return '';
+        }
         return ($entityClassName) ?: $this->entityClassName;
     }
 
@@ -69,6 +72,9 @@ class EntityHelper{
 
     public function getEntityName(?string $entityClassName=null, string $bundleName=null):string
     {
+        if($entityClassName === ''){
+            return '';
+        }
         return ($this->getEntityNamespace($entityClassName))::en;
     }
 
@@ -274,7 +280,7 @@ class EntityHelper{
                     'active' => 'active',
                     'users' =>[
                         'name' => 'users.id',
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'entity',
                             'query' => 'Users',
                             'options' => [
@@ -384,7 +390,7 @@ class EntityHelper{
                             'type' => 'settings',
                             'query' => 'deliveries-filters-generated-value'
                         ],
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'settings',
                             'query' => 'deliveries-filters-dateRanges'
                         ],
@@ -396,7 +402,7 @@ class EntityHelper{
                     'progress' => [
                         'name' => 'progress',
                         'label' => 'deliveries.label.progress',
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'settings',
                             'query' => 'deliveries-filters-progress-dic'
                         ],
@@ -435,7 +441,7 @@ class EntityHelper{
                             'type' => 'settings',
                             'query' => 'invoices-filters-created-value'
                         ],
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'settings',
                             'query' => 'invoices-filters-dateRanges'
                         ],
@@ -451,7 +457,7 @@ class EntityHelper{
                             'type' => 'settings',
                             'query' => 'invoices-filters-term-value'
                         ],
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'settings',
                             'query' => 'invoices-filters-dateRanges'
                         ],
@@ -507,7 +513,7 @@ class EntityHelper{
                     'client' => 'client',
                     'status' => [
                         'name' => 'status',
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'settings',
                             'query' => 'orders-dictionaries-status'
                         ],
@@ -520,7 +526,7 @@ class EntityHelper{
                     ],
                     'express' => [
                         'name' => 'express',
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'settings',
                             'query' => 'orders-dictionaries-express'
                         ],
@@ -538,7 +544,7 @@ class EntityHelper{
                             'type' => 'settings',
                             'query' => 'orders-filters-created-value'
                         ],
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'settings',
                             'query' => 'orders-filters-dateRanges'
                         ],
@@ -554,7 +560,7 @@ class EntityHelper{
                             'type' => 'settings',
                             'query' => 'orders-filters-approved-value'
                         ],
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'settings',
                             'query' => 'orders-filters-dateRanges'
                         ],
@@ -566,7 +572,7 @@ class EntityHelper{
                     'ways' => [
                         'name' => 'client.ways.id',
                         'label' => 'orders.label.filter.ways',
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'entity',
                             'query' => 'Ways',
                         ],
@@ -581,7 +587,7 @@ class EntityHelper{
                         'client' => 'hidden-client',
                         'toProduction' => [
                             'name' => 'production',
-                            'source' => [
+                            'valueSource' => [
                                 'type' => 'options',
                                 'query' => 'production',
                                 'valueType' => 'set_or_null'
@@ -594,7 +600,7 @@ class EntityHelper{
                         ],
                         'notState' => [
                             'name' => 'status',
-                            'source' => [
+                            'valueSource' => [
                                 'type' => 'options',
                                 'query' => 'bannedStates'
                             ],
@@ -602,7 +608,7 @@ class EntityHelper{
                         ],
                         'posSize' => [
                             'name' => 'positions.size',
-                            'source' => [
+                            'valueSource' => [
                                 'type' => 'options',
                                 'query' => 'size'
                             ]
@@ -688,7 +694,7 @@ class EntityHelper{
                     'size' => [
                         'name' => 'size.id',
                         'label' => 'pricelistitems.label.filter.size',
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'entity',
                             'query' => 'Sizes'
                         ],
@@ -702,7 +708,7 @@ class EntityHelper{
                     'color' => [
                         'name' => 'color.id',
                         'label' => 'pricelistitems.label.filter.color',
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'entity',
                             'query' => 'Colors'
                         ],
@@ -731,7 +737,7 @@ class EntityHelper{
                             'type' => 'settings',
                             'query' => 'pricelists-filters-start-value'
                         ],
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'settings',
                             'query' => 'pricelists-filters-dateRanges'
                         ],
@@ -747,7 +753,7 @@ class EntityHelper{
                             'type' => 'settings',
                             'query' => 'pricelists-filters-end-value'
                         ],
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'settings',
                             'query' => 'pricelists-filters-dateRanges'
                         ],
@@ -758,7 +764,7 @@ class EntityHelper{
                     ],
                     'clients' => [
                         'name' => 'clients.id',
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'entity',
                             'query' => 'Clients',
                         ],
@@ -771,7 +777,7 @@ class EntityHelper{
                     ],
                     'clientsGroups' => [
                         'name' => 'clientsGroups.id',
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'entity',
                             'query' => 'ClientsGroups',
                         ],
@@ -785,7 +791,7 @@ class EntityHelper{
                     'hidden' => [
                         'client' => [
                             'name' => 'clients.id',
-                            'source' => [
+                            'valueSource' => [
                                 'type' => 'options',
                                 'query' => 'client'
                             ]
@@ -812,7 +818,7 @@ class EntityHelper{
                             'type' => 'settings',
                             'query' => 'productions-filters-generated-value'
                         ],
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'settings',
                             'query' => 'productions-filters-dateRanges'
                         ],
@@ -824,7 +830,7 @@ class EntityHelper{
                     'progress' => [
                         'name' => 'progress',
                         'label' => 'productions.label.progress',
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'settings',
                             'query' => 'productions-filters-progress-dic'
                         ],
@@ -873,14 +879,14 @@ class EntityHelper{
                     'hidden' => [
                         "production" => [
                             "name" => 'production',
-                            'source' => [
+                            'valueSource' => [
                                 'type' => 'options',
                                 'query' => 'production'
                             ]
                         ],
                         "delivery" => [
                             "name" => 'delivery',
-                            'source' => [
+                            'valueSource' => [
                                 'type' => 'options',
                                 'query' => 'delivery'
                             ]
@@ -907,7 +913,7 @@ class EntityHelper{
                 'predefined' => [
                     'client' => [
                         'name' => 'client',
-                        'source' => [
+                        'dataSource' => [
                             'type' => 'entity',
                             'query' => 'Clients',
                         ],

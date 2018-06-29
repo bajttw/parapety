@@ -153,9 +153,8 @@ class ClientsController extends AppController{
     }
 
     protected function setCustomFormOptions(){
-        $this->addModalsField([
-            [
-                'name' => 'comment',
+        $this->addModalsField([ 
+            'comment' => [
                 'fieldtype' => 'textarea'
             ]
         ]);
@@ -202,9 +201,9 @@ class ClientsController extends AppController{
         $clientIdPrototype=$this->getEntityHelper()->getIdPrototype(static::ec);
         $po=[
             'clientId' => $clientIdPrototype,
-            'contentType' => 'index',
+            'contentName' => 'index',
             'active' => true,
-            'elements' => [
+            'childs' => [
                 'toolbar' => true,
                 'filterbar' => true,
                 'table' => [
@@ -240,8 +239,8 @@ class ClientsController extends AppController{
                 'title' => $this->getTransHelper()->titleText('service'),
                 'panel_left' => $this->genPanel('service', static::ec, [
                     // 'content' => $this->tmplPath('panel', null),
-                    'contentType' => 'index',
-                    'elements' => [
+                    'contentName' => 'index',
+                    'childs' => [
                         'toolbar' => true,
                         'filterbar' => true,
                         'table' => [

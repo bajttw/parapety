@@ -511,30 +511,6 @@ class AppController extends Controller
     
  //  <editor-fold defaultstate="collapsed" desc="Rendering">
 
-    // protected function typeTemplate($type = null){
-    //     $subdir = '';
-    //     switch ($type) {
-    //         case 'm' :
-    //             $subdir = 'Modal';
-    //             break;
-    //         case 'p' :
-    //             $subdir = 'Panel';
-    //             break;
-    //         case 'w' :
-    //             $subdir = 'Window';
-    //             break;
-    //         default :
-    //             break;
-    //     }
-    //     return $subdir;
-    // }
-
-    // protected function tmplPath($name, $entityClassName = '', $subdir = '', $bundleName = null){
-    //     return $this->getTemplateHelper()->getPath($name, $entityClassName === '', $entityClassName == '' ? static::ec : $entityClassName, $subdir );
-    // }
-  
-    
-    
     protected function getTemplate(string $name, ?string $entityClassName = null, bool $genericTemplate=true,  ?string $renderType = null):string
     {
         return $this->getTemplateHelper()->getPath($name, $entityClassName, $genericTemplate, $renderType );
@@ -546,14 +522,6 @@ class AppController extends Controller
         $this->renderTemplate = $this->getTemplate($name, $entityClassName, $genericTemplate, $this->renderType );
         return $this;
     }
-
-    // protected function setFormTemplate($entityClassName = '', $name='edit')
-    // {
-    //     if (!$this->renderTemplate) {
-    //         $this->renderTemplate = $this->tmplPath($name, $entityClassName, $this->renderType);
-    //     }
-    //     return $this;
-    // }
 
     protected function setRenderOptions($options = [])
     {
@@ -1025,7 +993,14 @@ class AppController extends Controller
         return (($onlyAdmin && $this->isAdmin()) || (!$onlyAdmin && ($this->isAdmin() || ($this->isClient() && $this->user->hasClient($this->client))) ));
     }
 
-    public function addEntityModal(?string $entityClassName=null, array $options = [])
+
+    public function addEntityModal(?string $type=null, ?string $entityClassName=null, array $options = [])
+    {
+        $this->renderOptions['modals'][]=$this->getModalsGenerator()->generateEntityModal($type, $entityClassName, $options);
+        return $this;
+    }
+  
+    public function addEntityModal1(?string $entityClassName=null, array $options = []):array
     {
         $en = $this->getEntityHelper()->getEntityName($entityClassName); 
         $default = [
@@ -1041,7 +1016,14 @@ class AppController extends Controller
         return $this->addModal(array_replace_recursive($default, $settings, $options));
     }
 
-    public function addModal($modal)
+    public function addModal(?string $type=null, array $options=[])
+    {
+        $this->renderOptions['modals'][]=$this->getModalsGenerator()->generate($type, '', $options);
+        return $this;
+    }
+
+    
+    public function addModal1($modal)
     {
         $name = $modal['name'];
         $ecn = Utils::deep_array_value('ecn', $modal, '');
@@ -1089,7 +1071,7 @@ class AppController extends Controller
         return $modal;
     }
 
-    protected function addModalsField($modals)
+    protected function addModalsField1($modals)
     {
         $default = [
             'content' => $this->getTemplate('field', static::ec, true, 'm'),
@@ -1106,7 +1088,22 @@ class AppController extends Controller
         return $this;
     }
 
+    protected function addModalsField($fields)
+    {
+        $mo = $this->getModalsGenerator()->generateFieldModals($fields);
+        foreach ($mo as $modal) {
+            $this->renderOptions['modals'][]=$modal;
+        }
+        return $this;
+    }
+
     protected function addExpModal(?string $entityClassName = null, array $options = [])
+    {
+        $this->renderOptions['modals'][]=$this->getModalsGenerator()->generateExpModal($entityClassName, $options);
+        return $this;
+    }
+
+    protected function addExpModal1(?string $entityClassName = null, array $options = [])
     {
         $ec = $this->getEntityHelper()->getEntityClassName($entityClassName);
         $en = $this->getEntityHelper()->getEntityName($entityClassName);

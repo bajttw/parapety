@@ -19,7 +19,7 @@ class ToolbarsGenerator extends ClientElementsGenerator
     public function generate(?string $type=null,  ?string $entityClassName=null, array $options=[]):array
     {
         $this->init($type, $entityClassName, $options);
-        $toolbar=$this->generateElement($options);
+        $toolbar=$this->generateElement();
         $this->setId($toolbar);
         $toolbar['elements']=$this->tg->generate($type, $this->ecn, Utils::deep_array_value('actions', $options, []));
         return $toolbar;

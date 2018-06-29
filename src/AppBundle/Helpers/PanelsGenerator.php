@@ -27,111 +27,102 @@ class PanelsGenerator extends ClientElementsGenerator
     //     return $this->getName($type) . '_' . $elementType;
     // }
 
-    private function getElementOptions(string $elementType):?array
+    protected function setToolbars(array &$panel, ?array $panelOptions=null, bool $set =true):void
     {
-        $elementOpt=Utils::deep_array_value(['elements', $elementType], $this->options);
-        if($elementOpt && !is_array($elementOpt)){
-            $elementOpt=[
-                'type' => is_string($elementOpt) ? $elementOpt : $this->type
-            ];
-        }     
-        if(is_array($elementOpt)){
-            Utils::deep_array_value_set('type', $elementOpt, $this->type);
+        $panelOptions = ($panelOptions) ?: $this->options;
+        $panel['toolbars']=Utils::deep_array_value('toolbars', $panelOptions, []);
+        if(!is_array(Utils::deep_array_value('toolbars-toolbar', $panel))){
+            $toolbar=$this->getToolbar($panelOptions);
+            if(is_array($toolbar)){
+                $panel['toolbars']['toolbar']=$toolbar;
+            }
         }
-        return $elementOpt;
+        if(!is_array(Utils::deep_array_value('toolbars-filterbar', $panel))){
+            $filterbar=$this->getToolbar($panelOptions);
+            if(is_array($filterbar)){
+                $panel['toolbars']['filterbar']=$filterbar;
+            }
+        }
     }
 
-    protected function setToolbar(array &$panel):void
+    protected function getToolbar(array $panelOptions):?array
     {
-        if(is_array(Utils::deep_array_value('toolbars-toolbar', $panel))){
-            return;
-        }
-        $toolbar=$this->getElementOptions('toolbar');
+        $toolbar=$this->getChildOptions('toolbar', $panelOptions);
         if(is_array($toolbar)){
             $oToolbar= \array_replace_recursive(
                 ($this->clientId) ? [ 'clientId' => $this->clientId ] : [],
                 Utils::deep_array_value('options', $toolbar, [])
             );
-            $panel['toolbars']['toolbar']= $this->tbg->generate(
+            return $this->tbg->generate(
                 $toolbar['type'],
                 $this->ecn,
                 $oToolbar
             );
         }
+        return null;
     }
 
-    protected function setFilterbar(array &$panel):void
+    protected function getFilterbar(array $panelOptions):?array
     {
-        if(is_array(Utils::deep_array_value('toolbars-filterbar', $panel))){
-            return;
-        }
-        $filterbar=$this->getElementOptions('filterbar');
+        $filterbar=$this->getChildOptions('filterbar', $panelOptions);
         if(is_array($filterbar)){
-            $panel['toolbars']['filterbar']= $this->fbg->generate(
+            return $this->fbg->generate(
                 $filterbar['type'],
                 $this->ecn,
                 Utils::deep_array_value('options', $filterbar, [])
             );
         }
+        return null;
     }
 
-    protected function setTable(array &$panel):void
+    protected function getTable(array $panelOptions):?array
     {
-        $panel['table']=Utils::deep_array_value('table', $this->options);
-        if(is_array($panel['table'])){
-            return;
-        }
-        $table=$this->getElementOptions('table');
+        $table=$this->getChildOptions('table', $panelOptions);
         if(is_array($table)){
             $oTable= \array_replace_recursive(
                 ($this->clientId) ? [ 'clientId' => $this->clientId ] : [],
                 Utils::deep_array_value('options', $table, [])
             );
-            $panel['table'] = $this->dtg->generate(
+            return $this->dtg->generate(
                 $table['type'],
                 $this->ecn,
                 $oTable
             );
         }
+        return null;
     }
 
-    protected function setContent(array &$panel):void
+    protected function setTable(array &$panel, ?array $panelOptions=null, bool $set =true):void
     {
-        $panel['content']=Utils::deep_array_value('content', $this->options );
-        if(is_null($panel['content'])){
-            $panel['content'] = $this->tmplh->getPath(
-                Utils::deep_array_value('contentType', $this->options, $this->type),
-                true,
+        $this->setElementProperty('table', $panel, $panelOptions, $set);
+    }
+
+    protected function getContent(array $panelOptions):?array
+    {
+        $contentName = Utils::deep_array_value('contentName', $panelOptions);
+        if($contentName){
+            return $this->tmplh->getPath(
+                $contentName,
+                Utils::deep_array_value('contentGeneric', $panelOptions, true),
                 $this->ecn,
                 'p'
             );
         }
+        return null;
     }
 
     public function generate(?string $type=null,  ?string $entityClassName=null, array $options=[]):array
     {
         $this->init($type, $entityClassName, $options);
-        $panel=$this->generateElement($options);
-        $panel['toolbars']=Utils::deep_array_value('toolbars', $this->options, []);
+        $panel=$this->generateElement();
         $this->setId($panel);
         $this->setContent($panel);    
         $this->setTable($panel);
-        $this->setToolbar($panel);
-        $this->setFilterbar($panel);
+        $this->setToolbars($panel);
         if(Utils::deep_array_value('active', $this->options)){
             $panel['active']=true;
         }
         return $panel;
     }
 
-    // public function generatePanels(?string $type=null, array $entityClassNames, array $options=[]):array
-    // {
-    //     $panels=[];
-    //     foreach ($entityClassNames as $ec) {
-    //         $this->init($type, $entityClassName, $options);
-
-    //         $this->generate($type, $ec, $options)
-
-    //     }
-    // }
 }

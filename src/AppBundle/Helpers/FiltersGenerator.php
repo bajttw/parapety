@@ -79,71 +79,67 @@ class FiltersGenerator extends ElementsGenerator{
         return $filter;
     }
 
-    private function getValue(array $filterOptions)
+    protected function getValue(array $filterOptions)
     {
-        if(array_key_exists('value', $filterOptions)){
-            return $filterOptions['value'];
-        }
         $value=null;
-        $source=$filterOptions['source'];
-        switch($source['type']){
-            case 'settings':
-                $value=$this->sh->getSettingValue($source['query']);
-            break ;
-            case 'options':
-                $value=Utils::deep_array_value(['values' , $source['query']], $this->options);
-            break;
-        }
-        switch (Utils::deep_array_value('valueType', $source)){
-            case 'set_or_null':
-                $value= is_null($value) ? null : [null, $value];
-            break;
+        $source=Utils::deep_array_value('valueSource', $filterOptions);
+        if(is_array($source)){
+            switch($source['type']){
+                case 'settings':
+                    $value=$this->sh->getSettingValue($source['query']);
+                break ;
+                case 'options':
+                    $value=Utils::deep_array_value(['values' , $source['query']], $this->options);
+                break;
+            }
+            switch (Utils::deep_array_value('valueType', $source)){
+                case 'set_or_null':
+                    $value= is_null($value) ? null : [null, $value];
+                break;
+            }
         }
         return $value;
     }
 
-    private function getData(array $filterOptions):array
+    protected function getData(array $filterOptions):?array
     {
-        $data=Utils::deep_array_value('data', $filterOptions);
-        if(is_array($data)){
-            return $data;
-        }
         $data=[];
-        $source=$filterOptions['source'];
-        switch($source['type']){
-            case 'settings':
-                $banned= $this->getBannedValues($filterOptions);
-                $rows=$this->sh->getSettingValue($source['query']);
-                if(is_array($rows)){
-                    foreach($rows as $row){
-                        if(is_array($banned) && count($banned) && in_array(array_key_exists('v', $row) ? $row['v'] : $row['value'] , $banned)){
-                            continue;
+        $source=Utils::deep_array_value('dataSource', $filterOptions);
+        if(is_array($source)){
+            switch($source['type']){
+                case 'settings':
+                    $banned= $this->getBannedValues($filterOptions);
+                    $rows=$this->sh->getSettingValue($source['query']);
+                    if(is_array($rows)){
+                        foreach($rows as $row){
+                            if(is_array($banned) && count($banned) && in_array(array_key_exists('v', $row) ? $row['v'] : $row['value'] , $banned)){
+                                continue;
+                            }
+                            $data[]=$row;
                         }
-                        $data[]=$row;
+                    }
+                break;
+                case 'entity':
+                    // $repository=$this->getEntityManager()->getRepository(Utils::deep_array_value('repository', $source, self::$bundlePath . Utils::deep_array_value('query', $source, '')));
+                    $data = $this->eh->getRepository($source['query'])->getFilter(Utils::deep_array_value('options', $source, [])) ;
+                break;
+            }  
+            if(isset($filterOptions['add'])){
+                $start=Utils::deep_array_value('add-start', $filterOptions);
+                $end=Utils::deep_array_value('add-end', $filterOptions);
+                if(is_array($start)){
+                    foreach($start as $row){
+                        array_unshift($data, $row);
                     }
                 }
-            break;
-            case 'entity':
-                // $repository=$this->getEntityManager()->getRepository(Utils::deep_array_value('repository', $source, self::$bundlePath . Utils::deep_array_value('query', $source, '')));
-                $data = $this->eh->getRepository($source['query'])->getFilter(Utils::deep_array_value('options', $source, [])) ;
-            break;
-        }  
-        if(isset($filterOptions['add'])){
-            $start=Utils::deep_array_value('add-start', $filterOptions);
-            $end=Utils::deep_array_value('add-end', $filterOptions);
-            if(is_array($start)){
-                foreach($start as $row){
-                    array_unshift($data, $row);
-                }
-            }
-            if(is_array($end)){
-                foreach($end as $row){
-                    array_push($data, $row);
+                if(is_array($end)){
+                    foreach($end as $row){
+                        array_push($data, $row);
+                    }
                 }
             }
         }
         return $data;
-
     }
 
     private function getBannedValues(array $filterOptions):array
@@ -167,12 +163,13 @@ class FiltersGenerator extends ElementsGenerator{
 
     private function genHiddenFilter(array $filterOptions):array
     {
-        return [
+        $filter= [
             'name' => $filterOptions['name'],
             'type' => 'hidden',
-            'value' => $this->getValue($filterOptions),
             'options' => Utils::deep_array_value('options', $filterOptions, [])
         ];
+        $this->setValue($filter, $filterOptions, true);
+        return $filter;        
     }
 
     private function genFilter(array $filterOptions):array
@@ -180,7 +177,7 @@ class FiltersGenerator extends ElementsGenerator{
         $filter=$this->generateElement($filterOptions);
         $filter['type'] = Utils::deep_array_value('type', $filterOptions, 'select');
         $this->setFieldAttr($filter, $filterOptions);
-        $filter['data'] = $this->getData($filterOptions);
+        $this->setData($filter, $filterOptions, true);
         if(count($filter['data']) > 0){
             $filter['d']['dic']=$filter['data'];
         }

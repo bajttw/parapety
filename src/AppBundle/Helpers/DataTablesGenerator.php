@@ -187,7 +187,7 @@ class DataTablesGenerator extends ClientElementsGenerator
     public function generate( ?string $type = 'index', ?string $entityClassName = null, array $options = [ ]):array
     {
         $this->init($type, $entityClassName, $options);
-        $table=$this->generateElement($options);
+        $table=$this->generateElement();
         $this->setId($table);
         $this->setAjax($table);
         $this->setFilters($table);

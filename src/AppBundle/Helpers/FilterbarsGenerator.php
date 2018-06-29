@@ -18,9 +18,9 @@ class FilterbarsGenerator extends ElementsGenerator
     public function generate(?string $type=null,  ?string $entityClassName=null, array $options=[]):array
     {
         $this->init($type, $entityClassName, $options);
-        $filterbar=$this->generateElement($options);
+        $filterbar=$this->generateElement();
         $this->setId($filterbar);
-        $filters=$this->fg->generate($type, $this->ecn, Utils::deep_array_value('filters', $options, [
+        $filters=$this->fg->generate($type, $this->ecn, Utils::deep_array_value('filters', $this->options, [
             'parentId' => $filterbar['attr']['id']
         ]));
         $filterbar['filters']= $filters['visible'];

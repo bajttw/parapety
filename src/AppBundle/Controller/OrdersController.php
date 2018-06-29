@@ -400,30 +400,26 @@ class OrdersController extends AppController
         $this->formOptions['attr']['data-copy-textarea'] = self::en;
         $this->formOptions['attr']['style'] = "min-width: 1200px;";
         $this->addModalsField([
-            [ 
-                'name' => 'comment', 
-                'fieldtype' => 'textarea',
+            'comment' => [ 
+                'fieldtype' => 'textarea'
             ],
-            [ 
-                'name' => 'model', 
+            'model' => [ 
                 'ecn' => 'Models', 
                 'fieldtype' => 'radio',
                 'dic' => true
             ],
+            'color' => 
             [ 
-                'name' => 'color', 
                 'ecn' => 'Colors', 
                 'fieldtype' => 'radio',
                 'dic' => true
             ],
-            [ 
-                'name' => 'size', 
+            'size' => [ 
                 'ecn' => 'Sizes', 
                 'fieldtype' => 'select',
                 'data' => $this->getEntityHelper()->getDic('Sizes')
             ],
-            [ 
-                'name' => 'trims', 
+            'trims' => [ 
                 'ecn' => 'Trims', 
                 'fieldtype' => 'checkbox',
                 'dic' => true,
