@@ -1095,44 +1095,42 @@
 
 {%- block tabs -%}
     {% set attr = tabs.attr|default({})|add_class(['tabs-wrapper']) %}
+    {{ dump(tabs) }}
     <div {{ block('attributes') }} >
         <div>
             <ul class="nav nav-tabs" role="tablist">
                 {% for tab_panel in tabs.panels %}
                     <li class="nav-item">
                         {% set en = tab_panel.en|default(tab_panel.name) %}
+                        {% set active = tab_panel.active|default(false) %}
                         {% set data_opt = {
                             toggle : "tab"
                         } %}
                         {% set attr={
-                            id: tab_panel.name ~ '_tab',
-                            href : "#" ~ tab_panel.name ~ "_tab_panel",
-                            class : 'nav-link' ~ (tab_panel.active|default(false) ? ' active' : ''),
+                            id: tab_panel.attr.id ~ '_tab',
+                            href : "#" ~ tab_panel.attr.id,
+                            class : 'nav-link' ~ ( active ? ' active' : ''),
                             role : 'tab', 
-                            title : tab_panel.title is defined ? tab_panel.title : tab_panel.name|gen_title( en),
-                            'aria-expanded' : tab_panel.active|default(false) ? 'true' : 'false'
+                            title : tab_panel.title|default(tab_panel.name|gen_title( en)),
+                            'aria-expanded' : active ? 'true' : 'false'
                         } %}
-                            {# 'aria-controls' : tab_panel.name ~ "_tab_panel",
-                            'aria-expanded' : tab_panel.active|default(false) ? 'true' : 'false' #}
-
-                        <a {{ block('attributes') }} {{ block('data_options') }} >{{ tab_panel.label|default( tab_panel.name|gen_label(en, false) )|trans }}</a>
+                        <a {{ block('attributes') }} {{ block('data_options') }} >{{ tab_panel.label|default( tab_panel.name|gen_label(en)) }}</a>
                     </li>
                 {% endfor %}
             </ul>
         </div>
         <div class="tab-content">
             {% for tab_panel in tabs.panels %}
+                {% set active = tab_panel.active|default(false) %}
+                {% set data_opt = tab_panel.d|default({}) %}
                 {% set attr={
-                    id : tab_panel.name ~ "_tab_panel",
-                    class : 'tab-pane' ~ (tab_panel.active|default(false) ? ' active' : ''), 
                     role : "tabpanel",
-                    'aria-expanded' : tab_panel.active|default(false) ? 'true' : 'false'
-                }%}
-                    {# 'aria-labelledby': tab_panel.name ~ "_tab",
-                    'aria-expanded' : tab_panel.active|default(false) ? 'true' : 'false' #}
-
-                {# ~ (tab_panel.active|default(false) ? ' active' : '') #}
-                <div {{ block('attributes') }} >
+                    'aria-expanded' : active ? 'true' : 'false'
+                    }
+                    |array_replace(tab_panel.attr|default({}))
+                    |add_class(['tab-pane', active ? ' active' : ''])
+                %}
+                <div {{ block('attributes') }} {{ block('data_options') }}>
                     {% include tab_panel.template|default('Panel/layout.html.twig') with { panel : tab_panel } %}
                 </div>
             {% endfor %}

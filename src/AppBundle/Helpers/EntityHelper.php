@@ -30,14 +30,18 @@ class EntityHelper{
 
     public function setEntityClassName(string $entityClassName){
         $this->entityClassName= $entityClassName;
+    }
 
+    public function getBundleName():string
+    {
+        return $this->bundleName;
     }
 
     public function getEntityClassName(?string $entityClassName=null){
         return ($entityClassName) ?: $this->entityClassName;
     }
 
-    public function getNamespace(string $name, ?string $entityClassName=null, $suffix = '', string $bundleName=null): string
+    public function getNamespace(string $name, ?string $entityClassName=null, $suffix = '', ?string $bundleName=null): string
     {
         $entityClassName= ($entityClassName) ?: $this->entityClassName;
         $str = explode(':', $entityClassName);
@@ -617,7 +621,65 @@ class EntityHelper{
                     'table_client' => ['hidden-client'],
                     'table_service' => ['hidden-client']
                 ]                          
+            ],
+            'actions' => [
+                'predefined' => [
+                    'edit' => [
+                        'action' => 'edit', 
+                        'renderType' => 'w'
+                    ],
+                    'copy' => [
+                        'action' => 'copy', 
+                        'browserAction' => true,
+                        'd' => [
+                            'exp' => ''
+                        ]
+                    ],
+                    'show' => [
+                        'action' => 'show', 
+                        'browserAction' => true
+                    ],
+                    'pdf' => [
+                        'action' => 'pdf', 
+                        'browserAction' => true,
+                        'd' => [
+                            'exp' => 'order'
+                        ]
+                    ],
+                    'xls' => [
+                        'action' => 'xls', 
+                        'browserAction' => true,
+                        'd' => [
+                            'exp' => ''
+                        ]
+                    ]       
+                ],
+                'types' => [
+                    'index' => ['show', 'pdf', 'edit', 'delete'],
+                    'def' => ['show']
+                ]
+
+            ],
+            'tools' => [
+                'predefined' => [
+                    'new' => [   
+                        'action' => 'new',
+                        'attr' => [
+                            'class' => 'btn-primary'
+                        ],
+                        'renderType' => 'w'
+                    ]
+                ],
+                'types' => [
+                    'index' => ['new'],
+                    'def' => ['new']
+                ]
+         
+            ],
+            'templates' => [    
+                'generic' => ['edit', 'Window/edit', 'show', 'Modal/show', 'import', 'Window/import']
             ]
+
         ],
         'PriceListItems' => [
             'filters' => [

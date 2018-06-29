@@ -71,20 +71,32 @@ services:
         alias: AppBundle\Helpers\RouteHelper
         public: true
 
+    helper.template: 
+        alias: AppBundle\Helpers\TemplateHelper
+        public: true
+
     generator.filters: 
         alias: AppBundle\Helpers\FiltersGenerator
         public: true
 
-    generator.filterbar: 
-        alias: AppBundle\Helpers\FilterbarGenerator
+    generator.filterbars: 
+        alias: AppBundle\Helpers\FilterbarsGenerator
         public: true
 
-    generator.toolbar: 
-        alias: AppBundle\Helpers\ToolbarGenerator
+    generator.toolbars: 
+        alias: AppBundle\Helpers\ToolbarsGenerator
+        public: true
+
+    generator.panels: 
+        alias: AppBundle\Helpers\PanelsGenerator
         public: true
 
     generator.datatables: 
         alias: AppBundle\Helpers\DataTablesGenerator
+        public: true
+    
+    generator.modals: 
+        alias: AppBundle\Helpers\ModalsGenerator
         public: true
     
  

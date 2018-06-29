@@ -153,7 +153,7 @@ class DeliveriesController extends AppController
         switch ($type) {
             case 'create':
             case 'update':
-                $messages['message']=$this->trans($this->messageText($type), [$this->entity->getNumber(), $this->entity->getClient()->getName()]);
+                $messages['message']=$this->trans($this->getTransHelper()->messageText($type), [$this->entity->getNumber(), $this->entity->getClient()->getName()]);
             break;
         }
         return $messages;

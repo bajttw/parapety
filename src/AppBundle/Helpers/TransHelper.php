@@ -12,15 +12,9 @@ class TransHelper
     private $en='';
     private $translator;  
 
-    // public function __construct(ContainerInterface $seviceContainer){
-    //     $this->translator=$seviceContainer->get('translator');
-    // }
- 
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator=$translator;
-        // string $entityName = ''){
-        // $this->en=$entityName;
     }
 
     public function setEntityName(string $entityName){

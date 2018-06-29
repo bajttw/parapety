@@ -70,70 +70,71 @@ class ProductionsController extends AppController
     //     return $filters;
     // }
 
-    public static function getActions($type = 'view', $options = [])
-    {
-        $actions = [];
-        $all = [
-            'edit' => ['action' => 'edit', 'type' => 'w'],
-            'show' => ['action' => 'show', 'browserAction' => true],
-            'xls' => [
-                'action' => 'xls',
-                'browserAction' => true,
-                'd' => [
-                    'exp' => ''
-                ]
-            ],
-            'delete' => ['action' => 'delete', 'type' => 'm', 'target' => 'productions']
-        ];
-        switch ($type) {
-            case 'index':
-                $as = ['show', 'xls',  'edit', 'delete'];
-            break;
-            case 'view':
-            default:
-                $as = ['show', ];
-        }
-        foreach ($as as $a) {
-            $actions[$a] = $all[$a];
-        }
-        return $actions;
-    }
+    // public static function getActions($type = 'view', $options = [])
+    // {
+    //     $actions = [];
+    //     $all = [
+    //         'edit' => ['action' => 'edit', 'type' => 'w'],
+    //         'show' => ['action' => 'show', 'browserAction' => true],
+    //         'xls' => [
+    //             'action' => 'xls',
+    //             'browserAction' => true,
+    //             'd' => [
+    //                 'exp' => ''
+    //             ]
+    //         ],
+    //         'delete' => ['action' => 'delete', 'type' => 'm', 'target' => 'productions']
+    //     ];
+    //     switch ($type) {
+    //         case 'index':
+    //             $as = ['show', 'xls',  'edit', 'delete'];
+    //         break;
+    //         case 'view':
+    //         default:
+    //             $as = ['show', ];
+    //     }
+    //     foreach ($as as $a) {
+    //         $actions[$a] = $all[$a];
+    //     }
+    //     return $actions;
+    // }
 
-    public static function getToolbarBtn($type='index', $options=[] )
-    {
-        $cid = Utils::deep_array_value('cid', $options);
-        $b= [
-            'new' => [   
-                'action' => 'new',
-                'attr' => [
-                    'class' => 'btn-primary',
-                    'target' => '_blank'
-                ],
-                'routeParam' => [ 'type' => 'w' ]
-            ]
-        ];
-        $btns=[];
-        switch($type){
-            case 'index':
-                foreach(['new' ] as $n){
-                    $btns[]=$b[$n];
-                }
-            break;
-            default:
-                foreach(['new'] as $n){
-                    $btns[]=$b[$n];
-                }
-        }
-        return $btns;
+    // public static function getToolbarBtn($type='index', $options=[] )
+    // {
+    //     $cid = Utils::deep_array_value('cid', $options);
+    //     $b= [
+    //         'new' => [   
+    //             'action' => 'new',
+    //             'attr' => [
+    //                 'class' => 'btn-primary',
+    //                 'target' => '_blank'
+    //             ],
+    //             'routeParam' => [ 'type' => 'w' ]
+    //         ]
+    //     ];
+    //     $btns=[];
+    //     switch($type){
+    //         case 'index':
+    //             foreach(['new' ] as $n){
+    //                 $btns[]=$b[$n];
+    //             }
+    //         break;
+    //         default:
+    //             foreach(['new'] as $n){
+    //                 $btns[]=$b[$n];
+    //             }
+    //     }
+    //     return $btns;
         
-    }
-    //  <editor-fold defaultstate="collapsed" desc="Custom functions">
+    // }
+ //  <editor-fold defaultstate="collapsed" desc="Custom functions">
+    
     protected function customMessages(&$messages, $type)
     {
         switch ($type) {
             case 'create':
             case 'update':
-                $messages['message']=$this->trans($this->messageText($type), [$this->entity->getNumber()]);
+                $messages['message']=$this->trans($this->getTransHelper()->messageText($type), [$this->entity->getNumber()]);
             break;
         }
         return $messages;

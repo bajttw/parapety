@@ -54,27 +54,27 @@ class SettingsController extends AppController
     //     return $filters;
     // }
 
-    public static function getToolbarBtn($type='index', $options=[] )
-    {
-        $cid = Utils::deep_array_value('cid', $options);
-        $b=[
-            'new' => [
-                'action' => 'new',
-                'isClient' => $cid ? true : false,
-                'modal' => static::en,
-                'attr' => ['class' => 'btn-primary'],
-                'routeParam' => $cid ? [ 'cid' => $cid ] : []
-            ]
-        ];
-        $btns=[];
-        switch($type){
-            default:
-                foreach(['new'] as $n){
-                    $btns[]=$b[$n];
-                }
-        }
-        return $btns;
-    }
+    // public static function getToolbarBtn($type='index', $options=[] )
+    // {
+    //     $cid = Utils::deep_array_value('cid', $options);
+    //     $b=[
+    //         'new' => [
+    //             'action' => 'new',
+    //             'isClient' => $cid ? true : false,
+    //             'modal' => static::en,
+    //             'attr' => ['class' => 'btn-primary'],
+    //             'routeParam' => $cid ? [ 'cid' => $cid ] : []
+    //         ]
+    //     ];
+    //     $btns=[];
+    //     switch($type){
+    //         default:
+    //             foreach(['new'] as $n){
+    //                 $btns[]=$b[$n];
+    //             }
+    //     }
+    //     return $btns;
+    // }
     
     public function clientAjaxDataAction(Request $request, $id, $cid = 0)
     {
@@ -93,7 +93,7 @@ class SettingsController extends AppController
         if (!$this->preAction($request, $cid)) {
             return $this->responseAccessDenied();
         }
-        $this->setFormTemplate();
+        $this->setTemplate('edit');
         $this->newEntity();
         $this->entity->setClient($this->client);
         $this->createCreateForm();

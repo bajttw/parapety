@@ -125,7 +125,7 @@ class FiltersGenerator extends ElementsGenerator{
             break;
             case 'entity':
                 // $repository=$this->getEntityManager()->getRepository(Utils::deep_array_value('repository', $source, self::$bundlePath . Utils::deep_array_value('query', $source, '')));
-                $data = $this->eh->getRepository($source['query'])->getElement(Utils::deep_array_value('options', $source, [])) ;
+                $data = $this->eh->getRepository($source['query'])->getFilter(Utils::deep_array_value('options', $source, [])) ;
             break;
         }  
         if(isset($filterOptions['add'])){

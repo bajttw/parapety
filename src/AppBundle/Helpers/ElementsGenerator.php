@@ -29,6 +29,11 @@ class ElementsGenerator{
         }
     }
 
+    protected function getName(?string $type=null):string
+    {
+        return ($type) ? $type . '_' . $this->en : $this->en;
+    }
+
     protected function getId(?string $type=null, ?string $elementType=null):string
     {
         $elementType= ($elementType) ?: $this->genType;
@@ -110,7 +115,7 @@ class ElementsGenerator{
 
     protected function setId(array &$element, ?string $idValue = null ):void
     {
-        $element['attr']['id']= ($idValue) ?: $this->getId();
+        $element['attr']['id']= ($idValue) ?: $this->getId(Utils::deep_array_value('name', $element));
     }
 
 
@@ -124,7 +129,11 @@ class ElementsGenerator{
         $choiced=[];
         if(Utils::array_keys_exists(['predefined','types'], $elements)){
             $types=$elements['types'];
-            $type=array_key_exists($this->type, $types) ? $this->type : 'def';           
+            $type=$this->type;
+            if(!array_key_exists($type, $types)){
+                $s= explode('_', $type);
+                $type= count($s) > 1 ? $s[0] . '_' . 'def' : 'def';
+            }
             if(array_key_exists($type, $types)){
                 foreach($types[$type] as $n){
                     $element=$this->getPredefinedElement($n, $elements['predefined']);

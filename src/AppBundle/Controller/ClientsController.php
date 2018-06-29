@@ -66,23 +66,23 @@ class ClientsController extends AppController{
     //     return $filters;
     // }
 
-    public static function getActions($type = 'index', $options=[]){
-        $actions= [
-            'edit' => [ 'action' => 'edit', 'type' => 'm', 'target' => self::en],
-            'delete' => [ 'action' => 'delete', 'type' => 'm', 'target' => self::en]
-        ];
-        return $actions;
-    }
+    // public static function getActions($type = 'index', $options=[]){
+    //     $actions= [
+    //         'edit' => [ 'action' => 'edit', 'type' => 'm', 'target' => self::en],
+    //         'delete' => [ 'action' => 'delete', 'type' => 'm', 'target' => self::en]
+    //     ];
+    //     return $actions;
+    // }
 
-    public static function getToolbarBtn($type='index', $options=[] ){
-        return [
-            [   
-                'action' => 'new', 
-                'modal' => self::en, 
-                'attr' => [ 'class' => 'btn-primary' ]
-            ]
-        ];
-    }
+    // public static function getToolbarBtn($type='index', $options=[] ){
+    //     return [
+    //         [   
+    //             'action' => 'new', 
+    //             'modal' => self::en, 
+    //             'attr' => [ 'class' => 'btn-primary' ]
+    //         ]
+    //     ];
+    // }
 
     public static function getModal(){
         return [
@@ -127,8 +127,8 @@ class ClientsController extends AppController{
                         $this->responseMessage([
                             'title' => $this->trans($this->getTransHelper()->titleText('user_created', 'Clients')),
                             'message' => [
-                                $this->trans($this->messageText('login', 'Users'), [$user->getUsername()]),
-                                $this->trans($this->messageText('password', 'Users'), [$defaultPass])
+                                $this->trans($this->getTransHelper()->messageText('login', 'Users'), [$user->getUsername()]),
+                                $this->trans($this->getTransHelper()->messageText('password', 'Users'), [$defaultPass])
 
                             ]
                         ], null, false)
@@ -141,7 +141,7 @@ class ClientsController extends AppController{
                     ];
                 }
             }else{
-                $error= new FormError($this->trans($this->messageText('email_exist', 'Users')));        
+                $error= new FormError($this->trans($this->getTransHelper()->messageText('email_exist', 'Users')));        
                 $this->formSystem->get('email')->addError($error);
                 $dataReturn['errors']['childs']= [ $this->errorMessage([
                     'title' => 'error.user_create',
@@ -165,31 +165,31 @@ class ClientsController extends AppController{
 
 // </editor-fold>   
 
-    private function genClientServicePanel(string $entityClassName, string $clientIdPrototype,  $active=false ):array
-    {
-        return $this->genPanel($entityClassName, [
-            'active' => $active,
-            'content' => $this->tmplPath('index', '', 'Panel'),
-            'toolbars' => [
-                $this->genToolbar( 'service', $entityClassName, [ 'tmpl' => true, "cid" => $clientIdPrototype ]),
-                $this->getFilterbarGenerator()->generate( 'service', $entityClassName)
-            ],
-            'table' => $this->getDTGenerator()->generate('panel', $entityClassName, [
-                'actions' => true,
-                'export' => true,
-                'clientId' => $clientIdPrototype,
-                'ajax' =>[
-                    'filtersType' => 'table_service'
-                ]
-                // 'd' => [
-                //     'ajax' => [
-                //         'url' => $this->getRouteHelper()->getClientUrl('ajax', $entityClassName, ['cid' => $clientIdPrototype ])
-                //     ],
-                //     'filters' => $this->getFilterHelper()->generate('table_service', $entityClassName, [ 'values' => ['client' => $clientIdPrototype ]]) 
-                // ]
-            ])
-        ]);
-    }
+    // private function genClientServicePanel(string $entityClassName, string $clientIdPrototype,  $active=false ):array
+    // {
+    //     return $this->genPanel('service', $entityClassName, [
+    //         'active' => $active,
+    //         'content' => $this->tmplPath('index', '', 'Panel'),
+    //         'toolbars' => [
+    //             $this->genToolbar( 'service', $entityClassName, [ 'tmpl' => true, "cid" => $clientIdPrototype ]),
+    //             $this->genFilterbar( 'service', $entityClassName)
+    //         ],
+    //         'table' => $this->genDT('service', $entityClassName, [
+    //             'actions' => true,
+    //             'export' => true,
+    //             'clientId' => $clientIdPrototype,
+    //             'ajax' =>[
+    //                 'filtersType' => 'table_service'
+    //             ]
+    //             // 'd' => [
+    //             //     'ajax' => [
+    //             //         'url' => $this->getRouteHelper()->getClientUrl('ajax', $entityClassName, ['cid' => $clientIdPrototype ])
+    //             //     ],
+    //             //     'filters' => $this->getFilterHelper()->generate('table_service', $entityClassName, [ 'values' => ['client' => $clientIdPrototype ]]) 
+    //             // ]
+    //         ])
+    //     ]);
+    // }
     
 // <editor-fold defaultstate="collapsed" desc="Actions">  
     
@@ -199,55 +199,82 @@ class ClientsController extends AppController{
         }
         $tabs=[];
         $tabsOpt=[];
-        $i=0;
         $clientIdPrototype=$this->getEntityHelper()->getIdPrototype(static::ec);
+        $po=[
+            'clientId' => $clientIdPrototype,
+            'contentType' => 'index',
+            'active' => true,
+            'elements' => [
+                'toolbar' => true,
+                'filterbar' => true,
+                'table' => [
+                    'options' => [
+                        'actions' => true,
+                        'export' => true
+                    ]
+                ]
+            ]
+        ];
         foreach([ 'Orders','Deliveries', 'Invoices', 'PriceLists', 'Settings' ] as $tec){
             $ten=$this->getEntityHelper()->getEntityName($tec);
-            $tabs['client_'.$ten]=$this->genClientServicePanel($tec, $clientIdPrototype, $i==0);
+            $tabs['client_'.$ten]=$this->genPanel('service', $tec, $po);
+            $po['active']= false;
             $tabsOpt[$ten]=['ajax' => false];
             $this->addEntityModal($tec);
-            $i++;
         }
         $tabsOpt['edit']=['ajax' => true];
         $cEditUrl=$this->getUrl('edit', static::ec, ["id" => $clientIdPrototype, "type" => "p"]);
-        $tabs['client_edit'] = $this->genPanel(static::ec, [
-            'label' => $this->getTransHelper()->labelText('edit'),
+        $tabs['client_edit'] = $this->genPanel('edit', static::ec, [
+            // 'label' => $this->getTransHelper()->labelText('edit'),
+            'name' => 'edit',
             'd' => [
-                'url' => json_encode([
+                'url' => [
                     'start' => $cEditUrl,
                     'edit' => $cEditUrl,
                     'new' => $this->getUrl('new', static::ec, [ "type" => "p"])
-                ])               
-            ],
-            'attr' =>[
-                'id' => 'edit_panel'
+                ]               
             ]
         ]);
-        $this->setTemplate('service', null)
+        $this->setTemplate('service', static::ec, false )
             ->setRenderOptions([
                 'title' => $this->getTransHelper()->titleText('service'),
-                'panel_left' => $this->genPanel(static::ec, [
-                    'content' => $this->tmplPath('panel', null),
-                    'toolbars' => [
-                        $this->genToolbar(),
-                        $this->getFilterbarGenerator()->generate('service', static::ec)
-                    ],
-                    'table' => $this->getDTGenerator()->generate('panel', static::ec, [
-                        'actions' => true, 
-                        'select' => 'single',
-                        'ajax' => [
-                            'urlType' => 'ajax_details'
+                'panel_left' => $this->genPanel('service', static::ec, [
+                    // 'content' => $this->tmplPath('panel', null),
+                    'contentType' => 'index',
+                    'elements' => [
+                        'toolbar' => true,
+                        'filterbar' => true,
+                        'table' => [
+                            'options' => [
+                                'actions' => true, 
+                                'select' => 'single',
+                                'ajax' => [
+                                    'urlType' => 'ajax_details'
+                                ]
+        
+                            ]                            
                         ]
-                        // 'd' => [
-                        //     'ajax' => [
-                        //         'url' => $this->getUrl('ajax_details', static::ec)
-                        //     ],
-                        //     'filters' => $this->getFiltersGenerator()->generate('table_service')
-                        // ]
-                    ])
+                    ]                 
+                    // 'toolbars' => [
+                    //     $this->genToolbar(),
+                    //     $this->genFilterbar('service', static::ec)
+                    // ],
+                    // 'table' => $this->genDT('panel', static::ec, [
+                    //     'actions' => true, 
+                    //     'select' => 'single',
+                    //     'ajax' => [
+                    //         'urlType' => 'ajax_details'
+                    //     ]
+                    //     // 'd' => [
+                    //     //     'ajax' => [
+                    //     //         'url' => $this->getUrl('ajax_details', static::ec)
+                    //     //     ],
+                    //     //     'filters' => $this->getFiltersGenerator()->generate('table_service')
+                    //     // ]
+                    // ])
                 ] ),
                 'panel_right' => [
-                    'template' => $this->tmplPath('panel_service', null),
+                    'template' => $this->getTemplate('panel_service', static::ec, false),
                     'tabs'=> [
                         'panels' => $tabs
                     ],
@@ -255,9 +282,9 @@ class ClientsController extends AppController{
                         'id' => 'service_panel'
                     ],
                     'd' => [
-                        'options' => json_encode([
+                        'options' => [
                             'panels' => $tabsOpt
-                        ])
+                        ]
                     ]
                 ],
                 'service' => [

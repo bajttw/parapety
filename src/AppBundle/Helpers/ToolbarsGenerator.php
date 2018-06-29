@@ -2,7 +2,7 @@
 namespace AppBundle\Helpers;
 use AppBundle\Utils\Utils;
 
-class ToolbarGenerator extends ClientElementsGenerator
+class ToolbarsGenerator extends ClientElementsGenerator
 {
 
     private $tg;// ToolsGenerator

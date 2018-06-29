@@ -241,49 +241,49 @@ class OrdersController extends AppController
     //     return $filters;
     // }
 
-    public static function getActions($type = 'view', $options=[])
-    {
-        $actions = [];
-        $all = [
-            'edit' => ['action' => 'edit', 'type' => 'w'],
-            // 'show' =>  [ 'action' => 'show', 'type' => 'm', 'target' => 'orders'],
-            'copy' => [
-                'action' => 'copy', 
-                'browserAction' => true,
-                'd' => [
-                    'exp' => ''
-                ]
-            ],
-            'show' => ['action' => 'show', 'browserAction' => true],
-            'pdf' => [
-                'action' => 'pdf', 
-                'browserAction' => true,
-                'd' => [
-                    'exp' => 'order'
-                ]
-            ],
-            // 'xls' => [
-            //     'action' => 'xls', 
-            //     'browserAction' => true,
-            //     'd' => [
-            //         'exp' => ''
-            //     ]
-            // ],
-            'delete' => ['action' => 'delete', 'type' => 'm', 'target' => 'orders']
-        ];
-        switch ($type) {
-            case 'index' :
-                $as = ['show', 'copy', 'pdf', 'edit', 'delete'];
-            break;
-            case 'view' :
-            default :
-                $as = ['show', 'copy', 'pdf'];
-        }
-        foreach ($as as $a) {
-            $actions[$a] = $all[$a];
-        }
-        return $actions;
-    }
+    // public static function getActions($type = 'view', $options=[])
+    // {
+    //     $actions = [];
+    //     $all = [
+    //         'edit' => ['action' => 'edit', 'type' => 'w'],
+    //         // 'show' =>  [ 'action' => 'show', 'type' => 'm', 'target' => 'orders'],
+    //         'copy' => [
+    //             'action' => 'copy', 
+    //             'browserAction' => true,
+    //             'd' => [
+    //                 'exp' => ''
+    //             ]
+    //         ],
+    //         'show' => ['action' => 'show', 'browserAction' => true],
+    //         'pdf' => [
+    //             'action' => 'pdf', 
+    //             'browserAction' => true,
+    //             'd' => [
+    //                 'exp' => 'order'
+    //             ]
+    //         ],
+    //         // 'xls' => [
+    //         //     'action' => 'xls', 
+    //         //     'browserAction' => true,
+    //         //     'd' => [
+    //         //         'exp' => ''
+    //         //     ]
+    //         // ],
+    //         'delete' => ['action' => 'delete', 'type' => 'm', 'target' => 'orders']
+    //     ];
+    //     switch ($type) {
+    //         case 'index' :
+    //             $as = ['show', 'copy', 'pdf', 'edit', 'delete'];
+    //         break;
+    //         case 'view' :
+    //         default :
+    //             $as = ['show', 'copy', 'pdf'];
+    //     }
+    //     foreach ($as as $a) {
+    //         $actions[$a] = $all[$a];
+    //     }
+    //     return $actions;
+    // }
 
     public static function getToolbarBtn($type='index', $options=[] )
     {
@@ -498,7 +498,7 @@ class OrdersController extends AppController
                 $this->genToolbar(),
                 $this->genFilterbar()
             ],
-            'table' => $this->genTable('index', null, [
+            'table' => $this->genDT('index', static::ec, [
                 'actions' => 'index',
                 'select' => [
                     'options' => [
@@ -518,7 +518,7 @@ class OrdersController extends AppController
                         'importFields' => static::$importFields,
                         'ajax' => [
                             'type' => 'POST',
-                            'url' => $this->getUrl('generate', 'Productions')
+                            'url' => $this->getRouteHelper()->getEmployeeUrl('generate', 'Productions')
                         ]
                     ]
                 ]
@@ -727,7 +727,7 @@ class OrdersController extends AppController
     }   
 
     private function setImportRenderOptions($request){
-        $this->setFormTemplate('', 'import');
+        $this->setTemplate('import');
         $this->setRenderOptions([
             'template_body' => $this->entityNameSpaces['path'] . ':importForm.html.twig',
             'title' => $this->getTransHelper()->titleTex('import'),

@@ -9,7 +9,7 @@ class DataTablesGenerator extends ClientElementsGenerator
     private $fg;//FilterGenerator
     private $eag;//EntityActionsGenerator
 
-    protected $genType='datatables';
+    protected $genType='table';
     
     public function __construct( EntityHelper $entityHelper, SettingsHelper $settingsHelper, TransHelper $transHelper, FiltersGenerator $filtersGenerator, EntityActionsGenerator $entityActionsGenerator, RouteHelper $routeHelper){
         $this->eh=$entityHelper;
@@ -57,18 +57,30 @@ class DataTablesGenerator extends ClientElementsGenerator
     }
 
     private function setFilters(array &$table){
-        $filtersType=Utils::deep_array_value('ajax-filtersType', $this->options);
-
+        if(!Utils::deep_array_key_exists('d-filters', $table)){
+            $filters=Utils::deep_array_value('ajax-filters', $this->options, []);
+            if(is_array($filters)){
+                $table['d']['filters']=$this->fg->generateTableFilters(
+                    Utils::deep_array_value('type', $filters, $this->type ), 
+                    $this->ecn, 
+                    \array_replace_recursive([ 
+                            'values' => [
+                                'client' => (int)$this->clientId
+                            ]
+                        ],
+                        Utils::deep_array_value('options', $filters, [])
+                    )
+                );
+            }
+        }
     }
 
     protected function getD(array $elementOptions):array
     {
         return array_replace_recursive([
-                [
-                    'columns' => [ 
-                     'data' => 'id' 
+                'columns' => [ 
+                        [ 'data' => 'id' ]
                     ]
-                ]
             ],
             $this->eh->getSettingsValue('tables-options', $this->ecn) ?: [],
             Utils::deep_array_value('d', $elementOptions, []),
@@ -178,6 +190,7 @@ class DataTablesGenerator extends ClientElementsGenerator
         $table=$this->generateElement($options);
         $this->setId($table);
         $this->setAjax($table);
+        $this->setFilters($table);
         $this->setEntityUrls($table);
         $this->setActions($table);
         $this->setSelect($table);

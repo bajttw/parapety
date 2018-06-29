@@ -2,7 +2,7 @@
 namespace AppBundle\Helpers;
 use AppBundle\Utils\Utils;
 
-class FilterbarGenerator extends ElementsGenerator
+class FilterbarsGenerator extends ElementsGenerator
 {
 
     private $fg;// FiltersGenerator
