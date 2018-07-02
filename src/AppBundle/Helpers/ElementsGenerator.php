@@ -31,7 +31,9 @@ class ElementsGenerator{
 
     protected function getName(?array $elementOptions = null, ?string $prefix=null):string
     {
-        $name= Utils::deep_array_value('name', $elementOptions ?: $this->options, $this->en) ?: $this->type;
+        $elementOptions= ($elementOptions) ?: $this->options;
+        $name= Utils::deep_array_value('name', $elementOptions, $this->en) ?: $this->type;
+        $prefix = ($prefix) ?: Utils::deep_array_value('namePrefix', $elementOptions);
         return ($prefix) ? $prefix . '_' . $name : $name;
     }
 
@@ -60,9 +62,35 @@ class ElementsGenerator{
         return Utils::deep_array_value('attr', $elementOptions, []);
     }
 
-    protected function setAttr(array &$element, string $key, $value):void
+    public function addAttributes(array &$element, array $add, bool $overwrite = false):void
     {
-        $element['attr'][$key]=$value;
+        if (!array_key_exists('attr', $element)) {
+            $element['attr'] = $add;
+        }else{
+            Utils::array_values_set($element['attr'], $add, $overwrite);
+        }
+    }
+
+    protected function setAttr(string $attrName, $attrValue=null, array &$element, ?array $elementOptions = null, bool $overwrite=false):void
+    {
+        $elementOptions= $elementOptions ?: $this->options;
+        if (!array_key_exists('attr', $element)) {
+            $element['attr'] = [];
+        }
+        if(!array_key_exists($attrName, $element['attr']) || $overwrite ){
+            if(is_null($attrValue)){
+                $fnGet='get' . ucfirst($attrName);
+                if(method_exists($this, $fnGet)){
+                    $attrValue=$this->$fnGet($elementOptions);
+                }
+            }
+            $element['attr'][$attrName] = $attrValue; 
+        }
+    }
+
+    protected function setId(array &$element, ?array $elementOptions = null, ?string $idValue=null  ):void
+    {
+        $this->setAttr('id', ($idValue) ?: $this->getId($element['name']), $element, $elementOptions);
     }
 
     protected function addClass(array &$element, $class):void
@@ -70,19 +98,30 @@ class ElementsGenerator{
         Utils::addClass($element, $class, 'attr');
     }
 
-    protected function genLabel(string $name)
+    protected function getLabel(string $name)
     {
         return $this->th->trans($this->th->labelText($this->genType . '.' . $name, $this->en));
     }
 
+    protected function getTitle(string $name)
+    {
+        return $this->th->trans($this->th->titleText($this->genType . '.' . $name, $this->en));
+    }
+
+
+    protected function setTitle(array &$element, ?array $elementOptions = null, ?string $title= null):void
+    {
+        $this->setAttr('id', ($title) ?: $this->getTitle($element['name']), $element, $elementOptions);
+    }
+
     protected function setLabel(array &$element):void
     {
-        $element['label']=$this->genLabel($element['name']);
+        $element['label']=$this->getLabel($element['name']);
     }
 
     protected function setFieldLabel(array &$element):void
     {
-        $element['fileldLabel']['label']=$this->genLabel($element['name']);
+        $element['fileldLabel']['label']=$this->getLabel($element['name']);
     }
 
     protected function setFieldAttr(array &$element, array $elementOptions):void
@@ -95,11 +134,6 @@ class ElementsGenerator{
             }
             $this->setTitle($element);
         }         
-    }
-    
-    protected function setTitle(array &$element):void
-    {
-        $element['attr']['title']=$this->th->titleText($this->genType . '.' . $element['name'], $this->en);
     }
 
     protected function getChildOptions(string $childType, ?array $elementOptions=null ):?array
@@ -115,7 +149,6 @@ class ElementsGenerator{
         }
         return $childOpt;
     }
-
 
     protected function setChildId(array &$element, ?string $parentId =null ):void
     {
@@ -134,17 +167,12 @@ class ElementsGenerator{
         }
     }
 
-    protected function setId(array &$element, ?string $idValue = null ):void
-    {
-        $element['attr']['id']= ($idValue) ?: $this->getId(Utils::deep_array_value('name', $element));
-    }
-
     protected function setElementProperty(string $propertyName, array &$element, ?array $elementOptions = null, bool $set=false):void
     {
         $elementOptions= $elementOptions ?: $this->options;
         $data=Utils::deep_array_value($propertyName, $elementOptions);
         if(is_null($data)){
-            $fnGet='get' . ufirst($propertyName);
+            $fnGet='get' . ucfirst($propertyName);
             if(method_exists($this, $fnGet)){
                 $data=$this->$fnGet($elementOptions);
             }
@@ -189,7 +217,7 @@ class ElementsGenerator{
         return null;
     }
 
-    protected function getContent(array $elementOptions):?array
+    protected function getContent(array $elementOptions):?string
     {
         return null;
     }
@@ -231,9 +259,8 @@ class ElementsGenerator{
     protected function generateElement(?array $elementOptions=null):array
     {
         $elementOptions= ($elementOptions) ?: $this->options;
-        $name= $this->getName($elementOptions);
         return [  
-            'name' => $name,         
+            'name' => $this->getName($elementOptions),         
             'en' => $this->en,
             'ecn' => $this->ecn,
             'attr' => $this->getAttr($elementOptions),

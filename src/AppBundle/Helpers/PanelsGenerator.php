@@ -97,14 +97,14 @@ class PanelsGenerator extends ClientElementsGenerator
         $this->setElementProperty('table', $panel, $panelOptions, $set);
     }
 
-    protected function getContent(array $panelOptions):?array
+    protected function getContent(array $panelOptions):?string
     {
         $contentName = Utils::deep_array_value('contentName', $panelOptions);
         if($contentName){
             return $this->tmplh->getPath(
                 $contentName,
-                Utils::deep_array_value('contentGeneric', $panelOptions, true),
                 $this->ecn,
+                Utils::deep_array_value('contentGeneric', $panelOptions, true),
                 'p'
             );
         }

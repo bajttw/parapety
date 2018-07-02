@@ -65,27 +65,27 @@ class TransHelper
 
     public function filterLabel(?string $str, ?string $entityName=null):string
     {
-        return $this->labelText('filter'.$str, $entityName );
+        return $this->labelText('filter.'.$str, $entityName );
     }
     
     public function filterTitle(?string $str, ?string $entityName=null):string
     {
-        return $this->titleText('filter'.$str, $entityName );
+        return $this->titleText('filter.'.$str, $entityName );
     }
 
     public function btnLabel(?string $str, ?string $entityName=null):string
     {
-        return $this->labelText('btn'.$str, $entityName );
+        return $this->labelText('btn.'.$str, $entityName );
     }
     
     public function btnTitle(?string $str, ?string $entityName=null):string
     {
-        return $this->titleText('btn'.$str, $entityName );
+        return $this->titleText('btn.'.$str, $entityName );
     }
   
     public function modalTitle(?string $str, ?string $entityName=null):string
     {
-        return $this->titleText('btn'.$str, $entityName );
+        return $this->titleText('modal.'.$str, $entityName );
     }
 
     private function translate(string $str, array $include=[]):string

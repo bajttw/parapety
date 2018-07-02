@@ -270,10 +270,9 @@ colors:
         wrong_value: Nieprawidłowy kolor parapetu.
     message:
         update: Zaktualizowano kolor
-    modal:
-        title:
-            color: Wybór koloru parapetu
     title:
+        modal:
+            color: Wybór koloru parapetu
         actions: Akcje
         active: Status aktywności
         btn:
@@ -661,10 +660,9 @@ models:
         correct_values: 'Dostępne modele: '
         updated: Zaktualizowano
         wrong_value: Nieprawidłowy model parapetu.
-    modal:
-        title:
-            model: Wybór modelu parapetu
     title:
+        modal:
+            model: Wybór modelu parapetu
         actions: Akcje
         active: Status
         btn:
@@ -847,11 +845,10 @@ orders:
         import_success_count: Zaimportowano zamówienia %1
         remove: Zamówienie zostało usunięte
         update: Zaktualizowano zamówienie o numerze
-    modal:
-        title:
+    title:
+        modal:
             orders_exp: Eksport zamówienia
             orders_to_production: Zamówienie gotowe do produkcji
-    title:
         actions: Polecenia
         actualState: Status
         approved: Czas zatwierdzenia zamówienia
@@ -1767,10 +1764,9 @@ sizes:
         correct_values: 'Dostępne grubości: '
         notFound: Nie odnaleziono grubości
         wrong_value: Nieprawidłowa grubość parapetu.
-    modal:
-        title:
-            size: Wybór grubości parapetu
     title:
+        modal:
+            size: Wybór grubości parapetu
         actions: Akcje
         active: Status
         btn:
@@ -1822,6 +1818,8 @@ sizes:
     warning:
         not_found: brak w bazie
 title:
+    modal:
+        comment: Komentarz
     btn:
         add: Dodaj
         change: Zmień
@@ -1899,10 +1897,9 @@ trims:
         correct_values: 'Dostępne opcje wykończenia: '
         notFound: Nie odnaleziono grubości
         wrong_value: Nieprawidłowa opcja wykończenia parapetu.
-    modal:
-        title:
-            trims: Wybór wykonania parapetu
     title:
+        modal:
+            trims: Wybór wykonania parapetu
         actions: Akcje
         active: Status aktywności
         btn:

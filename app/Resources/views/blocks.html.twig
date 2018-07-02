@@ -1055,7 +1055,6 @@
     {%- endblock datatable_column -%}
 
     {%- block datatable -%}
-         {# {{dump(table)}} #}
         {% set table_id= table.attr.id|default(table.name~"_table") %}
         {% set attr=table.attr|set_array_value('id', table_id)|add_class(['datatable', 'dataTable', 'table-hover', 'table-striped',  'table-bordered' ]) %}
         {% set data_opt= table.d|default({})
@@ -1069,7 +1068,6 @@
                 {% set data_opt=data_opt|set_array_value(['columns', idx, 'tmpl'], block(tmpl.block), true) %}
             {% endif %}
         {% endfor %}       
-        {# {{dump(data_opt)}} #}
         {% set fields=entities_settings[table.ecn].fields|default({}) %}
             <table style="width: 100%;" width="100" {{ block('attributes') }} {{ block('data_options') }} 
                 data-detail-tmpl="{{  table.details.tmpl|default('') != '' ? block(table.details.tmpl|default(''))|e : '' }}"
@@ -1095,7 +1093,6 @@
 
 {%- block tabs -%}
     {% set attr = tabs.attr|default({})|add_class(['tabs-wrapper']) %}
-    {{ dump(tabs) }}
     <div {{ block('attributes') }} >
         <div>
             <ul class="nav nav-tabs" role="tablist">
@@ -1197,17 +1194,13 @@
 
 {% block document_body %}
     {% set title= title|default('title.title')|trans %}
-    {% set div={
-        attr: { id : 'page_title', class: 'bar-shadow' },
-        d: { title: title } 
-    }%}
-    {{ block("begin_div") }}
+    <div id="page_title"  class="bar-shadow" data-title="{{title}}">
         <h1>
             {% block title_form  %}
                 {{ title }}
             {% endblock %}  
         </h1>
-    {{ block("close_div") }}
+    </div>
     <div class="content-header">
         {% for flashMessage in app.session.flashbag.get('notice') %}
             <div class="flash_notice">
@@ -1234,14 +1227,9 @@
                 {% include 'Modal/layout.html.twig' with { modal : modal } %} 
             {% endfor %}
         {% endif %}
-        {% include 'Modal/layout.html.twig' with {'modal': {} } %} 
+        {% include 'Modal/layout.html.twig' with {'modal': { name : 'my', title: '', attr: { title: 'title.modal.my' , id: 'my_modal' } } } %} 
     {% endblock %}
 {% endblock document_body %}
-
-
-
-
-
 
 {%- block show_field -%}
     <div class="form-group">
@@ -1252,7 +1240,6 @@
         {{ block("cell_data") }}
     </div>
 {%- endblock show_field -%}
-
 
 {%- block field_details -%}
     {% set en = details.en|default(en|default('')) %}

@@ -19,14 +19,14 @@ class ModalsGenerator extends ElementsGenerator
     }
 
 
-    protected function getContent(array $panelOptions):?array
+    protected function getContent(array $panelOptions):?string
     {
         $contentName = Utils::deep_array_value('contentName', $panelOptions);
         if($contentName){
             return $this->tmplh->getPath(
                 $contentName,
-                Utils::deep_array_value('contentGeneric', $panelOptions, false),
                 $this->ecn,
+                Utils::deep_array_value('contentGeneric', $panelOptions, false),
                 'm'
             );
         }
@@ -43,7 +43,9 @@ class ModalsGenerator extends ElementsGenerator
                     $data=$this->sh->getSettingValue($source['query']);
                 break;
                 case 'entity':
-                    $data = $this->eh->getRepository($source['query'])->getList(Utils::deep_array_value('options', $source, [])) ;
+                    $fn=Utils::deep_array_value('fnGet', $source, 'getList');
+                    $ecn= Utils::deep_array_value('ecn', $source, $this->ecn);
+                    $data = $this->eh->getRepository($ecn)->$fn(Utils::deep_array_value('options', $source, [])) ;
                 break;
             }
         }
@@ -67,26 +69,29 @@ class ModalsGenerator extends ElementsGenerator
         return $data;
     }
 
-    protected function generateElement(?array $elementOptions=null):array
+    protected function generateElement(?array $modalOptions=null):array
     {
-        $elementOptions= ($elementOptions) ?: $this->options;
-        $name= $this->getName($elementOptions);
-        return [  
-            'name' => $name,         
-            'title' => $this->th->modalTitle($name, $this->en),
-            'attr' => $this->getAttr($elementOptions),
-            'd' => $this->getD($elementOptions),
-        ];
+        $modalOptions= ($modalOptions) ?: $this->options;
+        $modal=parent::generateElement($modalOptions);
+        $title=$this->getTitle($modal['name']);
+        if(!array_key_exists('title', $modal)){
+            $modal['title'] = $this->th->trans($title);
+        }
+        $this->addAttributes($modal, [
+            'title' => $title,
+            'id' => $this->getId($modal['name'])
+        ]);
+        $this->setElementProperty('dialog', $modal, $modalOptions);
+        return $modal;
     }
 
     public function generate(?string $type=null,  ?string $entityClassName='', array $options=[]):array
     {
         $this->init($type, $entityClassName, $options);
         $modal=$this->generateElement();
-        $this->setId($modal);
         $this->setData($modal);
         $this->setSettings($modal);
-        $this->setContent();
+        $this->setContent($modal);
         return $modal;
     }
 
@@ -96,7 +101,6 @@ class ModalsGenerator extends ElementsGenerator
         $modal=$this->generateElement();
         $modal['en'] = $this->en;
         $modal['ecn'] = $this->ecn;
-        $this->setId($modal);
         $this->addClass($modal, 'ajax');
         $this->setData($modal);
         $this->setSettings($modal);
@@ -105,42 +109,48 @@ class ModalsGenerator extends ElementsGenerator
 
     public function generateFieldModal(string $fieldName, string $entityClassName='', array $options=[]):array
     {       
-        $modal=$this->generate(null, $entityClassName, array_replace_recursive([
+        $options=array_replace_recursive([
                 'name' => $fieldName,
                 'contentName' => 'field',
                 'contentGeneric' => true,
-                'attr' => [
-                    'class' => 'modal-field',
-                ],
+                'd' => [
+                    'set-focus' => '.field'
+                ]
+            ],
+            $options
+        );
+        if(array_key_exists('dataSource', $options)){
+            Utils::deep_array_value_set('dataSource-fnGet', $options, 'getDic');
+        }
+        $modal=$this->generate('field', $entityClassName, $options);
+        $this->addClass($modal, 'modal-field');
+        $this->setData($modal);
+        $this->setElementProperty('fieldType', $modal);
+        $this->setElementProperty('fieldAttr', $modal);
+        return $modal;
+    }
+
+    public function generateExpModal(?string $entityClassName=null, array $options=[]):array
+    {       
+        $this->init('exp', $entityClassName, array_replace_recursive([
+                'contentName' => 'field',
+                'contentGeneric' => true,
+                'namePrefix' => 'exp',
                 'd' => [
                     'set-focus' => '.field'
                 ]
             ],
             $options
         ));
-        $this->setElementProperty('fieldType', $options);
-        $this->setElementProperty('fieldAttr', $options);
-        return $modal;
-    }
-
-    public function generateExpModal(?string $entityClassName=null, array $options=[]):array
-    {       
-        $this->init('exp', $entityClassName, $options);
-        $modal=$this->generate(null, $entityClassName, array_replace_recursive([
-                'name' => $this->getName(null, 'exp'),
-                'contentName' => 'field',
-                'contentGeneric' => true,
-                'attr' => [
-                    'class' => 'modal-field',
-                ],
-                'd' => [
-                    'set-focus' => ''
-                ]
-            ],
-            $options
-        ));     
-        $this->setElementProperty('fieldType', $options);
-        $this->setElementProperty('fieldAttr', $options);
+        $modal=$this->generateElement();     
+        $modal['en'] = $this->en;
+        $modal['ecn'] = $this->ecn;
+        $this->setId($modal);
+        $this->setSettings($modal);
+        $this->setContent($modal);
+        $this->addClass($modal, 'modal-field');
+        $this->setElementProperty('fieldType', $modal);
+        $this->setElementProperty('fieldAttr', $modal);
         $modal['showSave']=false;   
         return $modal;
     }
@@ -148,7 +158,7 @@ class ModalsGenerator extends ElementsGenerator
     public function generateFieldModals(array $fields , array $options=[]):array
     {
         $modals = [];
-        $this->init($type, $entityClassName, $options);
+        // $this->init($type, $entityClassName, $options);
         foreach($fields as $name => $fmo){
             $modals[$name]=$this->generateFieldModal(
                 $name,

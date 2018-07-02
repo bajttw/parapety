@@ -406,23 +406,31 @@ class OrdersController extends AppController
             'model' => [ 
                 'ecn' => 'Models', 
                 'fieldtype' => 'radio',
-                'dic' => true
+                'dataSource' => [
+                    'type' => 'entity'
+                ]
             ],
             'color' => 
             [ 
                 'ecn' => 'Colors', 
                 'fieldtype' => 'radio',
-                'dic' => true
+                'dataSource' => [
+                    'type' => 'entity'
+                ]
             ],
             'size' => [ 
                 'ecn' => 'Sizes', 
                 'fieldtype' => 'select',
-                'data' => $this->getEntityHelper()->getDic('Sizes')
+                'dataSource' => [
+                    'type' => 'entity'
+                ]
             ],
             'trims' => [ 
                 'ecn' => 'Trims', 
                 'fieldtype' => 'checkbox',
-                'dic' => true,
+                'dataSource' => [
+                    'type' => 'entity'
+                ],
                 'attr' => [
                     'class' => 'modal-trims'
                 // ],
@@ -434,21 +442,23 @@ class OrdersController extends AppController
             ]
         ])
         ->addExpModal()
-        ->addModal(
-            [
-            'name' => 'import', 
-            'content' => $this->tmplPath('importPositions', 'Orders'),
-                'attr' => [
-                    'class' => 'modal-import',
-                ],
-                'dialog_attr' => [
-                 'class' => 'modal-xl',
-                ]
+        // ->addModal(
+        //     [
+        //     'name' => 'import', 
+        //     'content' => $this->tmplPath('importPositions', 'Orders'),
+        //         'attr' => [
+        //             'class' => 'modal-import',
+        //         ],
+        //         'dialog_attr' => [
+        //          'class' => 'modal-xl',
+        //         ]
 
-            ]
-        );
+        //     ]
+        // );
+        ;
         return $this;
     }
+    
 
     // public static function genCustomSettings($controller, &$entitySettings=[]){
     //     foreach (['Models' , 'Colors', 'Trims', 'Sizes'] as $ecn){
