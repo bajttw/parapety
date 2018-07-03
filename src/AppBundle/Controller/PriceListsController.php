@@ -174,7 +174,7 @@ class PriceListsController extends AppController
         return $dataReturn;
     } 
 
-    protected function customEditAction(Request $request, $id, $cid = 0)
+    protected function customEditAction(Request $request, int $id, int $cid = 0):void
     {
         $this->renderOptions['entity_data'] = $this->entity->getShowData();
     }

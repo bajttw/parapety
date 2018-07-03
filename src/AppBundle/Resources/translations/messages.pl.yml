@@ -1,2207 +1,2254 @@
+---
 clients:
-    label:
-        account: Moje konto
-        actions: Akcje
-        active: Status
-        active_no: nieaktywny
-        active_yes: aktywny
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Zapisz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edycja klienta
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Zapisz
-        choice: '-- wybierz klienta --'
-        city: Miejscowość
-        client: Klient
-        clientGroups: Grupy klientów
-        clientNrOrder: Kolejny nr zam. kl.
-        clientNrOrderGenerator: Generator kl.
-        clients: Klienci
-        code: Kod kl.
-        contact: Kontakt
-        description: Opis
-        det: ''
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        edit: Edycja klienta
-        email: Adres e-mail
-        filters:
-            active: Status
-            orders:
-                status: Status zamówienia
-            regular: Stały klient
-        id: ID
-        index: Klienci
-        limits: Limity
-        list: Lista klientów
-        mobile: Tel. kom.
-        name: Nazwa
-        nip: NIP
-        not_selected: Nie wybrano klienta
-        nrOrderGenerator: Generator Nr
-        nr_order: Kolejny nr zam.
-        phone: Telefon
-        regular: Stały klient
-        regular_no: nie
-        regular_yes: tak
-        sel: ''
-        service: Obsługa klientów
-        settings: Ustawienia
-        street: Ulica
-        tel: Telefon
-        tools:
-            new: Dodaj
-        update: Aktualizuj
-        uploads: Załączniki
-        users: Użytkownicy
-        ways: Trasy
-        zipCode: Kod poczt.
-    message:
-        create: Utworzono klienta
-        email_exist: Podany adres e-mail znajduje się już w bazie
-        update: Dane klienta
-        updated_post: zostały zaktualizowane
-    title:
-        actions: Akcje
-        active: Status aktywności
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Zapisz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edycja klienta
-            filter: Filtruj
-            new: Nowy klient
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Zapisz
-        choice: Wybierz klienta
-        city: Miejscowość
-        clientGroups: Grupy klientów
-        clients: Klienci
-        code: Kod klienci (numer)
-        contact: Osoba kontaktowa
-        create: Nowy klient
-        delete: Usuwanie klienta
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja klienta
-        email: Adres e-mail do klienta
-        error:
-            create: Błąd utworzenia nowego klienta
-            user_create: Błąd utworzenia użytkownika klienta
-        filters:
-            active: Status
-            orders:
-                status: Status zamówienia
-            regular: Stały klient
-        id: ID
-        index: Klienci
-        list: Lista klientów
-        mobile: Drugi telefon do klienta
-        name: Nazwa klienta
-        new: Nowy klient
-        nip: Numer NIP klienta
-        service: Obsługa klientów
-        street: Ulica
-        tel: Telefon do klienta
-        tools:
-            new: Dodaj
-        update: Aktualizacja
-        user_added: Dodano nowego użytkownika dla klienta
-        user_created: Utworzono użytkownika dla klienta
-        zipCode: Kod pocztowy
-    warning:
-        not_found: brak w bazie
-clientsgroups:
-    label:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Zapisz
-        code: Kod
-        create: Utwórz
-        description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters: []
-        id: ID
-        index: Grupy klientów
-        name: Nazwa
-        new: Dodaj
-        tools:
-            new: Dodaj
-        update: Aktualizuj
-    message:
-        no_orders: Brak poprawnych zamówień
-    title:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            error:
-                create: Błąd tworzenia wysyłki
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Zapisz
-        choice: wybierz grupę klientów
-        delete: Usuwanie grupy klientów
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja grupy klientów
-        filters: []
-        id: ID
-        index: Grupy klientów
-        new: Nowa grupa klientów
-        tools:
-            new: Dodaj
-    warning: []
-colors:
-    label:
-        '': Nazwa
-        actions: Akcje
-        active: Status
-        active_no: nieaktywny
-        active_yes: aktywny
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            info: Szczegóły
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Zapisz
-            upload: Dodaj
-            upload_delete: Usuń
-        colors: Kolory parapetów
-        correct_values: 'Dostępne kolory: '
-        d: Opis
-        delete: Usuń
-        description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        edit: Edycja
-        file:
-            desc: Opis
-            original: Nazwa pliku
-            size: Rozmiar pliku
-        filters:
-            active: Filtruj
-        id: ID
-        index: Kolory parapetów
-        message: ''
-        name: Nazwa
-        new: Dodaj
-        pdf: Generuj pdf
-        remove: Usuń
-        sequence: Kolejnosć
-        show: Pokaż
-        sq: Kolejnosć
-        symbol: Symbol
-        tools:
-            new: Dodaj
-        update: Aktualizuj
-        updated: Zaktualizowano
-        upload: Obraz
-        wrong_value: Nieprawidłowy kolor parapetu.
-    message:
-        update: Zaktualizowano kolor
-    title:
-        modal:
-            color: Wybór koloru parapetu
-        actions: Akcje
-        active: Status aktywności
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            change_off: Edycja zablokowana
-            change_on: Edycja
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Zapisz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Zapisz
-            upload: Wstaw rysunek
-            upload_delete: Usuń rysunek
-        delete: Usuń
-        description: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja
-        file:
-            desc: Opis
-            original: Nazwa pliku
-            size: Rozmiar pliku
-        filters:
-            active: Aktywny
-        id: Id w bazie
-        index: Kolory parapetów
-        models: Kolory parapetów
-        name: Nazwa
-        new: Dodaj
-        pdf: Generuj pdf
-        sequence: Kolejność
-        show: Pokaż
-        tools:
-            new: Dodaj
-        update: Aktualizacja koloru
-    warning:
-        not_found: brak w bazie
-deliveries:
-    label:
-        actions: Akcje
-        addOrders: Dodaj zamówienia
-        basic_data: Podstawowe dane
-        btn:
-            add: Dodaj
-            addOrders: Dodaj zamówienia
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            exp_xls: Eksport do Excel
-            filter: Filtruj
-            import: ''
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-            upload_delete: Usuń
-        choiceClient: Wybierz klienta
-        client:
-            code: Kod klienta
-            name: Nazwa klienta
-        clientCode: Kod klienta
-        clientName: Nazwa klienta
-        deliveries: Wysyłki
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters:
-            generated: Wygenerowana
-            progress: Kompletowanie
-        generated: Utworzona
-        id: ID
-        index: Wysyłki
-        number: Numer
-        orders: Zamówienia
-        products: Produkty
-        progress: Postęp
-        tools:
-            new: Dodaj
-    message:
-        create: Utworzono wysyłkę o numerze %1 do klienta %2
-        update: Zaktualizowano wysyłkę o numerze %1 do klienta %2
-    title:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            import: ''
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Aktualizuj
-            upload_delete: Usuń
-            xls: Eksport do Excel
-        create: Tworzenie wysyłki
-        delete: Usuwanie wysyłki
-        deliveries: Wysyłki
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja wysyłki
-        filters:
-            generated: Utworzona
-            progress: Utworzona
-        generated: Utworzona
-        id: ID
-        index: Lista wysyłek
-        new: Nowa wysyłka
-        number: Numer wysyłki
-        progress: Postęp
-        tools:
-            new: Dodaj
-    warning: []
-error:
-    base: Błąd bazy danych
-    server: Błąd serwera
-import:
-    label:
-        line: Linia
-    modal:
-        title: Import pozycji
-invoices:
-    label:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: ''
-            details: ''
-            edit: Edycja
-            filter: Filtruj
-            info: Szczegóły
-            new: Nowa faktura
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        clientCode: Kod klienta
-        created: Utworzona
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters:
-            client: Kient
-            clientCode: Klient
-            clientName: Klient
-            created: Utworzone
-            term: Termin
-        id: ID
-        index: Faktury
-        invoices: Faktury
-        number: Numer
-        term: Termin
-        tools:
-            new: Dodaj
-    message: []
-    title:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            copy: Kopiuj
-            create: Utwórz
-            default: Domyślnie
-            delete: ''
-            details: ''
-            edit: Edycja
-            filter: Filtruj
-            info: Szczegóły
-            new: Nowa faktura
-            pdf: pdf
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Aktualizuj
-        clientCode: Kod klienta
-        created: Utworzona
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        filters:
-            client: Filtrowanie wg. klienta
-            clientCode: Filtrowanie wg. klienta
-            clientName: Filtrowanie wg. klienta
-            created: Filtrowanie wg. daty utworzenia
-            term: Filtrowanie wg. terminu
-        id: ID
-        index: Faktury
-        invoices: Faktury
-        number: Numer
-        term: Termin
-        tools:
-            new: Dodaj
-    warning: []
-invoicesitems:
-    label:
-        actions: Akcje
-        tools:
-            new: Dodaj
-    title:
-        tools:
-            new: Dodaj
-label:
-    '': Nie
-    '1': Tak
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Zapisz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edycja klienta
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+    tools:
+      new: Dodaj
+    filters:
+      active: Status
+      orders:
+        status: Status zamówienia
+      regular: Stały klient
+    account: Moje konto
     active: Status
     active_no: nieaktywny
     active_yes: aktywny
-    add: Dodaj
-    approved: Zatwierdzone
-    auto: '- auto -'
-    base_error: Błąd bazy danych
-    btn:
-        add: Dodaj
-        cancel: Anuluj
-        change: Zmień
-        clear: Wyczyść
-        close: Zamknij
-        confirm: Zatwierdź
-        create: Utwórz
-        default: Domyślnie
-        delete: Usuń
-        edit: Edytuj
-        filter: Filtruj
-        import: ''
-        new: Dodaj
-        remove: Usuń
-        save: Zapisz
-        submit: Zapisz
-        update: Aktualizuj
-        upload_delete: Usuń
-    choice: '--- wybierz ---'
-    confirm: potwierdzam
-    confirm_remove: potwierdzam usunięcie
+    choice: -- wybierz klienta --
+    city: Miejscowość
+    client: Klient
+    clientGroups: Grupy klientów
+    clientNrOrder: Kolejny nr zam. kl.
+    clientNrOrderGenerator: Generator kl.
+    clients: Klienci
+    code: Kod kl.
+    contact: Kontakt
+    description: Opis
+    det: ""
+    edit: Edycja klienta
     email: Adres e-mail
-    empty: '----'
-    exp_copy: Export do schowka
-    exp_pdf: Export PDF
-    exp_xls: Export Excel
-    express: Ekspres
-    lp: Lp.
+    index: Klienci
+    limits: Limity
+    list: Lista klientów
+    mobile: Tel. kom.
+    name: Nazwa
+    nip: NIP
+    not_selected: Nie wybrano klienta
+    nrOrderGenerator: Generator Nr
+    nr_order: Kolejny nr zam.
+    phone: Telefon
+    regular: Stały klient
+    regular_no: nie
+    regular_yes: tak
+    sel: ""
+    service: Obsługa klientów
+    settings: Ustawienia
+    street: Ulica
+    tel: Telefon
+    update: Aktualizuj
+    uploads: Załączniki
+    users: Użytkownicy
+    ways: Trasy
+    zipCode: Kod poczt.
+  message:
+    create: Utworzono klienta
+    update: Dane klienta
+    remove: Usunięto
+    email_exist: Podany adres e-mail znajduje się już w bazie
+    updated_post: zostały zaktualizowane
+  warning:
+    not_found: brak w bazie
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Zapisz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edycja klienta
+      filter: Filtruj
+      new: Nowy klient
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+    tools:
+      new: Dodaj
+    filters:
+      active: Status
+      orders:
+        status: Status zamówienia
+      regular: Stały klient
+    active: Status aktywności
+    choice: Wybierz klienta
+    city: Miejscowość
+    clientGroups: Grupy klientów
+    clients: Klienci
+    code: Kod klienci (numer)
+    contact: Osoba kontaktowa
+    create: Nowy klient
+    delete: Usuwanie klienta
+    edit: Edycja klienta
+    email: Adres e-mail do klienta
+    error:
+      create: Błąd utworzenia nowego klienta
+      user_create: Błąd utworzenia użytkownika klienta
+    index: Klienci
+    list: Lista klientów
+    mobile: Drugi telefon do klienta
+    name: Nazwa klienta
+    new: Nowy klient
+    nip: Numer NIP klienta
+    service: Obsługa klientów
+    street: Ulica
+    tel: Telefon do klienta
+    update: Aktualizacja
+    user_added: Dodano nowego użytkownika dla klienta
+    user_created: Utworzono użytkownika dla klienta
+    zipCode: Kod pocztowy
+clientsgroups:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+    tools:
+      new: Dodaj
+    filters: []
+    code: Kod
+    create: Utwórz
+    description: Opis
+    index: Grupy klientów
     name: Nazwa
     new: Dodaj
-    record_id: Identyfikator
-    remove: Usuń
-    reports: Raporty
-    return: Powrót
-    save: Zapisz
-    server_error: Błąd serwera
-    sumAll: Łącznie
-    summary: Podsumowanie
     update: Aktualizuj
-    warnings: Uwagi
-message:
-    access_denied: Dostęp zabroniony. Brak uprawnień.
-    base_error: Błąd bazy danych
-    error: Błąd
-    must_ajax: Oczekiwano zapytania typu AJAX
-    remove_aborted: Anulowano akację usuwania z bazy
-    removed: Usunięto z bazy
-    server_error: Błąd serwera
-modal:
-    title:
-        comment: Komentarz
-        date: Data
-        deliveries_show: Podgląd wysyłki
-        exp: Eksport
-        import: Import pozycji zamówienia
-        invoices_exp: Eksport faktury
-        invoices_show: Podgląd faktury
-        my_modal: ''
-        orders_confirm: Zatwierdzanie zamówień
-        orders_exp: Eksport zamówienia
-        orders_show: Podgląd zamówienia
-        orders_table_export: Export zamówień
-        productions_show: Podgląd produkcji
-        servicecatalog: Katalog usług
-        size: Wybór grubosci
-        trims: Opcje wykończenia
-models:
-    label:
-        '': Nazwa
-        a: Status
-        actions: Akcje
-        active: Status
-        active_no: nieaktywny
-        active_yes: aktywny
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            info: Szczegóły
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Aktualizuj
-            upload: Dodaj
-            upload_delete: Usuń
-        d: Opis
-        delete: Usuń
-        description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        edit: Edycja
-        file:
-            desc: Opis
-            original: Nazwa pliku
-            size: Rozmiar pliku
-        filters:
-            active: Status
-        id: ID
-        index: Modele parapetów
-        models: Modele parapetów
-        name: Nazwa
-        new: Dodaj
-        pdf: Generuj pdf
-        remove: Usuń
-        s: Kolejność
-        sequence: Kolejność
-        show: Pokaż
-        sq: Kolejność
-        symbol: Symbol
-        tools:
-            new: Dodaj
-        update: Aktualizuj
-        upload: Obraz
-    message:
-        correct_values: 'Dostępne modele: '
-        updated: Zaktualizowano
-        wrong_value: Nieprawidłowy model parapetu.
-    title:
-        modal:
-            model: Wybór modelu parapetu
-        actions: Akcje
-        active: Status
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            change_off: Edycja zablokowana
-            change_on: Edycja
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            details: Szczegóły
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Zapisz
-            upload: Wstaw rysunek
-            upload_delete: Usuń rysunek
-        delete: Usuń
-        description: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja
-        file:
-            desc: Opis
-            original: Nazwa pliku
-            size: Rozmiar pliku
-        filters:
-            active: Status
-        id: ID
-        index: Modele parapetów
-        models: Modele parapetów
-        name: Nazwa
-        new: Dodaj
-        sequence: Kolejność
-        show: Pokaż
-        symbol: Symbol
-        tools:
-            new: Dodaj
-    warning:
-        not_found: brak w bazie
-orders:
-    label:
-        actions: Akcje
-        actualState: Status
-        approved: Zatwierdzone
-        area: 'Pow. [m2]'
-        areaLack: Pow. lak.
-        basic: Podstawowe dane
-        basic_data: Podstawowe dane
-        basic_parameters: Domyślne parametry
-        btn:
-            add: Dodaj
-            addPosition: Dodaj pozycję
-            cancel: Anuluj
-            change: Zmień
-            clear: Domyślne
-            clientComment: K
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utworz
-            default: Domyślnie
-            delete: ''
-            details: ''
-            edit: Edycja
-            exp_excel: Excel
-            exp_export: Eksport
-            exp_pdf: PDF
-            filter: Filtruj
-            import: Import
-            info: Szczegóły
-            new: Dodaj
-            orderComment: U
-            prodComment: P
-            production: Produkcja
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        choiceClient: wybierz klienta
-        client: Klient
-        clientCode: Kod klienta
-        clientComment: Komentarz własny
-        clientName: Nazwa klienta
-        clientNumber: Numer kl.
-        color: Kolor
-        comments: Uwagi
-        create: Utwórz
-        created: Utworzone
-        cutter: Frez
-        delete: Usuń
-        det: ''
-        doubleSide: DW
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        express: Tryb
-        filters:
-            approved: Zatwierdzone
-            client: Klient
-            clientCode: Kod klienta
-            clientName: Klient
-            created: Utworzone
-            express: Trybu realizacji
-            progress: Postęp
-            sizes: Grubości
-            status: Statusu zamówienia
-            ways: Trasy
-        generated: Utworzone
-        handle: Uchwyt
-        id: ID
-        importContent: Treść
-        importType: Typ importu
-        index: Zamówienia
-        lackers: Kolory
-        list: Lista klientów
-        model: Model
-        number: Numer
-        order: Zamówienie
-        orderComment: Komentarz
-        orders: Zamówienia
-        package: Paleta
-        packages: Palety
-        parameters: Domyślne parametry pozycji zamówienia
-        pdf: Generuj pdf
-        pos_sel: Zaznaczone poz.
-        positions: Pozycje zamówienia
-        prodComment: Komentarz producenta
-        progress: Postęp
-        quantity: Sztuk
-        sel: ''
-        shipment: Wysyłka
-        show: Pokaż
-        side1: jednostronnie
-        side2: dwustronnie
-        sig:
-            clientComment: K
-            orderComment: U
-            prodComment: P
-        size: Grubość
-        sizes: Grubości
-        status: Status
-        submit: Zapisz
-        sum_area: 'Łączna powierzchnia [m2]'
-        sum_quantity: Łącznie sztuk
-        summary: Podsumowanie
-        term: Termin
-        tools:
-            new: Dodaj
-        total: Łącznie
-        trims: Wykończenie
-        update: Aktualizuj
-        value: Wartość
-    message:
-        create: Utworzono zamówienie o numerze
-        import_default_color_error: Nie można wskazać domyślnego koloru dla zamówienia
-        import_default_model_error: Nie można wskazać domyślnego modelu dla zamówienia
-        import_default_size_error: Nie można wskazać domyślnej grubości dla zamówienia
-        import_delivery: Dostawa o ID %1
-        import_delivery_empty: Brak zamówień w dostawie
-        import_delivery_orders_exist: W dostawie znajdują się duplikaty zamówień
-        import_empty: Nie zaimportowano żadnego zamówienia
-        import_order: Zamówienie o numrze klienta %1
-        import_order_exist: Zamówienie istnieje pod numerem %1
-        import_position: Pozycja nr %1
-        import_positions_empty: Zamówienie nie zawiera pozycji
-        import_positions_error: Zamówienie zawiera pozycje z błędami
-        import_positions_success: Zaimportowano pozycje %1
-        import_report: Raport importu zamówień
-        import_success_count: Zaimportowano zamówienia %1
-        remove: Zamówienie zostało usunięte
-        update: Zaktualizowano zamówienie o numerze
-    title:
-        modal:
-            orders_exp: Eksport zamówienia
-            orders_to_production: Zamówienie gotowe do produkcji
-        actions: Polecenia
-        actualState: Status
-        approved: Czas zatwierdzenia zamówienia
-        area: Powierzchnia zamówienia
-        areaLack: Powierzchnia lakierowania
-        array: Powierzchnia w m2
-        btn:
-            add: Dodaj
-            addPosition: Dodaj pozycję
-            cancel: Anuluj
-            change: Zmień
-            clear: Domyślne
-            clientComment: Komentarz własny klienta
-            close: Zamknij
-            confirm: Zatwierdź
-            copy: Kopiuj
-            create: Utworz
-            default: Domyślnie
-            delete: Usuń
-            details: Szczegoly
-            edit: Edycja
-            exp_excel: Excel
-            exp_export: Eksport
-            exp_pdf: PDF
-            filter: Filtruj
-            import: Import
-            info: Szczegoly
-            new: Dodaj
-            orderComment: Komentarz do zamówienia
-            pdf: Generuj pdf
-            prodComment: Komentarz własny producenta
-            production: Produkcja
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Aktualizuj
-            xls: Excel
-        client: Kod klienta
-        clientCode: Kod klienta
-        clientComment: Komentarz własny
-        clientName: Nazwa klienta
-        clientNumber: Numer zamówienia własny klienta
-        color: Domyslny kolor
-        comments: Uwagi do zamówienia
-        copy: Export danych zamówienia
-        created: Czas utworzenia zamówienia
-        cutter: Domyślny frez
-        delete: Usuń
-        det: Szczegóły zamówienia
-        details: Szczegóły zamówienia
-        doubleSide: Opcja dwustronna
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja
-        error:
-            create: Błąd zapisu zamówienia
-        express: Tryb realizacji zamówienia
-        filters:
-            approved: Filtrowanie wg. daty zatwierdzenia
-            client: Filtrowanie wg. klienta
-            clientCode: Filtrowanie wg. klienta
-            clientName: Filtrowanie wg. klienta
-            created: Filtrowanie wg. daty utworzenia
-            express: Filtrowanie wg. trybu realizacji
-            progress: Filtrowanie wg. postępu realizacji
-            sizes: Filtrowanie wg. grubości
-            status: Filtrowanie wg. aktualnego statusu zamówienia
-            ways: Trasy
-        generated: Czas utworzenia zamówienia
-        handle: Wybór uchwytu
-        id: ID zamówienia
-        import: Import zamówień
-        importContent: Treść
-        importType: Typ importu
-        index: Zamówienia
-        lackers: Wybór lakierów
-        list: Lista zamówień
-        model: Wybór modelu
-        new: Dodaj
-        nr: Numer zamówienia
-        number: Numer zamówienia
-        orderComment: Komentarz
-        orders: Zamówienia
-        packages: Palety
-        parameters: Domyślne parametry pozycji zamówienia
-        pos_sel: Zaznaczone pozycje
-        prodComment: Komentarz producenta
-        progress: Postęp wykonania zamówienia
-        quantity: Ilość parapetów
-        sel: Zaznaczanie
-        show: Podgląd zamówienia
-        size: Wybór grubości
-        sizes: Grubości występujące w zamówieniu
-        status: Status zamówienia
-        term: Termin realizacji zamówienia
-        tools:
-            new: Dodaj
-        trims: Wykończenie
-        update: Aktualizacja zamówienia
-        value: Wartość
-    warning:
-        not_found: brak w bazie
-positions:
-    label:
-        actions: Akcje
-        add: Nowa pozycja
-        area: 'Pow. [m2]'
-        areaLack: 'Pow. lak. [m2]'
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            clientComment: K
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: ''
-            details: ''
-            edit: Edycja
-            filter: Filtruj
-            info: Szczegóły
-            new: Dodaj
-            positionComment: U
-            positionLackers: K
-            prodComment: P
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        clientComment: Komentarz własny
-        color: Kolor
-        comments: Uwagi
-        cutter: Frez
-        det: ''
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters: []
-        handle: Uchwyt
-        height: 'Wys. [mm]'
-        id: id
-        import: Import pozycji
-        import_area: Pole importu
-        import_view: Podgląd importu
-        length: 'Dł. [mm]'
-        lengthcm: 'Dł. [cm]'
-        lp: Lp.
-        model: Model
-        nr: Lp.
-        order: Zamówienie
-        ordera: Zamówienia
-        package: Paleta
-        positionComment: Komentarz
-        positionLackers: Kolory
-        positions: Pozycje
-        poslackers: Kolory
-        prodComment: Komentarz producenta
-        production: Produkcja
-        quantity: Ilość
-        sel: ''
-        sig:
-            clientComment: K
-            positionComment: U
-            positionLackers: K
-            prodComment: P
-        size: Grubość
-        tools:
-            new: Dodaj
-        trims: Wykończenie
-        uploads: Załączniki
-        width: 'Szer. [mm]'
-        widthcm: 'Szer. [cm]'
-    message:
-        import_length_error: Długość %1 jest błędna.
-        import_length_warning: Długość %1 jest przyjęta z ostrzeżeniem.
-        import_lengthcm_error: Długość %1 jest błędna.
-        import_lengthcm_warning: Długość %1 jest przyjęta z ostrzeżeniem.
-        import_trims: Zaimportowano opcje wykonania %1 z %2
-        import_width_error: Szerokość %1 jest błędna.
-        import_width_warning: Szerokość %1 jest przyjęta z ostrzeżeniem.
-        import_widthcm_error: Szerokość %1 jest błędna.
-        import_widthcm_warning: Szerokość %1 jest przyjęta z ostrzeżeniem.
-    title:
-        actions: Akcje
-        addAttach: Zalącznik
-        area: Powierzchnia
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            clientComment: Komentarz własny klienta
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            details: Szczegóły
-            edit: Edycja
-            filter: Filtruj
-            new: Dodaj
-            positionComment: Komentarz do pozycji
-            positionLackers: Lakiery pozycji
-            prodComment: Komentarz własny producenta
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        clientComment: Komentarz własny
-        color: Kolor parapetu
-        comments: Uwagi
-        cutter: Frez
-        doubleSide: Lakierowanie dwustronne
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        filters: []
-        handle: Wybór uchwytu
-        handles: Uchwyt frontu
-        height: Wysokość w mm
-        id: ID
-        length: Długość w mm
-        lengthcm: Długość w cm
-        model: Wybór modelu
-        models: Model frontu
-        nr: Liczba porządkowa
-        positionComment: Komentarz
-        positionLackers: Wybór kolorów
-        prodComment: Komentarz producenta
-        quantity: Ilosć
-        size: Wybór grubości
-        status: Status zamówienia
-        tools:
-            new: Dodaj
-        trims: Wykończenie
-        uploads: Załączniki do pozycji zamówienia
-        width: Szerokość w mm
-        widthcm: Szerokość w cm
-    warning: []
-pricelistitems:
-    label:
-        actions: Akcje
-        active: Status
-        active_no: nieaktywna
-        active_yes: aktywna
-        add: Nowa pozycja cennika
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: ''
-            edit: Edytuj
-            filter: Filtruj
-            generate: Generuj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        c_n: Kolor
-        color: Kolor
-        delete: Usuń
-        description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        edit: Edycja
-        end: Do
-        filters:
-            active: aktywne
-            color: Kolor
-            size: Grubość
-        id: ID
-        index: Pozycje cennika
-        name: Nazwa
-        new: Dodaj
-        parameters: Parametry
-        pdf: PDF
-        positions: Pozycje
-        price: Domyślna cena
-        remove: Usuń
-        s_n: Grubość
-        sel: ''
-        show: Pokaż
-        size: Grubość
-        symbol: Symbol
-        title: Nazwa
-        tools:
-            new: Dodaj
-        update: Aktualizuj
-    message:
-        add: Dodano %1 z %2 pozycji cennika
-        notFound: Nie odnaleziono cennika
-    modal:
-        title:
-            to_pricelist: Pozycje do cennika
-    title:
-        actions: Akcje
-        active: Status
-        add: Dodawanie pozycji cennika
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            generate: Generowanie pozycji cannika
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        c_n: Kolor
-        clients: Klienci
-        clientsGroups: Grupy klientów
-        color: Kolor
-        delete: Usuń
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja
-        error:
-            add: Błąd dodawania pozycji cennika
-            create: Błąd tworzenia pozycji cennika
-        filters:
-            active: aktywne
-            color: Kolor
-            size: Grubość
-        generate: Generowanie pozycji cennika
-        id: ID
-        index: Cenniki
-        name: Nazwa
-        new: Dodaj
-        price: Domyślna cena
-        pricelists: cenniki
-        s_n: Grubość
-        sel: ''
-        show: Pokaż
-        size: Grubość
-        symbol: Symbol
-        tools:
-            new: Dodaj
-    warning: []
-pricelists:
-    label:
-        actions: Akcje
-        addPrices: Dodaj pozycje
-        basic: Podstawowe
-        basic_data: Podstawowe dane
-        btn:
-            add: Dodaj
-            addPriceListItems: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        clients: Klienci
-        clientsGroups: Grupy klientów
-        delete: Usuń
-        description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        edit: Edycja
-        end: Do
-        filters:
-            clients: Klienci
-            clientsGroups: Grupy klientów
-            end: Data końcowa
-            start: Data początkowa
-        id: ID
-        importServiceOptions: Importuj pozycje
-        importServices: Importuj pozycje
-        index: Cenniki
-        new: Dodaj
-        pdf: PDF
-        pricelists: Cenniki
-        prices: Ceny
-        remove: Usuń
-        serviceCatalog: Cennik usług
-        serviceOptions: Cennik opcji usług
-        show: Pokaż
-        start: Od
-        title: Nazwa
-        tools:
-            new: Dodaj
-        update: Aktualizuj
-    message:
-        create: Utworzono cennik %1 obowiązujący od %2
-        notFound: Nie odnaleziono cennika
-    modal:
-        pricelists_show: Podgląd cennika
-        title: Wybór cennika
-    title:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            addPriceListItems: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Aktualizuj
-            xls: Excel
-        clients: Klienci
-        clientsGroups: Grupy klientów
-        create: Tworzenie nowego cennika
-        delete: Usuń
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja
-        end: Data końcowa
-        filters:
-            clients: Klienci
-            clientsGroups: Grupy klientów
-            end: Data końcowa
-            start: Data początkowa
-        id: ID
-        index: Cenniki
-        new: Dodaj
-        pricelists: cenniki
-        show: Pokaż
-        start: Data początkowa
-        title: Cenniki
-        tools:
-            new: Dodaj
-    warning: []
-prices:
-    label:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: ''
-            edit: Edytuj
-            filter: Filtruj
-            generate: Generuj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters: []
-        id: ID
-        priceListItem: Pozycja cennika
-        tools:
-            new: Dodaj
-        value: Cena
-    message: []
-    title:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: ''
-            edit: Edytuj
-            filter: Filtruj
-            generate: Generuj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        filters: []
-        id: ID
-        priceListItem: Pozycja cennika
-        tools:
-            new: Dodaj
-        value: Cena
-    warning: []
-productions:
-    label:
-        actions: Akcje
-        addOrders: Dodaj zamówienia
-        basic_data: Podstawowe dane produkcji
-        btn:
-            add: Dodaj
-            addOrders: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            exp_xls: xls
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        create: Uworzono produkcję
-        delete: Usuwanie
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters:
-            generated: Wygenerowana
-            progress: Postęp
-        generated: Wygenerowana
-        id: ID
-        index: Produkcje
-        message: ''
-        new: Nowa produkcja
-        number: Numer
-        orders: Zamówienia
-        products: Produkty
-        progress: Postęp
-        tools:
-            new: Dodaj
-    message:
-        create: Utworzono produkcję o numerze
-        no_orders: Brak poprawnych zamówień
-        orders_added: Doddano %1 zamówień z %2
-        update: Zaktualizowano produkcję
-    modal:
-        title:
-            generate: Generowanie produkcji
-    title:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            exp_xls: Export do Excel
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Aktualizuj
-        create: Tworzenie produkcji
-        delete: Usuwanie produkcji
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja produkcji
-        error:
-            create: Błąd tworzenia produkcji
-        filters:
-            generated: Wygenerowana
-            progress: Postęp
-        generated: Wygenerowana
-        id: ID
-        index: Produkcje
-        new: Nowa produkcja
-        number: Numer
-        progress: Postęp produkcji
-        tools:
-            new: Dodaj
-        update: Aktutalizacja produkcji
-    warning: []
-products:
-    label:
-        actions: Akcje
-        barcode: Kod Paskowy
-        btn:
-            add: dodaj usługę
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            info: Szczegóły
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Aktualizuj
-        clientLabel: Etykieta klienta
-        comment: Uwagi
-        cutTime: Cięcie
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters:
-            cutTime: Proces cięcia
-            packingTime: Proces pakowania
-        id: ID
-        index: Produkty
-        info: Informacje
-        label: Etykieta
-        number: Numer
-        packingTime: Pakowanie
-        tools:
-            new: Dodaj
-    message: []
-    title:
-        actions: Akcje
-        barcode: Kod Paskowy
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Zapisz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edycja
-            filter: Filtruj
-            info: Szczegóły
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Zapisz
-        clientLabel: Etykieta klienta
-        comment: Uwagi
-        cutTime: Cięcie
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        filters:
-            cutTime: Proces cięcia
-            packingTime: Proces pakowania
-        id: ID
-        index: Produkty
-        info: Informacje
-        label: Etykieta
-        number: Numer
-        packingTime: Pakowanie
-        tools:
-            new: Dodaj
-    warning: []
-security:
-    title:
-        login: Logowanie do systemu
-        resetting: Resetowanie hasła
-settings:
-    label:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edycja
-            filter: Filtruj
-            new: Dodaj
-            pdf: Generuj pdf
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Aktualizuj
-        cl_n: Klient
-        client: Klient
-        create: Zapisz
-        description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters:
-            client: Klient
-        id: ID
-        index: Ustawienia
-        name: Nazwa
-        settings: Ustawienia
-        tools:
-            new: Dodaj
-        value: Wartość
-    message:
-        create: Utworzono
-        update: Zaktualizowano
-    title:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Zapisz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edycja
-            filter: Filtruj
-            new: Dodaj
-            pdf: Generuj pdf
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Aktualizuj
-        cl_n: Klient
-        complited: Zakończone
-        description: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja ustawienia
-        filters:
-            client: Klient
-        id: Identyfikator
-        index: Ustawienia
-        name: Nazwa
-        new: Nowe ustawienie
-        settings: Ustawienia
-        tools:
-            new: Dodaj
-        value: Wartość
-    warning:
-        not_found: brak w bazie
-shipments:
-    label:
-        actions: Akcje
-        add_pos: Do wysyłki
-        area: Powierzchnia
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        data: Dane wysyłki
-        generated: Wygenerowana
-        id: ID
-        new: Nowa wysyłka
-        number: Numer
-        orders: Zamówienia w wysyłce
-        quantity: Ilość
-        send: Wysłane
-        sent: Wysłano
-        shipments: Wysyłka
-        tools:
-            new: Dodaj
-    title:
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        delete: Usuwanie produkcji
-        edit: Edycja wysyłki
-        index: Lista wysyłek
-        new: Nowa wysyłka
-        tools:
-            new: Dodaj
-sizes:
-    label:
-        actions: Akcje
-        active: Aktywny
-        active_no: nie
-        active_yes: tak
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Zapisz
-            upload: Dodaj
-            upload_delete: Usuń
-        delete: Usuń
-        description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        edit: Edycja
-        file:
-            desc: Opis
-            original: Nazwa pliku
-            size: Rozmiar pliku
-        filters:
-            active: Status
-        id: ID
-        index: Grubości parapetów
-        name: Nazwa
-        new: Dodaj
-        pdf: Generuj pdf
-        remove: Usuń
-        sequence: Kolejność
-        show: Pokaż
-        sizes: Grubości parapetów
-        sq: Kolejność
-        symbol: Symbol
-        tools:
-            new: Dodaj
-        update: Aktualizuj
-    message:
-        correct_values: 'Dostępne grubości: '
-        notFound: Nie odnaleziono grubości
-        wrong_value: Nieprawidłowa grubość parapetu.
-    title:
-        modal:
-            size: Wybór grubości parapetu
-        actions: Akcje
-        active: Status
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            change_off: Edycja zablokowana
-            change_on: Edycja
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Zapisz
-            upload: Wstaw rysunek
-            upload_delete: Usuń rysunek
-        delete: Usuń
-        description: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja
-        file:
-            desc: Opis
-            original: Nazwa pliku
-            size: Rozmiar pliku
-        filters:
-            active: Status
-        id: ID
-        index: Grubości parapetów
-        name: Nazwa
-        new: Dodaj
-        pdf: Generuj pdf
-        sequence: Kolejność
-        show: Pokaż
-        sizes: Grubości parapetów
-        symbol: Symbol
-        tools:
-            new: Dodaj
-    warning:
-        not_found: brak w bazie
-title:
-    modal:
-        comment: Komentarz
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+    no_orders: Brak poprawnych zamówień
+  warning: []
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
     btn:
-        add: Dodaj
-        change: Zmień
-        close: Zamknij
-        confirm: Zatwierdź
-        create: Utwórz
-        import: Importuj
-        remove: Usuń
-        save: Zapisz
-        update: Aktualizuj
-        upload_delete: Usuń
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+      error:
+        create: Błąd tworzenia wysyłki
+    tools:
+      new: Dodaj
+    filters: []
+    choice: wybierz grupę klientów
+    delete: Usuwanie grupy klientów
+    edit: Edycja grupy klientów
+    index: Grupy klientów
+    new: Nowa grupa klientów
+colors:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+      info: Szczegóły
+      show: Pokaż
+      upload: Dodaj
+      upload_delete: Usuń
+    tools:
+      new: Dodaj
+    filters:
+      active: Filtruj
+    "": Nazwa
+    active: Status
+    active_no: nieaktywny
+    active_yes: aktywny
+    colors: Kolory parapetów
+    correct_values: 'Dostępne kolory: '
+    d: Opis
+    delete: Usuń
+    description: Opis
+    edit: Edycja
+    file:
+      desc: Opis
+      original: Nazwa pliku
+      size: Rozmiar pliku
+    index: Kolory parapetów
+    message: ""
+    name: Nazwa
+    new: Dodaj
+    pdf: Generuj pdf
+    remove: Usuń
+    sequence: Kolejnosć
+    show: Pokaż
+    sq: Kolejnosć
+    symbol: Symbol
+    update: Aktualizuj
+    updated: Zaktualizowano
+    upload: Obraz
+    wrong_value: Nieprawidłowy kolor parapetu.
+  message:
+    create: Utworzono
+    update: Zaktualizowano kolor
+    remove: Usunięto
+  warning:
+    not_found: brak w bazie
+  title:
+    id: Id w bazie
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Zapisz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+      change_off: Edycja zablokowana
+      change_on: Edycja
+      show: Pokaż
+      upload: Wstaw rysunek
+      upload_delete: Usuń rysunek
+    tools:
+      new: Dodaj
+    filters:
+      active: Aktywny
+    modal:
+      color: Wybór koloru parapetu
+    active: Status aktywności
+    delete: Usuń
+    description: Opis
+    edit: Edycja
+    file:
+      desc: Opis
+      original: Nazwa pliku
+      size: Rozmiar pliku
+    index: Kolory parapetów
+    models: Kolory parapetów
+    name: Nazwa
+    new: Dodaj
+    pdf: Generuj pdf
+    sequence: Kolejność
+    show: Pokaż
+    update: Aktualizacja koloru
+deliveries:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      addOrders: Dodaj zamówienia
+      exp_xls: Eksport do Excel
+      import: ""
+      upload_delete: Usuń
+    tools:
+      new: Dodaj
+    filters:
+      generated: Wygenerowana
+      progress: Kompletowanie
+    addOrders: Dodaj zamówienia
+    basic_data: Podstawowe dane
+    choiceClient: Wybierz klienta
+    client:
+      code: Kod klienta
+      name: Nazwa klienta
+    clientCode: Kod klienta
+    clientName: Nazwa klienta
+    deliveries: Wysyłki
+    generated: Utworzona
+    index: Wysyłki
+    number: Numer
+    orders: Zamówienia
+    products: Produkty
+    progress: Postęp
+  message:
+    create: Utworzono wysyłkę o numerze %1 do klienta %2
+    update: Zaktualizowano wysyłkę o numerze %1 do klienta %2
+    remove: Usunięto
+  warning: []
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      import: ""
+      show: Pokaż
+      upload_delete: Usuń
+      xls: Eksport do Excel
+    tools:
+      new: Dodaj
+    filters:
+      generated: Utworzona
+      progress: Utworzona
+    create: Tworzenie wysyłki
+    delete: Usuwanie wysyłki
+    deliveries: Wysyłki
+    edit: Edycja wysyłki
+    generated: Utworzona
+    index: Lista wysyłek
+    new: Nowa wysyłka
+    number: Numer wysyłki
+    progress: Postęp
+error:
+  base: Błąd bazy danych
+  server: Błąd serwera
+import:
+  label:
+    line: Linia
+  modal:
+    title: Import pozycji
+invoices:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: ""
+      edit: Edycja
+      filter: Filtruj
+      new: Nowa faktura
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      details: ""
+      info: Szczegóły
+    tools:
+      new: Dodaj
+    filters:
+      client: Kient
+      clientCode: Klient
+      clientName: Klient
+      created: Utworzone
+      term: Termin
+    clientCode: Kod klienta
+    created: Utworzona
+    index: Faktury
+    invoices: Faktury
+    number: Numer
+    term: Termin
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+  warning: []
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: ""
+      edit: Edycja
+      filter: Filtruj
+      new: Nowa faktura
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      copy: Kopiuj
+      details: ""
+      info: Szczegóły
+      pdf: pdf
+      show: Pokaż
+    tools:
+      new: Dodaj
+    filters:
+      client: Filtrowanie wg. klienta
+      clientCode: Filtrowanie wg. klienta
+      clientName: Filtrowanie wg. klienta
+      created: Filtrowanie wg. daty utworzenia
+      term: Filtrowanie wg. terminu
+    clientCode: Kod klienta
+    created: Utworzona
+    index: Faktury
+    invoices: Faktury
+    number: Numer
+    term: Termin
+invoicesitems:
+  label:
+    actions: Akcje
+    tools:
+      new: Dodaj
+  title:
+    tools:
+      new: Dodaj
+label:
+  "": Nie
+  1: Tak
+  active: Status
+  active_no: nieaktywny
+  active_yes: aktywny
+  add: Dodaj
+  approved: Zatwierdzone
+  auto: '- auto -'
+  base_error: Błąd bazy danych
+  btn:
+    add: Dodaj
+    cancel: Anuluj
+    change: Zmień
+    clear: Wyczyść
+    close: Zamknij
+    confirm: Zatwierdź
+    create: Utwórz
+    default: Domyślnie
+    delete: Usuń
+    edit: Edytuj
+    filter: Filtruj
+    import: ""
+    new: Dodaj
+    remove: Usuń
+    save: Zapisz
+    submit: Zapisz
+    update: Aktualizuj
+    upload_delete: Usuń
+  choice: '--- wybierz ---'
+  confirm: potwierdzam
+  confirm_remove: potwierdzam usunięcie
+  email: Adres e-mail
+  empty: '----'
+  exp_copy: Export do schowka
+  exp_pdf: Export PDF
+  exp_xls: Export Excel
+  express: Ekspres
+  lp: Lp.
+  name: Nazwa
+  new: Dodaj
+  record_id: Identyfikator
+  remove: Usuń
+  reports: Raporty
+  return: Powrót
+  save: Zapisz
+  server_error: Błąd serwera
+  sumAll: Łącznie
+  summary: Podsumowanie
+  update: Aktualizuj
+  warnings: Uwagi
+message:
+  access_denied: Dostęp zabroniony. Brak uprawnień.
+  base_error: Błąd bazy danych
+  error: Błąd
+  must_ajax: Oczekiwano zapytania typu AJAX
+  remove_aborted: Anulowano akację usuwania z bazy
+  removed: Usunięto z bazy
+  server_error: Błąd serwera
+models:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      info: Szczegóły
+      show: Pokaż
+      upload: Dodaj
+      upload_delete: Usuń
+    tools:
+      new: Dodaj
+    filters:
+      active: Status
+    "": Nazwa
+    a: Status
+    active: Status
+    active_no: nieaktywny
+    active_yes: aktywny
+    d: Opis
+    delete: Usuń
+    description: Opis
+    edit: Edycja
+    file:
+      desc: Opis
+      original: Nazwa pliku
+      size: Rozmiar pliku
+    index: Modele parapetów
+    models: Modele parapetów
+    name: Nazwa
+    new: Dodaj
+    pdf: Generuj pdf
+    remove: Usuń
+    s: Kolejność
+    sequence: Kolejność
+    show: Pokaż
+    sq: Kolejność
+    symbol: Symbol
+    update: Aktualizuj
+    upload: Obraz
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+    correct_values: 'Dostępne modele: '
+    updated: Zaktualizowano
+    wrong_value: Nieprawidłowy model parapetu.
+  warning:
+    not_found: brak w bazie
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+      change_off: Edycja zablokowana
+      change_on: Edycja
+      details: Szczegóły
+      show: Pokaż
+      upload: Wstaw rysunek
+      upload_delete: Usuń rysunek
+    tools:
+      new: Dodaj
+    filters:
+      active: Status
+    modal:
+      model: Wybór modelu parapetu
+    active: Status
+    delete: Usuń
+    description: Opis
+    edit: Edycja
+    file:
+      desc: Opis
+      original: Nazwa pliku
+      size: Rozmiar pliku
+    index: Modele parapetów
+    models: Modele parapetów
+    name: Nazwa
+    new: Dodaj
+    sequence: Kolejność
+    show: Pokaż
+    symbol: Symbol
+orders:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Domyślne
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utworz
+      default: Domyślnie
+      delete: ""
+      edit: Edycja
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      addPosition: Dodaj pozycję
+      clientComment: K
+      details: ""
+      exp_excel: Excel
+      exp_export: Eksport
+      exp_pdf: PDF
+      import: Import
+      info: Szczegóły
+      orderComment: U
+      prodComment: P
+      production: Produkcja
+    tools:
+      new: Dodaj
+    filters:
+      approved: Zatwierdzone
+      client: Klient
+      clientCode: Kod klienta
+      clientName: Klient
+      created: Utworzone
+      express: Trybu realizacji
+      progress: Postęp
+      sizes: Grubości
+      status: Statusu zamówienia
+      ways: Trasy
+    actualState: Status
+    approved: Zatwierdzone
+    area: Pow. [m2]
+    areaLack: Pow. lak.
+    basic: Podstawowe dane
+    basic_data: Podstawowe dane
+    basic_parameters: Domyślne parametry
+    choiceClient: wybierz klienta
+    client: Klient
+    clientCode: Kod klienta
+    clientComment: Komentarz własny
+    clientName: Nazwa klienta
+    clientNumber: Numer kl.
+    color: Kolor
+    comments: Uwagi
+    create: Utwórz
+    created: Utworzone
+    cutter: Frez
+    delete: Usuń
+    det: ""
+    doubleSide: DW
+    express: Tryb
+    generated: Utworzone
+    handle: Uchwyt
+    importContent: Treść
+    importType: Typ importu
+    index: Zamówienia
+    lackers: Kolory
+    list: Lista klientów
+    model: Model
+    number: Numer
+    order: Zamówienie
+    orderComment: Komentarz
+    orders: Zamówienia
+    package: Paleta
+    packages: Palety
+    parameters: Domyślne parametry pozycji zamówienia
+    pdf: Generuj pdf
+    pos_sel: Zaznaczone poz.
+    positions: Pozycje zamówienia
+    prodComment: Komentarz producenta
+    progress: Postęp
+    quantity: Sztuk
+    sel: ""
+    shipment: Wysyłka
+    show: Pokaż
+    side1: jednostronnie
+    side2: dwustronnie
+    sig:
+      clientComment: K
+      orderComment: U
+      prodComment: P
+    size: Grubość
+    sizes: Grubości
+    status: Status
+    submit: Zapisz
+    sum_area: Łączna powierzchnia [m2]
+    sum_quantity: Łącznie sztuk
+    summary: Podsumowanie
+    term: Termin
+    total: Łącznie
+    trims: Wykończenie
+    update: Aktualizuj
+    value: Wartość
+  message:
+    create: Utworzono zamówienie o numerze
+    update: Zaktualizowano zamówienie o numerze
+    remove: Zamówienie zostało usunięte
+    import_default_color_error: Nie można wskazać domyślnego koloru dla zamówienia
+    import_default_model_error: Nie można wskazać domyślnego modelu dla zamówienia
+    import_default_size_error: Nie można wskazać domyślnej grubości dla zamówienia
+    import_delivery: Dostawa o ID %1
+    import_delivery_empty: Brak zamówień w dostawie
+    import_delivery_orders_exist: W dostawie znajdują się duplikaty zamówień
+    import_empty: Nie zaimportowano żadnego zamówienia
+    import_order: Zamówienie o numrze klienta %1
+    import_order_exist: Zamówienie istnieje pod numerem %1
+    import_position: Pozycja nr %1
+    import_positions_empty: Zamówienie nie zawiera pozycji
+    import_positions_error: Zamówienie zawiera pozycje z błędami
+    import_positions_success: Zaimportowano pozycje %1
+    import_report: Raport importu zamówień
+    import_success_count: Zaimportowano zamówienia %1
+  warning:
+    not_found: brak w bazie
+  title:
+    id: ID zamówienia
+    actions: Polecenia
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Domyślne
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utworz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edycja
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      addPosition: Dodaj pozycję
+      clientComment: Komentarz własny klienta
+      copy: Kopiuj
+      details: Szczegoly
+      exp_excel: Excel
+      exp_export: Eksport
+      exp_pdf: PDF
+      import: Import
+      info: Szczegoly
+      orderComment: Komentarz do zamówienia
+      pdf: Generuj pdf
+      prodComment: Komentarz własny producenta
+      production: Produkcja
+      show: Pokaż
+      xls: Excel
+    tools:
+      new: Dodaj
+    filters:
+      approved: Filtrowanie wg. daty zatwierdzenia
+      client: Filtrowanie wg. klienta
+      clientCode: Filtrowanie wg. klienta
+      clientName: Filtrowanie wg. klienta
+      created: Filtrowanie wg. daty utworzenia
+      express: Filtrowanie wg. trybu realizacji
+      progress: Filtrowanie wg. postępu realizacji
+      sizes: Filtrowanie wg. grubości
+      status: Filtrowanie wg. aktualnego statusu zamówienia
+      ways: Trasy
+    modal:
+      orders_exp: Eksport zamówienia
+      orders_to_production: Zamówienie gotowe do produkcji
+    actualState: Status
+    approved: Czas zatwierdzenia zamówienia
+    area: Powierzchnia zamówienia
+    areaLack: Powierzchnia lakierowania
+    array: Powierzchnia w m2
+    client: Kod klienta
+    clientCode: Kod klienta
+    clientComment: Komentarz własny
+    clientName: Nazwa klienta
+    clientNumber: Numer zamówienia własny klienta
+    color: Domyslny kolor
+    comments: Uwagi do zamówienia
+    copy: Export danych zamówienia
+    created: Czas utworzenia zamówienia
+    cutter: Domyślny frez
+    delete: Usuń
+    det: Szczegóły zamówienia
+    details: Szczegóły zamówienia
+    doubleSide: Opcja dwustronna
+    edit: Edycja
     error:
-        form: Błąd w formularzu
-        server: Błąd serwera
-    title: System obługi Drako
-    update: Aktualizacja
+      create: Błąd zapisu zamówienia
+    express: Tryb realizacji zamówienia
+    generated: Czas utworzenia zamówienia
+    handle: Wybór uchwytu
+    import: Import zamówień
+    importContent: Treść
+    importType: Typ importu
+    index: Zamówienia
+    lackers: Wybór lakierów
+    list: Lista zamówień
+    model: Wybór modelu
+    new: Dodaj
+    nr: Numer zamówienia
+    number: Numer zamówienia
+    orderComment: Komentarz
+    orders: Zamówienia
+    packages: Palety
+    parameters: Domyślne parametry pozycji zamówienia
+    pos_sel: Zaznaczone pozycje
+    prodComment: Komentarz producenta
+    progress: Postęp wykonania zamówienia
+    quantity: Ilość parapetów
+    sel: Zaznaczanie
+    show: Podgląd zamówienia
+    size: Wybór grubości
+    sizes: Grubości występujące w zamówieniu
+    status: Status zamówienia
+    term: Termin realizacji zamówienia
+    trims: Wykończenie
+    update: Aktualizacja zamówienia
+    value: Wartość
+positions:
+  label:
+    id: id
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: ""
+      edit: Edycja
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      clientComment: K
+      details: ""
+      info: Szczegóły
+      positionComment: U
+      positionLackers: K
+      prodComment: P
+    tools:
+      new: Dodaj
+    filters: []
+    add: Nowa pozycja
+    area: Pow. [m2]
+    areaLack: Pow. lak. [m2]
+    clientComment: Komentarz własny
+    color: Kolor
+    comments: Uwagi
+    cutter: Frez
+    det: ""
+    handle: Uchwyt
+    height: Wys. [mm]
+    import: Import pozycji
+    import_area: Pole importu
+    import_view: Podgląd importu
+    length: Dł. [mm]
+    lengthcm: Dł. [cm]
+    lp: Lp.
+    model: Model
+    nr: Lp.
+    order: Zamówienie
+    ordera: Zamówienia
+    package: Paleta
+    positionComment: Komentarz
+    positionLackers: Kolory
+    positions: Pozycje
+    poslackers: Kolory
+    prodComment: Komentarz producenta
+    production: Produkcja
+    quantity: Ilość
+    sel: ""
+    sig:
+      clientComment: K
+      positionComment: U
+      positionLackers: K
+      prodComment: P
+    size: Grubość
+    trims: Wykończenie
+    uploads: Załączniki
+    width: Szer. [mm]
+    widthcm: Szer. [cm]
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+    import_length_error: Długość %1 jest błędna.
+    import_length_warning: Długość %1 jest przyjęta z ostrzeżeniem.
+    import_lengthcm_error: Długość %1 jest błędna.
+    import_lengthcm_warning: Długość %1 jest przyjęta z ostrzeżeniem.
+    import_trims: Zaimportowano opcje wykonania %1 z %2
+    import_width_error: Szerokość %1 jest błędna.
+    import_width_warning: Szerokość %1 jest przyjęta z ostrzeżeniem.
+    import_widthcm_error: Szerokość %1 jest błędna.
+    import_widthcm_warning: Szerokość %1 jest przyjęta z ostrzeżeniem.
+  warning: []
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edycja
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      clientComment: Komentarz własny klienta
+      details: Szczegóły
+      positionComment: Komentarz do pozycji
+      positionLackers: Lakiery pozycji
+      prodComment: Komentarz własny producenta
+    tools:
+      new: Dodaj
+    filters: []
+    addAttach: Zalącznik
+    area: Powierzchnia
+    clientComment: Komentarz własny
+    color: Kolor parapetu
+    comments: Uwagi
+    cutter: Frez
+    doubleSide: Lakierowanie dwustronne
+    handle: Wybór uchwytu
+    handles: Uchwyt frontu
+    height: Wysokość w mm
+    length: Długość w mm
+    lengthcm: Długość w cm
+    model: Wybór modelu
+    models: Model frontu
+    nr: Liczba porządkowa
+    positionComment: Komentarz
+    positionLackers: Wybór kolorów
+    prodComment: Komentarz producenta
+    quantity: Ilosć
+    size: Wybór grubości
+    status: Status zamówienia
+    trims: Wykończenie
+    uploads: Załączniki do pozycji zamówienia
+    width: Szerokość w mm
+    widthcm: Szerokość w cm
+pricelistitems:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: ""
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      generate: Generuj
+    tools:
+      new: Dodaj
+    filters:
+      active: aktywne
+      color: Kolor
+      size: Grubość
+    active: Status
+    active_no: nieaktywna
+    active_yes: aktywna
+    add: Nowa pozycja cennika
+    c_n: Kolor
+    color: Kolor
+    delete: Usuń
+    description: Opis
+    edit: Edycja
+    end: Do
+    index: Pozycje cennika
+    name: Nazwa
+    new: Dodaj
+    parameters: Parametry
+    pdf: PDF
+    positions: Pozycje
+    price: Domyślna cena
+    remove: Usuń
+    s_n: Grubość
+    sel: ""
+    show: Pokaż
+    size: Grubość
+    symbol: Symbol
+    title: Nazwa
+    update: Aktualizuj
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+    add: Dodano %1 z %2 pozycji cennika
+    notFound: Nie odnaleziono cennika
+  warning: []
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      generate: Generowanie pozycji cannika
+    tools:
+      new: Dodaj
+    filters:
+      active: aktywne
+      color: Kolor
+      size: Grubość
+    active: Status
+    add: Dodawanie pozycji cennika
+    c_n: Kolor
+    clients: Klienci
+    clientsGroups: Grupy klientów
+    color: Kolor
+    delete: Usuń
+    edit: Edycja
+    error:
+      add: Błąd dodawania pozycji cennika
+      create: Błąd tworzenia pozycji cennika
+    generate: Generowanie pozycji cennika
+    index: Cenniki
+    name: Nazwa
+    new: Dodaj
+    price: Domyślna cena
+    pricelists: cenniki
+    s_n: Grubość
+    sel: ""
+    show: Pokaż
+    size: Grubość
+    symbol: Symbol
+  modal:
+    title:
+      to_pricelist: Pozycje do cennika
+pricelists:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      addPriceListItems: Dodaj
+    tools:
+      new: Dodaj
+    filters:
+      clients: Klienci
+      clientsGroups: Grupy klientów
+      end: Data końcowa
+      start: Data początkowa
+    addPrices: Dodaj pozycje
+    basic: Podstawowe
+    basic_data: Podstawowe dane
+    clients: Klienci
+    clientsGroups: Grupy klientów
+    delete: Usuń
+    description: Opis
+    edit: Edycja
+    end: Do
+    importServiceOptions: Importuj pozycje
+    importServices: Importuj pozycje
+    index: Cenniki
+    new: Dodaj
+    pdf: PDF
+    pricelists: Cenniki
+    prices: Ceny
+    remove: Usuń
+    serviceCatalog: Cennik usług
+    serviceOptions: Cennik opcji usług
+    show: Pokaż
+    start: Od
+    title: Nazwa
+    update: Aktualizuj
+  message:
+    create: Utworzono cennik %1 obowiązujący od %2
+    update: Zaktualizowano
+    remove: Usunięto
+    notFound: Nie odnaleziono cennika
+  warning: []
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      addPriceListItems: Dodaj
+      show: Pokaż
+      xls: Excel
+    tools:
+      new: Dodaj
+    filters:
+      clients: Klienci
+      clientsGroups: Grupy klientów
+      end: Data końcowa
+      start: Data początkowa
+    clients: Klienci
+    clientsGroups: Grupy klientów
+    create: Tworzenie nowego cennika
+    delete: Usuń
+    edit: Edycja
+    end: Data końcowa
+    index: Cenniki
+    new: Dodaj
+    pricelists: cenniki
+    show: Pokaż
+    start: Data początkowa
+    title: Cenniki
+  modal:
+    pricelists_show: Podgląd cennika
+    title: Wybór cennika
+prices:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: ""
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      generate: Generuj
+    tools:
+      new: Dodaj
+    filters: []
+    priceListItem: Pozycja cennika
+    value: Cena
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+  warning: []
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: ""
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      generate: Generuj
+    tools:
+      new: Dodaj
+    filters: []
+    priceListItem: Pozycja cennika
+    value: Cena
+productions:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      addOrders: Dodaj
+      exp_xls: xls
+    tools:
+      new: Dodaj
+    filters:
+      generated: Wygenerowana
+      progress: Postęp
+    addOrders: Dodaj zamówienia
+    basic_data: Podstawowe dane produkcji
+    create: Uworzono produkcję
+    delete: Usuwanie
+    generated: Wygenerowana
+    index: Produkcje
+    message: ""
+    new: Nowa produkcja
+    number: Numer
+    orders: Zamówienia
+    products: Produkty
+    progress: Postęp
+  message:
+    create: Utworzono produkcję o numerze
+    update: Zaktualizowano produkcję
+    remove: Usunięto
+    no_orders: Brak poprawnych zamówień
+    orders_added: Doddano %1 zamówień z %2
+  warning: []
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      exp_xls: Export do Excel
+      show: Pokaż
+    tools:
+      new: Dodaj
+    filters:
+      generated: Wygenerowana
+      progress: Postęp
+    create: Tworzenie produkcji
+    delete: Usuwanie produkcji
+    edit: Edycja produkcji
+    error:
+      create: Błąd tworzenia produkcji
+    generated: Wygenerowana
+    index: Produkcje
+    new: Nowa produkcja
+    number: Numer
+    progress: Postęp produkcji
+    update: Aktutalizacja produkcji
+  modal:
+    title:
+      generate: Generowanie produkcji
+products:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: dodaj usługę
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      info: Szczegóły
+      show: Pokaż
+    tools:
+      new: Dodaj
+    filters:
+      cutTime: Proces cięcia
+      packingTime: Proces pakowania
+    barcode: Kod Paskowy
+    clientLabel: Etykieta klienta
+    comment: Uwagi
+    cutTime: Cięcie
+    index: Produkty
+    info: Informacje
+    label: Etykieta
+    number: Numer
+    packingTime: Pakowanie
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+  warning: []
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Zapisz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edycja
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+      info: Szczegóły
+      show: Pokaż
+    tools:
+      new: Dodaj
+    filters:
+      cutTime: Proces cięcia
+      packingTime: Proces pakowania
+    barcode: Kod Paskowy
+    clientLabel: Etykieta klienta
+    comment: Uwagi
+    cutTime: Cięcie
+    index: Produkty
+    info: Informacje
+    label: Etykieta
+    number: Numer
+    packingTime: Pakowanie
+security:
+  title:
+    login: Logowanie do systemu
+    resetting: Resetowanie hasła
+settings:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edycja
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      pdf: Generuj pdf
+      show: Pokaż
+    tools:
+      new: Dodaj
+    filters:
+      client: Klient
+    cl_n: Klient
+    client: Klient
+    create: Zapisz
+    description: Opis
+    index: Ustawienia
+    name: Nazwa
+    settings: Ustawienia
+    value: Wartość
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+  warning:
+    not_found: brak w bazie
+  title:
+    id: Identyfikator
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Zapisz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edycja
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      pdf: Generuj pdf
+      show: Pokaż
+    tools:
+      new: Dodaj
+    filters:
+      client: Klient
+    modal:
+      settings: Ustawienia
+    delete: Usuwanie
+    cl_n: Klient
+    complited: Zakończone
+    description: Opis
+    edit: Edycja ustawienia
+    index: Ustawienia
+    name: Nazwa
+    new: Nowe ustawienie
+    settings: Ustawienia
+    value: Wartość
+shipments:
+  label:
+    actions: Akcje
+    add_pos: Do wysyłki
+    area: Powierzchnia
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+    data: Dane wysyłki
+    generated: Wygenerowana
+    id: ID
+    new: Nowa wysyłka
+    number: Numer
+    orders: Zamówienia w wysyłce
+    quantity: Ilość
+    send: Wysłane
+    sent: Wysłano
+    shipments: Wysyłka
+    tools:
+      new: Dodaj
+  title:
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+    delete: Usuwanie produkcji
+    edit: Edycja wysyłki
+    index: Lista wysyłek
+    new: Nowa wysyłka
+    tools:
+      new: Dodaj
+sizes:
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+      show: Pokaż
+      upload: Dodaj
+      upload_delete: Usuń
+    tools:
+      new: Dodaj
+    filters:
+      active: Status
+    active: Aktywny
+    active_no: nie
+    active_yes: tak
+    delete: Usuń
+    description: Opis
+    edit: Edycja
+    file:
+      desc: Opis
+      original: Nazwa pliku
+      size: Rozmiar pliku
+    index: Grubości parapetów
+    name: Nazwa
+    new: Dodaj
+    pdf: Generuj pdf
+    remove: Usuń
+    sequence: Kolejność
+    show: Pokaż
+    sizes: Grubości parapetów
+    sq: Kolejność
+    symbol: Symbol
+    update: Aktualizuj
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+    correct_values: 'Dostępne grubości: '
+    notFound: Nie odnaleziono grubości
+    wrong_value: Nieprawidłowa grubość parapetu.
+  warning:
+    not_found: brak w bazie
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+      change_off: Edycja zablokowana
+      change_on: Edycja
+      show: Pokaż
+      upload: Wstaw rysunek
+      upload_delete: Usuń rysunek
+    tools:
+      new: Dodaj
+    filters:
+      active: Status
+    modal:
+      size: Wybór grubości parapetu
+    active: Status
+    delete: Usuń
+    description: Opis
+    edit: Edycja
+    file:
+      desc: Opis
+      original: Nazwa pliku
+      size: Rozmiar pliku
+    index: Grubości parapetów
+    name: Nazwa
+    new: Dodaj
+    pdf: Generuj pdf
+    sequence: Kolejność
+    show: Pokaż
+    sizes: Grubości parapetów
+    symbol: Symbol
+title:
+  modal:
+    date: Data
+    deliveries_show: Podgląd wysyłki
+    exp: Eksport
+    import: Import pozycji zamówienia
+    invoices_exp: Eksport faktury
+    invoices_show: Podgląd faktury
+    my_modal: ""
+    orders_confirm: Zatwierdzanie zamówień
+    orders_exp: Eksport zamówienia
+    orders_show: Podgląd zamówienia
+    orders_table_export: Export zamówień
+    productions_show: Podgląd produkcji
+    servicecatalog: Katalog usług
+    size: Wybór grubosci
+    trims: Opcje wykończenia
+    my: m
+    comment: Komentarz
+  btn:
+    add: Dodaj
+    change: Zmień
+    close: Zamknij
+    confirm: Zatwierdź
+    create: Utwórz
+    import: Importuj
+    remove: Usuń
+    save: Zapisz
+    update: Aktualizuj
+    upload_delete: Usuń
+  error:
+    form: Błąd w formularzu
+    server: Błąd serwera
+  title: System obługi Drako
+  update: Aktualizacja
 trims:
-    label:
-        '': Nazwa
-        a: Status
-        actions: Akcje
-        active: Status
-        active_no: nieaktywny
-        active_yes: aktywny
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Edytuj
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Zapisz
-            upload: Dodaj
-            upload_delete: Usuń
-        d: Opis
-        delete: Usuń
-        description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        edit: Edycja
-        file:
-            desc: Opis
-            original: Nazwa pliku
-            size: Rozmiar pliku
-        filters:
-            active: Status
-        id: ID
-        index: Wykończenie parapetów
-        name: Nazwa
-        new: Dodaj
-        pdf: Generuj pdf
-        remove: Usuń
-        sequence: Kolejność
-        show: Pokaż
-        sq: Kolejność
-        symbol: Symbol
-        tools:
-            new: Dodaj
-        trims: Wykończenia parapetów
-        update: Aktualizuj
-        upload: Obraz
-    message:
-        correct_values: 'Dostępne opcje wykończenia: '
-        notFound: Nie odnaleziono grubości
-        wrong_value: Nieprawidłowa opcja wykończenia parapetu.
-    title:
-        modal:
-            trims: Wybór wykonania parapetu
-        actions: Akcje
-        active: Status aktywności
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            change_off: Edycja zablokowana
-            change_on: Edycja
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            show: Pokaż
-            submit: Zapisz
-            update: Zapisz
-            upload: Wstaw rysunek
-            upload_delete: Usuń rysunek
-        delete: Usuń
-        description: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja
-        file:
-            desc: Opis
-            original: Nazwa pliku
-            size: Rozmiar pliku
-        filters:
-            active: Status
-        id: Id w bazie
-        index: Wykończenia parapetów
-        name: Nazwa
-        new: Dodaj
-        pdf: Generuj pdf
-        sequence: Kolejność
-        show: Pokaż
-        symbol: Symbol
-        tools:
-            new: Dodaj
-        trims: Wykończenia parapetów
-    warning:
-        not_found: brak w bazie
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Edytuj
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+      show: Pokaż
+      upload: Dodaj
+      upload_delete: Usuń
+    tools:
+      new: Dodaj
+    filters:
+      active: Status
+    "": Nazwa
+    a: Status
+    active: Status
+    active_no: nieaktywny
+    active_yes: aktywny
+    d: Opis
+    delete: Usuń
+    description: Opis
+    edit: Edycja
+    file:
+      desc: Opis
+      original: Nazwa pliku
+      size: Rozmiar pliku
+    index: Wykończenie parapetów
+    name: Nazwa
+    new: Dodaj
+    pdf: Generuj pdf
+    remove: Usuń
+    sequence: Kolejność
+    show: Pokaż
+    sq: Kolejność
+    symbol: Symbol
+    trims: Wykończenia parapetów
+    update: Aktualizuj
+    upload: Obraz
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+    correct_values: 'Dostępne opcje wykończenia: '
+    notFound: Nie odnaleziono grubości
+    wrong_value: Nieprawidłowa opcja wykończenia parapetu.
+  warning:
+    not_found: brak w bazie
+  title:
+    id: Id w bazie
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+      change_off: Edycja zablokowana
+      change_on: Edycja
+      show: Pokaż
+      upload: Wstaw rysunek
+      upload_delete: Usuń rysunek
+    tools:
+      new: Dodaj
+    filters:
+      active: Status
+    modal:
+      trims: Wybór wykonania parapetu
+    active: Status aktywności
+    delete: Usuń
+    description: Opis
+    edit: Edycja
+    file:
+      desc: Opis
+      original: Nazwa pliku
+      size: Rozmiar pliku
+    index: Wykończenia parapetów
+    name: Nazwa
+    new: Dodaj
+    pdf: Generuj pdf
+    sequence: Kolejność
+    show: Pokaż
+    symbol: Symbol
+    trims: Wykończenia parapetów
 uploads:
-    label:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            desc: Opis
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-            upload: Wstaw
-            upload_delete: Usuń
-        desc: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        file:
-            desc: Opis
-            original: Nazwa pliku
-            size: Rozmiar pliku
-        filters: []
-        id: ID
-        name: Nazwa pliku
-        original: Nazwa pliku
-        sig:
-            desc: U
-        size: Rozmiar
-        tools:
-            new: Dodaj
-        uploading: Wysylam
-    message: []
-    title:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            change_off: Edycja zablokowana
-            change_on: Edycja
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            desc: Opis
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-            upload: Załącznik
-        delete: Usuń
-        desc: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        file:
-            desc: Opis
-            original: Nazwa pliku
-            size: Rozmiar pliku
-        filters: []
-        id: ID
-        original: Nazwa
-        size: Rozmiar
-        tools:
-            new: Dodaj
-        upload: Wstaw
-        upload_delete: Usuń
-    warning: []
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      desc: Opis
+      upload: Wstaw
+      upload_delete: Usuń
+    tools:
+      new: Dodaj
+    filters: []
+    desc: Opis
+    file:
+      desc: Opis
+      original: Nazwa pliku
+      size: Rozmiar pliku
+    name: Nazwa pliku
+    original: Nazwa pliku
+    sig:
+      desc: U
+    size: Rozmiar
+    uploading: Wysylam
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+  warning: []
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+      change_off: Edycja zablokowana
+      change_on: Edycja
+      desc: Opis
+      upload: Załącznik
+    tools:
+      new: Dodaj
+    filters: []
+    delete: Usuń
+    desc: Opis
+    file:
+      desc: Opis
+      original: Nazwa pliku
+      size: Rozmiar pliku
+    original: Nazwa
+    size: Rozmiar
+    upload: Wstaw
+    upload_delete: Usuń
 users:
-    label:
-        actions: Akcje
-        active_no: nieaktywny
-        active_yes: aktywny
-        added: Utworzono użytkownika
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Aktualizuj
-        clients: Klienci
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        email: Adres e-mail
-        enabled: Status
-        enabled_no: nieaktywny
-        enabled_yes: aktywny
-        error: Błąd użytkownika
-        filters:
-            active: Aktywny
-        id: Id
-        index: Użytkownicy
-        lastLogin: Ostatnie logowanie
-        login: Użytkownik
-        name: Nazwa wyświetlana
-        new: Nowy
-        password: Hasło
-        password_confirmation: Powtórz hasło
-        password_mismatch: Niezgodne hasło
-        role_admin: pracownik
-        role_super_admin: administrator
-        role_user: klient
-        roles: Uprawnienia
-        tools:
-            new: Dodaj
-        type: Typ
-        userGroups: Grupy użytkowników
-        username: Nazwa użytkownika
-        usernameCanonical: Nazwa użytkownika kanononiczna
-    message:
-        added: Dodano użytkownika o danych logowania
-        email_exist: Podany adres e-mail znajduje się już w bazie
-        error_create: Błąd utworzenia użytkownika
-        login: 'Nazwa logowania: %1'
-        password: 'Hasło: %1'
-        updated: Zaktualizowano użytkownika
-    title:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Zapisz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edycja
-            filter: Filtruj
-            new: Nowy
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Zapisz
-        delete: Usuwanie użytkownika
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Modyfikacja użytkownika
-        enabled: Status
-        filters:
-            active: Aktywny
-        id: ID
-        index: Lista użytkowników
-        lastLogin: Ostatnie logowanie
-        new: Nowy użytkownik
-        roles: Uprawnienia
-        tools:
-            new: Dodaj
-        userGroups: Grupy użytkowników
-        username: Nazwa użytkownika
-        usernameCanonical: Nazwa użytkownika kanononiczna
-    warning: []
+  label:
+    id: Id
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Aktualizuj
+    tools:
+      new: Dodaj
+    filters:
+      active: Aktywny
+    active_no: nieaktywny
+    active_yes: aktywny
+    added: Utworzono użytkownika
+    clients: Klienci
+    email: Adres e-mail
+    enabled: Status
+    enabled_no: nieaktywny
+    enabled_yes: aktywny
+    error: Błąd użytkownika
+    index: Użytkownicy
+    lastLogin: Ostatnie logowanie
+    login: Użytkownik
+    name: Nazwa wyświetlana
+    new: Nowy
+    password: Hasło
+    password_confirmation: Powtórz hasło
+    password_mismatch: Niezgodne hasło
+    role_admin: pracownik
+    role_super_admin: administrator
+    role_user: klient
+    roles: Uprawnienia
+    type: Typ
+    userGroups: Grupy użytkowników
+    username: Nazwa użytkownika
+    usernameCanonical: Nazwa użytkownika kanononiczna
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+    added: Dodano użytkownika o danych logowania
+    email_exist: Podany adres e-mail znajduje się już w bazie
+    error_create: Błąd utworzenia użytkownika
+    login: 'Nazwa logowania: %1'
+    password: 'Hasło: %1'
+    updated: Zaktualizowano użytkownika
+  warning: []
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Zapisz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edycja
+      filter: Filtruj
+      new: Nowy
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+    tools:
+      new: Dodaj
+    filters:
+      active: Aktywny
+    delete: Usuwanie użytkownika
+    edit: Modyfikacja użytkownika
+    enabled: Status
+    index: Lista użytkowników
+    lastLogin: Ostatnie logowanie
+    new: Nowy użytkownik
+    roles: Uprawnienia
+    userGroups: Grupy użytkowników
+    username: Nazwa użytkownika
+    usernameCanonical: Nazwa użytkownika kanononiczna
 usersgroups:
-    label:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Zapisz
-        code: Kod
-        create: Utwórz
-        description: Opis
-        eactions:
-            delete: ''
-            edit: ''
-            show: ''
-        filters: []
-        id: ID
-        index: Grupy użytkowników
-        name: Nazwa
-        tools:
-            new: Dodaj
-        update: Aktualizuj
-    message: []
-    title:
-        actions: Akcje
-        btn:
-            add: Dodaj
-            cancel: Anuluj
-            change: Zmień
-            clear: Wyczyść
-            close: Zamknij
-            confirm: Zatwierdź
-            create: Utwórz
-            default: Domyślnie
-            delete: Usuń
-            edit: Edytuj
-            filter: Filtruj
-            new: Dodaj
-            remove: Usuń
-            save: Zapisz
-            submit: Zapisz
-            update: Zapisz
-        code: Kod
-        delete: Usuwanie grupy klientów
-        description: Opis
-        eactions:
-            delete: Usunięcie
-            edit: Edycja
-            show: Podgląd
-        edit: Edycja grupy użytkowników
-        filters: []
-        id: ID
-        index: Grupy użytkowników
-        name: Nazwa
-        new: Nowa grupa użytkowników
-        tools:
-            new: Dodaj
-    warning: []
+  label:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: ""
+      show: ""
+      delete: ""
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+    tools:
+      new: Dodaj
+    filters: []
+    code: Kod
+    create: Utwórz
+    description: Opis
+    index: Grupy użytkowników
+    name: Nazwa
+    update: Aktualizuj
+  message:
+    create: Utworzono
+    update: Zaktualizowano
+    remove: Usunięto
+  warning: []
+  title:
+    id: ID
+    actions: Akcje
+    eactions:
+      edit: Edycja
+      show: Podgląd
+      delete: Usunięcie
+    btn:
+      add: Dodaj
+      cancel: Anuluj
+      change: Zmień
+      clear: Wyczyść
+      close: Zamknij
+      confirm: Zatwierdź
+      create: Utwórz
+      default: Domyślnie
+      delete: Usuń
+      edit: Edytuj
+      filter: Filtruj
+      new: Dodaj
+      remove: Usuń
+      save: Zapisz
+      submit: Zapisz
+      update: Zapisz
+    tools:
+      new: Dodaj
+    filters: []
+    code: Kod
+    delete: Usuwanie grupy klientów
+    description: Opis
+    edit: Edycja grupy użytkowników
+    index: Grupy użytkowników
+    name: Nazwa
+    new: Nowa grupa użytkowników
+...

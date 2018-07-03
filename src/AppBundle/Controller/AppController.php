@@ -341,32 +341,37 @@ class AppController extends Controller
  // <editor-fold defaultstate="collapsed" desc="entity">
     protected $entity;
     protected $entityId=0;
-    
-    protected function newEntity()
+  
+    protected function newEntity(array $options = [] ):void
     {
-        if(is_null($this->entity)){
-            $this->entity = $this->getEntityHelper()->newEntity(static::ec, ['defaults' => $this->getEntityHelper()->getSettingsValue('defaults') ] );
-            $this->newCustomEntity();  
-        }   
-        return $this->entity;
-    }
-
-    protected function newCustomEntity()
-    {
-        return $this->entity;
+        $ens=$this->getEntityHelper()->getEntityNamespace(static::ec);
+        $this->entity = new $ens(array_replace_recursive( [
+               'defaults' => $this->getEntityHelper()->getSettingsValue('defaults', static::ec)
+            ],
+            $options
+        ));
     }
 
     protected function newEntityGenerator()
     {
-        if (!$this->entity) {
-            $this->entity = $this-getEntityHelper()->newEntityGenerator();
-        }
-        return $this;
+        $this->entity=new \stdClass();
+        $this->entity->items= new ArrayCollection();
     }
 
-    protected function getEntityFromBase($condition, ?string $entityClassName = null)
+    public function fromBase($condition, ?string $entityClassName=null, bool $exeption=false){
+        $repository = $this->getEntityManager()->getRepository($this->getEntityHelper()->getEntityNameSpace($entityClassName));
+        $entity = is_array($condition) ? $repository->findOneBy($condition) : $repository->find($condition);
+        if (!$entity && $exeption) {
+            throw $this->createNotFoundException('NOT FOUND');
+        }
+        return $entity;
+    }
+
+
+    protected function getEntityFromBase(int $id, ?string $entityClassName = null)
     {
-        $this->entity = $this->getEntityHelper()->fromBase($condition, $entityClassName);
+        $this->entity = $this->getEntityManager()->getRepository(
+            $this->getEntityHelper()->getEntityNameSpace($entityClassName))->findOneById($id);
         if ($this->entity) {
             $this->entityId = $this->entity->getId();
         }
@@ -382,6 +387,7 @@ class AppController extends Controller
             'translator' => $this->get('translator'),
             'action' => $this->getUrl($type),
             'attr' => [
+                'data-ecn' => static::ec,
                 'data-admin' => $this->isAdmin(),
                 'data-entity-id' => $this->entityId ? $this->entityId : '',
                 'data-form' => 'ajax'
@@ -419,9 +425,8 @@ class AppController extends Controller
         return $this;
     }
 
-    protected function createCreateForm($options = [])
+    protected function createCreateForm(array $options = [])
     {
-        $this->newEntity();
         $this->setFormOptions('create', $options);
         $this->setRenderOptions([
             'title' => $this->getTransHelper()->titleText('new'),
@@ -433,7 +438,7 @@ class AppController extends Controller
         return $this;
     }
 
-    protected function createGenerateForm($options = [])
+    protected function createGenerateForm(array $options = [])
     {
         $this->newEntityGenerator();
         $this->setFormOptions('add', $options);
@@ -449,11 +454,8 @@ class AppController extends Controller
         return $this;
     }
 
-    protected function createEditForm($id, $options = [])
+    protected function createEditForm(array $options = [])
     {
-        if (!$this->entity) {
-            $this->getEntityFromBase($id);
-        }
         $this->setFormOptions('update', $options);
         $this->setRenderOptions([
             'title' => $this->getTransHelper()->titleText('edit'),
@@ -467,16 +469,13 @@ class AppController extends Controller
 
     protected function createDeleteForm($id, $options = [])
     {
-        if (!$this->entity) {
-            $this->getEntityFromBase($id);
-        }
         $this->formData = new \stdClass();
         $this->formData->id = $id;
         $this->formData->confirm = false;
         $this->setFormOptions('remove');
         $renderOptions = [
             'title' => $this->getTransHelper()->titleText('delete'),
-            'template_body' => $this->tmplPath('delete', '', 'Form'),
+            'template_body' => $this->getTemplate('Form/delete'),
             'form_options' => [
                 'submit' => $this->genSubmitBtn('remove')
             ],
@@ -799,6 +798,7 @@ class AppController extends Controller
         if (!$this->preAction($request, $cid)) {
             return $this->responseAccessDenied();
         }
+        $this->newEntity();
         $this->setTemplate('edit');
         $this->createCreateForm();
         if (method_exists($this, 'customNewAction')) {
@@ -816,6 +816,7 @@ class AppController extends Controller
         if (!$this->preAction($request, $cid)) {
             return $this->responseAccessDenied(true);
         }
+        $this->newEntity();
         $this
             ->createCreateForm()
             ->formSystem->handleRequest($request);
@@ -878,17 +879,20 @@ class AppController extends Controller
     }
     
 
-    public function editAction(Request $request, $id, $cid = 0)
+    public function editAction(Request $request, int $id, int $cid = 0)
     {
         if (!$this->preAction($request, $cid)) {
             return $this->responseAccessDenied();
         }
+        $this->getEntityFromBase($id);
+        $this->createEditForm();
         $this->setTemplate('edit');
-        $this->createEditForm($id);
-        if (method_exists($this, 'customEditAction')) {
-            $this->customEditAction($request, $id, $cid);
-        }
+        $this->customEditAction($request, $id, $cid);
         return $this->renderSystem(true);
+    }
+
+    protected function customEditAction(Request $request, int $id, int $cid = 0):void
+    {
     }
 
     public function updateAction(Request $request, int $id, int $cid = 0)
@@ -896,25 +900,29 @@ class AppController extends Controller
         if (!$request->isXmlHttpRequest()) {
             return $this->responseMustAjax();
         }
-        $dataReturn = [];
         if (!$this->preAction($request, $cid)) {
             return false;
         }
-        $this->createEditForm($id);
+        $this->getEntityFromBase($id);
         $this->entity->preUpdate();
-
-        if (method_exists($this, 'preUpdateAction')) {
-            $this->preUpdateAction($request, $id, $cid);
-        }
+        $this->createEditForm();
+        $this->preUpdateAction($request, $id, $cid);
+        $dataReturn = [];
         $this->formSystem->handleRequest($request);
         if ($this->formSystem->isValid()) {
-            $this->entity->postUpdate($this->getEntityManager());
-            if (method_exists($this, 'customUpdateAction')) {
-                $this->customUpdateAction($dataReturn);
-            }
+            // $this->entity->postUpdate($this->getEntityManager());
+            // $this->customUpdateAction($dataReturn);
             return $this->responseSave('update', $dataReturn);
         }
         return $this->errorsJsonResponse('update', $dataReturn);
+    }
+
+    protected function preUpdateAction(Request $request, int $id, int $cid = 0):void
+    {
+    }
+
+    protected function customUpdateAction(array &$dataReturn):void
+    {       
     }
 
     public function deleteAction(Request $request, $id, $cid = 0)
@@ -922,6 +930,7 @@ class AppController extends Controller
         if (!$this->preAction($request, $cid)) {
             return $this->responseAccessDenied();
         }
+        $this->getEntityFromBase($id);
         $this->setTemplate('edit');
         $this->createDeleteForm($id);
         return $this->renderSystem(true);
@@ -1217,7 +1226,7 @@ class AppController extends Controller
     // {
     //     return array_replace_recursive(
     //         $this->genElement('panel', $entityClassName),
-    //         $options
+    //         
     //     );
     // }
 

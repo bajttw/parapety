@@ -72,7 +72,7 @@ class Uploads extends AppEntity
         return $this->getFileUrl();
     }
 
-    public function getData($jsonEncode = true, $options = [])
+    public function getData(bool $jsonEncode=true, array $options=[])
     {
         $data = [
             'id' => $this->getId(),
@@ -109,18 +109,18 @@ class Uploads extends AppEntity
         // $this->id=($id);
     }
 
-    public function getId()
+    public function getId():int
     {
         return $this->id;
     }
 
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
         return $this;
     }
 
-    public function getName()
+    public function getName():?string
     {
         return $this->name;
     }

@@ -38,7 +38,7 @@ class PanelsGenerator extends ClientElementsGenerator
             }
         }
         if(!is_array(Utils::deep_array_value('toolbars-filterbar', $panel))){
-            $filterbar=$this->getToolbar($panelOptions);
+            $filterbar=$this->getFilterbar($panelOptions);
             if(is_array($filterbar)){
                 $panel['toolbars']['filterbar']=$filterbar;
             }

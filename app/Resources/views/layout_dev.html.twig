@@ -84,6 +84,8 @@
         {% endif %}
         <div id="main-wrapper" class="flex-auto flex-box">
             {{ block("document_body") }}
+            {{dump()}}
+
         </div>
         {{ block("fileupload") }}
         {% if full_layuot %}

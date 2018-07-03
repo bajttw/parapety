@@ -111,7 +111,7 @@ class ElementsGenerator{
 
     protected function setTitle(array &$element, ?array $elementOptions = null, ?string $title= null):void
     {
-        $this->setAttr('id', ($title) ?: $this->getTitle($element['name']), $element, $elementOptions);
+        $this->setAttr('title', ($title) ?: $this->getTitle($element['name']), $element, $elementOptions);
     }
 
     protected function setLabel(array &$element):void

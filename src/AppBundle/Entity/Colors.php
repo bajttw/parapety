@@ -125,7 +125,7 @@ class Colors extends AppEntity{
 		*
 		* @return integer
 		*/
-	public function getId(){
+	public function getId():int{
         return $this->id;
     }
 
@@ -136,7 +136,7 @@ class Colors extends AppEntity{
 		*
 		* @return Colors
 		*/
-	public function setName($name){
+	public function setName(string $name){
         $this->name = $name;
         return $this;
     }
@@ -146,7 +146,7 @@ class Colors extends AppEntity{
 		*
 		* @return string
 		*/
-	public function getName(){
+	public function getName():?string{
         return $this->name;
     }
 
@@ -179,7 +179,7 @@ class Colors extends AppEntity{
 		*
 		* @return Colors
 		*/
-	public function setDescription($description){
+	public function setDescription(?string $description){
         $this->description = $description;
 
         return $this;
@@ -190,7 +190,7 @@ class Colors extends AppEntity{
 		*
 		* @return string
 		*/
-	public function getDescription(){
+	public function getDescription():?string{
         return $this->description;
     }
 
@@ -201,10 +201,14 @@ class Colors extends AppEntity{
 		*
 		* @return Colors
 		*/
-	public function setSequence($sequence){
+	public function setSequence(int $sequence){
         $this->sequence = $sequence;
 
         return $this;
+    }
+
+    public function initSequence(int $sequence){
+        return $this->setSequence($sequence);
     }
 
     /**
@@ -212,7 +216,7 @@ class Colors extends AppEntity{
 		*
 		* @return integer
 		*/
-	public function getSequence(){
+	public function getSequence():int{
         return $this->sequence;
     }
 
@@ -223,7 +227,7 @@ class Colors extends AppEntity{
 		*
 		* @return Colors
 		*/
-	public function setActive($active){
+	public function setActive(bool $active){
         $this->active = $active;
 
         return $this;
@@ -234,7 +238,7 @@ class Colors extends AppEntity{
 		*
 		* @return boolean
 		*/
-	public function getActive(){
+	public function getActive():bool{
         return $this->active;
     }
 
@@ -299,7 +303,8 @@ class Colors extends AppEntity{
     
  // </editor-fold> 
 
-    public function getData($jsonEncode=true, $options=[]){
+    public function getData(bool $jsonEncode=true, array $options=[])
+    {
         return parent::getData($jsonEncode, array_replace([ 
                 'shortNames' => 'dic'
             ],
@@ -307,8 +312,10 @@ class Colors extends AppEntity{
         ));
     }
 
-
-
+    public function preUpdate(){
+        $this->saveFieldsValues(['active']);
+        return $this;
+    }
 
     // /**
     //  * @ORM\PreUpdate

@@ -353,7 +353,7 @@ class Users extends BaseUser
      *
      * @return integer
      */
-    public function getId()
+    public function getId():int
     {
         return $this->id;
     }
@@ -365,7 +365,7 @@ class Users extends BaseUser
     //  *
     //  * @return Users
     //  */
-    // public function setName($name)
+    // public function setName(string $name)
     // {
     //     $this->name = $name;
 
@@ -377,7 +377,7 @@ class Users extends BaseUser
     //  *
     //  * @return string
     //  */
-    // public function getName()
+    // public function getName():?string
     // {
     //     return $this->name;
     // }

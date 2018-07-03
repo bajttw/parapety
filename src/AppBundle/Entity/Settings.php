@@ -109,18 +109,18 @@ class Settings extends AppEntity
     }
 
     // <editor-fold defaultstate="collapsed" desc="Fields functions">
-    public function getId()
+    public function getId():int
     {
         return $this->id;
     }
 
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = strtolower($name);
         return $this;
     }
 
-    public function getName()
+    public function getName():?string
     {
         return $this->name;
     }
@@ -165,13 +165,13 @@ class Settings extends AppEntity
         return json_decode($this->value, true);
     }
 
-    public function setDescription($description)
+    public function setDescription(?string $description)
     {
         $this->description = $description;
         return $this;
     }
 
-    public function getDescription()
+    public function getDescription():?string
     {
         return $this->description;
     }

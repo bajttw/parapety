@@ -1,42 +1,42 @@
 {% extends 'Modal/content.html.twig' %}
 
 {%- block modal_body -%}
-    {% set fieldtype= modal.fieldtype|default('') %}
-    {% set fieldname= 'field-'~modal.attr.id %}
-    <div class="fields-container d-flex flex-wrap form-group justify-content-center" data-field="{{ fieldname }}" >
-        {% set attr = { name: fieldname }|merge(modal.field_attr|default({})|add_class("form-control field")) %}
-        {% if fieldtype == 'textarea' %} 
+    {% set field_type= modal.field.type|default('') %}
+    {% set field_name= 'field-'~modal.attr.id %}
+    <div class="fields-container d-flex flex-wrap form-group justify-content-center" data-field="{{ field_name }}" >
+        {% set attr = { name: field_name }|merge(modal.field_attr|default({})|add_class("form-control field")) %}
+        {% if field_type == 'textarea' %} 
             <textarea {{ block("attributes") }} style="width: 100%; height: 203px;"></textarea>     
-        {% elseif fieldtype == 'select' %}
+        {% elseif field_type == 'select' %}
             <select {{ block("attributes") }}>
                 {% for row in modal.data %}
                     {% set val= row.v is defined ? row.v : row.id %}
                     <option value="{{ val }}"  data-n="{{ row.n }}" data-d="{{ row. d }}">{{ row.n }}</option>
                 {% endfor %}
             </select>
-        {% elseif fieldtype == 'radio' or fieldtype == 'checkbox' %}
+        {% elseif field_type == 'radio' or field_type == 'checkbox' %}
             {% set width = modal.settings.image.width|default('100')~'px' %}
             {% set height = modal.settings.image.height|default('100')~'px' %}
-            {% set column_count=modal.settings.image.columns|default(2) %}
+            {% set column_count = modal.settings.image.columns|default(2) %}
             {% for row in modal.data %}
                 {% set val= row.v is defined ? row.v : row.id %}
                 <div class="option-img" >
-                    <input {{ block("attributes") }} type="{{ fieldtype }}" value="{{ val }}" id="{{ fieldname }}{{ val }}" data-n="{{ row.n }}" data-d="{{ row.d }}">
+                    <input {{ block("attributes") }} type="{{ field_type }}" value="{{ val }}" id="{{ field_name }}{{ val }}" data-n="{{ row.n }}" data-d="{{ row.d }}">
                     <span>{{ row.n }}</span>
-                    <label title="{{ row.d }}" for="{{ fieldname }}{{ val }}" >
+                    <label title="{{ row.d }}" for="{{ field_name }}{{ val }}" >
                         {% if row.u_url|default('') is empty %}
-                            {% set img_src=asset('bundles/images/no_image.jpg') %}
+                            {% set img_src = asset('bundles/images/no_image.jpg') %}
                         {% else %}
-                            {% set img_src= app.request.basePath~row.u_url~row.u_n %}
+                            {% set img_src = app.request.basePath~row.u_url~row.u_n %}
                         {% endif %}
                        <img  src="{{img_src}}" style="width:{{width}}; height:{{height}};"  >
                     </label>
                 </div>
             {% endfor %}
-        {% elseif fieldtype == 'check' %}
-            {% set attr=attr|set_array_value('value', modal.fieldvalue|default('1') ) %}
+        {% elseif field_type == 'check' %}
+            {% set attr = attr|set_array_value('value', modal.field.value|default('1') ) %}
             <input type="checkbox" {{ block("attributes") }}/>
-        {% elseif fieldtype == 'hidden' %}
+        {% elseif field_type == 'hidden' %}
             <input type="hidden" {{ block("attributes") }}/>
         {% else %}
             <input type="text" {{ block("attributes") }}>

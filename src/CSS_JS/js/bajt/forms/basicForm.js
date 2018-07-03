@@ -239,6 +239,7 @@
             _createFields: function() {
                 // console.log('basicForm - _initFields');
                 var o = this.options;
+                console.log(o);
                 for (var k in o.formFields) {
                     var fieldName,
                         options = {};

@@ -1,6 +1,8 @@
 AppBundle\Entity\Models:
     type: entity
     repositoryClass: AppBundle\Repository\ModelsRepository
+    entityListeners:
+        AppBundle\EntityListener\ModelsListener: ~
     table: Models
     id:
         id:

@@ -58,17 +58,6 @@
                 _unselectNotAllowed(combination);
             }
             var hh = this.$fieldsContainer.find('input[type=checkbox]:checked');
-        },
-        read: function() {
-            this.mdata.value = this.$field.readField(this.mdata.type);
-        },
-        // _encode: function () {
-        //     return $.isArray(this.mdata.value) ? this.mdata.value.join(this.options.separator || ', ') : '';
-        // },
-        write: function() {
-            this.$field.writeField(this.mdata.value);
-            this.ownChange = true;
-            this.$field.change();
         }
     });
 
@@ -647,8 +636,8 @@
         if (B.obj.is$($form)) {
             $form.order();
             $('#import_modal').modalImport();
-            $('.modal-field').modalField();
-            $('#trims_modal').modalTrims();
+            $('[data-modal-widget=field]').modalField();
+            $('[data-modal-widget=trims]').modalTrims();
         }
     };
 })(jQuery, Bajt);

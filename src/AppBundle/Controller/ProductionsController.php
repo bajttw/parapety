@@ -140,17 +140,16 @@ class ProductionsController extends AppController
         return $messages;
     }
     
-    protected function customCreateAction(&$dataReturn){
+    protected function customCreateAction(array &$dataReturn){
         $dataReturn['toEdit'] = true;
-        return $dataReturn;
     } 
 
-    protected function customEditAction(Request $request, $id, $cid = 0)
+    protected function customEditAction(Request $request, int $id, int $cid = 0):void
     {
         $this->renderOptions['entity_data'] = $this->entity->getShowData();
     }
 
-    protected function customUpdateAction(&$dataReturn)
+    protected function customUpdateAction(array &$dataReturn):void
     {
         $em = $this->getEntityManager();
         $removedProducts = $this->entity->getRemovedProducts();
@@ -159,7 +158,6 @@ class ProductionsController extends AppController
                 $em->remove($p);
             }
         }
-        return $dataReturn;
     }
 
     protected function setCustomFormOptions()

@@ -38,7 +38,9 @@ $def=[
 
     ],
     'message' => [
-
+        'create' => 'Utworzono',
+        'update' => 'Zaktualizowano',
+        'remove' => 'Usunięto'
     ],
     'warning' => [
 

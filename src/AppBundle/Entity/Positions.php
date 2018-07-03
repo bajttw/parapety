@@ -197,7 +197,7 @@ class Positions extends AppEntity{
 		*
 		* @return integer
 		*/
-	public function getId(){
+	public function getId():int{
 		return $this->id;
 	}
 
@@ -762,7 +762,7 @@ class Positions extends AppEntity{
         return $imp;
     }
 
-    public function getDescription()
+    public function getDescription():?string
     {
         $tab=[
             "FO" => "F",

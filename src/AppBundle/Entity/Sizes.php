@@ -96,7 +96,8 @@ class Sizes extends AppEntity
 		*
 		* @return integer
 		*/
-    public function getId(){
+    public function getId():int
+    {
         return $this->id;
     }
 
@@ -107,7 +108,7 @@ class Sizes extends AppEntity
 		*
 		* @return Sizes
 		*/
-    public function setName($name){
+    public function setName(string $name){
         $this->name = $name;
         return $this;
     }
@@ -117,7 +118,8 @@ class Sizes extends AppEntity
 		*
 		* @return string
 		*/
-    public function getName(){
+    public function getName():?string
+    {
         return $this->name;
     }
 
@@ -128,9 +130,8 @@ class Sizes extends AppEntity
 		*
 		* @return Sizes
 		*/
-    public function setSymbol($symbol){
+    public function setSymbol(string $symbol){
         $this->symbol = $symbol;
-
         return $this;
     }
 
@@ -139,7 +140,8 @@ class Sizes extends AppEntity
 		*
 		* @return string
 		*/
-    public function getSymbol(){
+    public function getSymbol():string
+    {
         return $this->symbol;
     }
 
@@ -150,7 +152,8 @@ class Sizes extends AppEntity
 		*
 		* @return Sizes
 		*/
-    public function setDescription($description){
+    public function setDescription(?string $description)
+    {
         $this->description = $description;
 
         return $this;
@@ -161,7 +164,8 @@ class Sizes extends AppEntity
 		*
 		* @return string
 		*/
-    public function getDescription(){
+    public function getDescription():?string
+    {
         return $this->description;
     }
 
@@ -172,10 +176,14 @@ class Sizes extends AppEntity
 		*
 		* @return Sizes
 		*/
-    public function setSequence($sequence){
+    public function setSequence(int $sequence){
         $this->sequence = $sequence;
 
         return $this;
+    }
+
+    public function initSequence(int $sequence){
+        return $this->setSequence($sequence);
     }
 
     /**
@@ -183,7 +191,7 @@ class Sizes extends AppEntity
 		*
 		* @return integer
 		*/
-    public function getSequence(){
+    public function getSequence():int{
         return $this->sequence;
     }
 
@@ -194,7 +202,7 @@ class Sizes extends AppEntity
 		*
 		* @return Sizes
 		*/
-    public function setActive($active){
+    public function setActive(bool $active){
         $this->active = $active;
 
         return $this;
@@ -205,7 +213,7 @@ class Sizes extends AppEntity
 		*
 		* @return boolean
 		*/
-    public function getActive(){
+    public function getActive():bool{
         return $this->active;
     }
 
@@ -246,7 +254,8 @@ class Sizes extends AppEntity
     // }
  // </editor-fold>   
     
-    public function getData($jsonEncode=true, $options=[]){
+    public function getData(bool $jsonEncode=true, array $options=[])
+    {
         return parent::getData($jsonEncode, array_replace([ 
                 'shortNames' => 'dic'
             ],

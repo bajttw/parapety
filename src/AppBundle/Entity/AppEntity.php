@@ -19,14 +19,11 @@ class AppEntity
 
     public function __construct($options = [])
     {
-        $defaults = Utils::deep_array_value('defaults', $options);
-        // $this->controller = Utils::deep_array_value('controller', $options);
-        if (is_array($defaults)) {
-            foreach ($defaults as $name => $value) {
-                $fnInit = 'init' . ucfirst($name);
-                if (method_exists($this, $fnInit)) {
-                    $this->$fnInit($this->controller, $value);
-                }
+        $defaults = $options['defaults'] ?? [];
+        foreach ($defaults as $name => $value) {
+            $fnInit = 'init' . ucfirst($name);
+            if (method_exists($this, $fnInit)) {
+                $this->$fnInit($value);
             }
         }
     }
@@ -395,7 +392,7 @@ class AppEntity
         return $this;
     }
 
-    public function getData($jsonEncode = true, $options = [])
+    public function getData(bool $jsonEncode=true, array $options=[])
     {
         return $this->getShowData($jsonEncode, array_replace(
             [

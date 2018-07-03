@@ -165,7 +165,7 @@ class PriceListItems extends AppEntity
      *
      * @return int
      */
-    public function getId()
+    public function getId():int
     {
         return $this->id;
     }
@@ -177,7 +177,7 @@ class PriceListItems extends AppEntity
      *
      * @return PriceListItems
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
 
@@ -189,7 +189,7 @@ class PriceListItems extends AppEntity
      *
      * @return string
      */
-    public function getName()
+    public function getName():?string
     {
         return $this->name;
     }
@@ -248,7 +248,7 @@ class PriceListItems extends AppEntity
      *
      * @return PriceListItems
      */
-    public function setActive($active)
+    public function setActive(bool $active)
     {
         $this->active = $active;
 
@@ -265,7 +265,7 @@ class PriceListItems extends AppEntity
      *
      * @return bool
      */
-    public function getActive()
+    public function getActive():bool
     {
         return $this->active;
     }

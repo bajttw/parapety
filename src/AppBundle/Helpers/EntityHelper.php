@@ -106,6 +106,11 @@ class EntityHelper{
         return $this->entitiesSettings['dictionaries'][$entityClassName];
     }
 
+    // public function getEntityClass(?string $entityClassName=null):string
+    // {
+    //     return ($this->getEntityNamespace($entityClassName))::class;
+    // }
+
     public function getRepository(?string $entityClassName=null)
     {
         return $this->em->getRepository($this->getEntityNamespace($entityClassName));
@@ -116,35 +121,8 @@ class EntityHelper{
         return $this->getRepository($entityClassName)->getCount();
     }
 
-    public function newEntity(?string $entityClassName=null, array $entityOptions=[]){
-        $ens=$this->getEntityNamespace($entityClassName);
-        return new $ens($entityOptions);
-    }
 
-    public function newEntityGenerator(){
-        $entity=new \stdClass();
-        $entity->items= new ArrayCollection();
-        return $entity;
-    }
 
-    public function fromBase($condition, ?string $entityClassName=null, bool $exeption=false){
-        $repository = $this->getRepository($entityClassName);
-        $entity = is_array($condition) ? $repository->findOneBy($condition) : $repository->find($condition);
-        if (!$entity && $exeption) {
-            throw $this->createNotFoundException('NOT FOUND');
-            
-            // $this->getTransHelper()->messageText('notFound', $this->)
-            // throw $this->createNotFoundException(
-            //     $this->trans([
-            //         $this->getTransHelper()->errorText('base', ''),
-            //         $this->getTransHelper()->errorText('notFound', $en),
-            //     ])
-            //     .' - ' 
-            //     . (is_array($condition) ? "Warunki wyszukiwania: " . json_encode($condition) : 'ID: ' . $condition)
-            // );
-        }
-        return $entity;
-    }
 
  //<editor-fold defaultstate="collapsed" desc="EntitySettings">
     private function genSettings(string $entityClassName):void
@@ -257,7 +235,7 @@ class EntityHelper{
         $this->addDics($this->entitiesSettings['Prices'], ['PriceListItems' ]);
     }
 
-    private function addDics($settings, array $entitiesClasses):void
+    private function addDics(array &$settings, array $entitiesClasses):void
     {
         foreach ($entitiesClasses as $ecn){
             $settings['dictionaries'][$ecn]=$this->getDic($ecn);            

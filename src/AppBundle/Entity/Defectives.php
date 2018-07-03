@@ -71,7 +71,7 @@ class Defectives extends AppEntity{
 		*
 		* @return integer
 		*/
-    public function getId()
+    public function getId():int
     {
         return $this->id;
     }
@@ -83,7 +83,7 @@ class Defectives extends AppEntity{
 		*
 		* @return Defectives
 		*/
-    public function setDescription($description)
+    public function setDescription(?string $description)
     {
         $this->description = $description;
 
@@ -95,7 +95,7 @@ class Defectives extends AppEntity{
 		*
 		* @return string
 		*/
-    public function getDescription()
+    public function getDescription():?string
     {
         return $this->description;
     }

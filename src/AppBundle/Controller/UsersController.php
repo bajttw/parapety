@@ -24,10 +24,10 @@ class UsersController extends AppController
         ];
     }
     
-    protected function customUpdateAction(&$dataReturn){
+    protected function customUpdateAction(array &$dataReturn):void
+    {
         $userManager = $this->get('fos_user.user_manager');
         $userManager->updateUser($this->entity, true);
-        return $dataReturn;
     }
 
 //  <editor-fold defaultstate="collapsed" desc="Custom functions">

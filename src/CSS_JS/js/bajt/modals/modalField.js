@@ -86,21 +86,34 @@
                 this.mdata.field.value(this._encode());
                 this.element.modal('hide');
             },
+            // _change: function(e, data) {
+            //     if (this.ownChange) {
+            //         this.ownChange = false;
+            //     } else {
+            //         this.read();
+            //         this._canSave(true);
+            //     }
+            // },
             _change: function(e, data) {
-                if (this.ownChange) {
-                    this.ownChange = false;
-                } else {
-                    this.read();
+                stopTrigger(e);
+                if (this._read() > 0) {
+                    this._changed();
                     this._canSave(true);
                 }
             },
-            read: function() {
-                this.mdata.value = this.$field.readField(this.mdata.type);
+            _changed:function(){
+            },
+            _read: function() {
+                var newValue = this.$field.readField(this.mdata.type);
+                if(this.mdata.value != newValue){
+                    this.mdata.value = newValue;
+                    return 1;
+                }
+                return 0;
             },
             write: function() {
                 this.$field.writeField(this.mdata.value);
-                this.ownChange = true;
-                this.$field.change();
+                this._changed();
             },
             show: function(field, caller) {
                 this.mdata.field = field;

@@ -366,19 +366,19 @@ class OrdersController extends AppController
         return $dataReturn;
     }
 
-    protected function customEditAction(Request $request, $id, $cid = 0)
+    protected function customEditAction(Request $request, int $id, int $cid = 0):void
     {
         $this->renderOptions['entity_data'] = $this->entity->getShowData();
     }
     
-    protected function newCustomEntity()
+    protected function newEntity(array $options = [] ):void
     {
+        parent::newEntity($options);
         if ($this->isClient()) {
             $this->entity->setClient($this->client);        
         }
         // $this->entity->genTerm(Utils::deep_array_value(['dictionaries', 'terms'], $this->getEntitySettings()));
         $this->entity->addPosition(new Positions());
-        return $this;
     }
 
     // protected function preUpdateAction(Request $request, $id, $cid = 0){
@@ -401,11 +401,15 @@ class OrdersController extends AppController
         $this->formOptions['attr']['style'] = "min-width: 1200px;";
         $this->addModalsField([
             'comment' => [ 
-                'fieldtype' => 'textarea'
+                'field' => [
+                    'type' => 'textarea'
+                ]
             ],
             'model' => [ 
                 'ecn' => 'Models', 
-                'fieldtype' => 'radio',
+                'field' => [
+                    'type' => 'radio'
+                ],
                 'dataSource' => [
                     'type' => 'entity'
                 ]
@@ -413,31 +417,36 @@ class OrdersController extends AppController
             'color' => 
             [ 
                 'ecn' => 'Colors', 
-                'fieldtype' => 'radio',
+                'field' => [
+                    'type' => 'radio'
+                ],
                 'dataSource' => [
                     'type' => 'entity'
                 ]
             ],
             'size' => [ 
                 'ecn' => 'Sizes', 
-                'fieldtype' => 'select',
+                'field' => [
+                    'type' => 'radio'
+                ],
                 'dataSource' => [
                     'type' => 'entity'
                 ]
             ],
             'trims' => [ 
-                'ecn' => 'Trims', 
-                'fieldtype' => 'checkbox',
+                'ecn' => 'Trims',
+                'd' => [
+                    'modal-widget' => 'trims'
+                ],
+                'field' => [
+                    'type' => 'checkbox',
+
+                ],
                 'dataSource' => [
                     'type' => 'entity'
                 ],
                 'attr' => [
                     'class' => 'modal-trims'
-                // ],
-                // 'd' => [
-                //     'options' => [
-                //         'combinations' => Utils::deep_array_value()
-                //     ]
                 ]
             ]
         ])

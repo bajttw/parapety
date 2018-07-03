@@ -78,7 +78,7 @@ class InvoiceItems extends AppEntity
      *
      * @return int
      */
-    public function getId()
+    public function getId():int
     {
         return $this->id;
     }
@@ -126,7 +126,7 @@ class InvoiceItems extends AppEntity
      *
      * @return string|null
      */
-    public function getName()
+    public function getName():?string
     {
         return $this->name;
     }

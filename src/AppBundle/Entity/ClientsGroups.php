@@ -79,7 +79,7 @@ class ClientsGroups extends AppEntity
      *
      * @return int
      */
-    public function getId()
+    public function getId():int
     {
         return $this->id;
     }
@@ -91,7 +91,7 @@ class ClientsGroups extends AppEntity
      *
      * @return ClientsGroups
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
 
@@ -103,7 +103,7 @@ class ClientsGroups extends AppEntity
      *
      * @return string
      */
-    public function getName()
+    public function getName():?string
     {
         return $this->name;
     }
@@ -151,7 +151,7 @@ class ClientsGroups extends AppEntity
      *
      * @return string|null
      */
-    public function getDescription()
+    public function getDescription():?string
     {
         return $this->description;
     }

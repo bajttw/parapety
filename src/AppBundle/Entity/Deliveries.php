@@ -153,7 +153,7 @@ class Deliveries extends AppEntity{
 		*
 		* @return integer
 		*/
-	public function getId(){
+	public function getId():int{
 		return $this->id;
 	}
 

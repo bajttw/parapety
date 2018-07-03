@@ -58,7 +58,7 @@ class UsersGroups extends AppEntity
      *
      * @return integer
      */
-    public function getId()
+    public function getId():int
     {
         return $this->id;
     }
@@ -70,7 +70,7 @@ class UsersGroups extends AppEntity
      *
      * @return UsersGroups
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
 
@@ -82,7 +82,7 @@ class UsersGroups extends AppEntity
      *
      * @return string
      */
-    public function getName()
+    public function getName():?string
     {
         return $this->name;
     }
@@ -118,7 +118,7 @@ class UsersGroups extends AppEntity
      *
      * @return UsersGroups
      */
-    public function setDescription($description)
+    public function setDescription(?string $description)
     {
         $this->description = $description;
 
@@ -130,7 +130,7 @@ class UsersGroups extends AppEntity
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription():?string
     {
         return $this->description;
     }

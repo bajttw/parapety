@@ -1,14 +1,12 @@
 {% use "blocks.html.twig" %} 
-{% set div={
-    attr: panel.attr|default({})|add_class('panel'),
-    d: panel.d|default({})|set_array_value('ecn', panel.ecn|default('') )
-}%} 
-{{ block("begin_div") }}
+{% set atrr = panel.attr|default({})|add_class('panel') %}
+{% set  data_opt = panel.d|default({})|set_array_value('ecn', panel.ecn|default('') ) %}
+<div {{ block('attributes') }} {{ block('data_options') }} >
     <div class="panel-header">
         {% block panel_header %}
         {% endblock %}
         {% block panel_toolbars %}
-        {% set toolbars=panel.toolbars|default(null) %}
+        {% set toolbars = panel.toolbars|default(null) %}
             {{ block("toolbars") }}
         {% endblock %}
     </div>
@@ -24,4 +22,4 @@
         {% block panel_footer %}
         {% endblock %}
     </div>
-{{ block("close_div") }}
+</div>

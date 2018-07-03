@@ -1,57 +1,61 @@
+---
 label:
-    id: ID
-    actions: Akcje
-    eactions:
-        edit: ""
-        show: ""
-        delete: ""
-    btn:
-        add: Dodaj
-        cancel: Anuluj
-        change: Zmień
-        clear: Wyczyść
-        close: Zamknij
-        confirm: Zatwierdź
-        create: Zapisz
-        default: Domyślnie
-        delete: Usuń
-        edit: Edycja
-        filter: Filtruj
-        new: Dodaj
-        remove: Usuń
-        save: Zapisz
-        submit: Zapisz
-        update: Zapisz
-    tools:
-        new: Dodaj
-    filters: []
-message: []
+  id: ID
+  actions: Akcje
+  eactions:
+    edit: ""
+    show: ""
+    delete: ""
+  btn:
+    add: Dodaj
+    cancel: Anuluj
+    change: Zmień
+    clear: Wyczyść
+    close: Zamknij
+    confirm: Zatwierdź
+    create: Zapisz
+    default: Domyślnie
+    delete: Usuń
+    edit: Edycja
+    filter: Filtruj
+    new: Dodaj
+    remove: Usuń
+    save: Zapisz
+    submit: Zapisz
+    update: Zapisz
+  tools:
+    new: Dodaj
+  filters: []
+message:
+  create: Utworzono
+  update: Zaktualizowano
+  remove: Usunięto
 warning: []
 title:
-    id: ID
-    actions: Akcje
-    eactions:
-        edit: Edycja
-        show: Podgląd
-        delete: Usunięcie
-    btn:
-        add: Dodaj
-        cancel: Anuluj
-        change: Zmień
-        clear: Wyczyść
-        close: Zamknij
-        confirm: Zatwierdź
-        create: Zapisz
-        default: Domyślnie
-        delete: Usuń
-        edit: Edycja
-        filter: Filtruj
-        new: Dodaj
-        remove: Usuń
-        save: Zapisz
-        submit: Zapisz
-        update: Zapisz
-    tools:
-        new: Dodaj
-    filters: []
-
+  id: ID
+  actions: Akcje
+  eactions:
+    edit: Edycja
+    show: Podgląd
+    delete: Usunięcie
+  btn:
+    add: Dodaj
+    cancel: Anuluj
+    change: Zmień
+    clear: Wyczyść
+    close: Zamknij
+    confirm: Zatwierdź
+    create: Zapisz
+    default: Domyślnie
+    delete: Usuń
+    edit: Edycja
+    filter: Filtruj
+    new: Dodaj
+    remove: Usuń
+    save: Zapisz
+    submit: Zapisz
+    update: Zapisz
+  tools:
+    new: Dodaj
+  filters: []
+...

@@ -362,7 +362,7 @@
     {%- block div -%}
         {{ block("begin_div") }}
             {{ div.content|default('')|raw }}
-        {{ block("close_div") }}
+        </div>
     {%- endblock div -%}
 
     {%- block div_show -%}
@@ -756,12 +756,10 @@
 
 {# cards #}
     {% block begin_card %}
-        {% set div= {
-            attr: card.attr|default({})|add_class('card'),
-            d: card.d|default({})
-        }%}
-        {{ block("begin_div") }}
-        {{ block('card_header') }}
+        {% set attr = card.attr|default({})|add_class('card') %}
+        {% set data_opt = card.d|default({}) %}
+        <div {{ block('attributes') }} {{ block('data_options') }} >
+            {{ block('card_header') }}
         {{ block("begin_card_block") }}
     {% endblock begin_card %}
 
@@ -783,11 +781,9 @@
     {% endblock card_header %}
 
     {% block begin_card_block %}
-    {% set div= {
-            attr: card.block.attr|default({})|add_class('card-block'),
-            d: card.d|default({})
-        } %}
-        {{ block("begin_div") }}
+        {% set attr = card.block.attr|default({})|add_class('card-block') %}
+        {% set data_opt = card.block.d|default({}) %}
+        <div {{ block('attributes') }} {{ block('data_options') }} >
     {% endblock begin_card_block %}
 
 

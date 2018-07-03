@@ -15,10 +15,10 @@ class ModelsController extends AppController
 
  //  <editor-fold defaultstate="collapsed" desc="Custom functions">
 
-    protected function newCustomEntity()
+    protected function newEntity(array $options = [] ):void
     {
-        $this->entity->setSequence($this->getEntityHelper()->getCount()+1);
-        return $this->entity;
+        $options['defaults']['sequence']=$this->getEntityHelper()->getCount(static::ec)+1;
+        parent::newEntity($options);
     }
     
  // </editor-fold>   
