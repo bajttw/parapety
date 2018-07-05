@@ -58,7 +58,8 @@ class Positions extends AppEntity{
 // </editor-fold>       
     
 //  <editor-fold defaultstate="collapsed" desc="Utils">    
-    public function mmCalcArea(){
+	public function mmCalcArea():int
+	{
         if(!is_array($this->mmArea)){
             $area=$this->length * $this->width * $this->quantity ;
             $this->mmArea= $area;
@@ -66,8 +67,10 @@ class Positions extends AppEntity{
         return $this->mmArea;
     }
 
-    public function calcArea(){
-        $this->area= $this->mmCalcArea()/1000000;
+	public function calcArea():float
+	{
+		$this->area= $this->mmCalcArea()/1000000;
+		return $this->area;
     }
 // </editor-fold>       
 
@@ -81,27 +84,27 @@ class Positions extends AppEntity{
 	/**
 		* @var integer
 		*/
-	private $nr = 1;
+	private $nr;
 
 	/**
 		* @var integer
 		*/
-	private $width = 0;
+	private $width;
 
 	/**
 		* @var integer
 		*/
-	private $length = 0;
+	private $length;
 
 	/**
 		* @var float
 		*/
-	private $widthcm = 0;
+	private $widthcm;
 
 	/**
 		* @var float
 		*/
-	private $lengthcm = 0;
+	private $lengthcm;
 
 	/**
 		* @var integer
@@ -121,7 +124,7 @@ class Positions extends AppEntity{
 	/**
 		* @var integer
 		*/
-	private $progress = 1;
+	private $progress = 0;
 
     /**
      * @var string
@@ -184,20 +187,24 @@ class Positions extends AppEntity{
     
 		
 	/**
-		* Constructor
-		*/
-	public function __construct($options=[]){
+	* Constructor
+	*/
+	public function __construct($options=[])
+	{
 		parent::__construct($options);
 		$this->products = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->uploads = new \Doctrine\Common\Collections\ArrayCollection();
 	}
+	
+//  <editor-fold defaultstate="collapsed" desc="Fields utils">    
 
 	/**
 		* Get id
 		*
 		* @return integer
 		*/
-	public function getId():?int{
+	public function getId():?int
+	{
 		return $this->id;
 	}
 
@@ -208,9 +215,8 @@ class Positions extends AppEntity{
 		*
 		* @return Positions
 		*/
-	public function setNr($nr){
+	public function setNr(int $nr){
 		$this->nr = $nr;
-
 		return $this;
 	}
 
@@ -219,18 +225,20 @@ class Positions extends AppEntity{
 		*
 		* @return integer
 		*/
-	public function getNr(){
+	public function getNr():?int
+	{
 		return $this->nr;
 	}
 
 	/**
 		* Set width
 		*
-		* @param float $width
+		* @param integer $width
 		*
 		* @return Positions
 		*/
-	public function setWidth($width){
+	public function setWidth(int $width)
+	{
 		$this->width = $width;
 		$this->widthcm = $width/10;
 		return $this;
@@ -239,20 +247,22 @@ class Positions extends AppEntity{
 	/**
 		* Get width
 		*
-		* @return float
+		* @return integer
 		*/
-	public function getWidth(){
+	public function getWidth():?int
+	{
 		return $this->width;
 	}
 
 	/**
 		* Set length
 		*
-		* @param float $length
+		* @param integer $length
 		*
 		* @return Positions
 		*/
-	public function setLength($length){
+	public function setLength(int $length)
+	{
 		$this->length = $length;
 		$this->lengthcm = $length/10;
 		return $this;
@@ -261,9 +271,10 @@ class Positions extends AppEntity{
 	/**
 		* Get length
 		*
-		* @return float
+		* @return integer
 		*/
-	public function getLength(){
+	public function getLength():?int
+	{
 		return $this->length;
 	}
 
@@ -274,10 +285,10 @@ class Positions extends AppEntity{
 		*
 		* @return Positions
 		*/
-	public function setWidthcm($widthcm){
+	public function setWidthcm(float $widthcm)
+	{
 		$this->widthcm = $widthcm;
 		$this->width = intval(10*$widthcm);
-
 		return $this;
 	}
 
@@ -286,7 +297,8 @@ class Positions extends AppEntity{
 		*
 		* @return float
 		*/
-	public function getWidthcm(){
+	public function getWidthcm():?float
+	{
 		$this->widthcm = $this->width/10;
 		return $this->widthcm;
 	}
@@ -298,10 +310,10 @@ class Positions extends AppEntity{
 		*
 		* @return Positions
 		*/
-	public function setLengthcm($lengthcm){
+	public function setLengthcm(float $lengthcm)
+	{
 		$this->lengthcm = $lengthcm;
 		$this->length = intval(10*$lengthcm);
-
 		return $this;
 	}
 
@@ -310,7 +322,8 @@ class Positions extends AppEntity{
 		*
 		* @return float
 		*/
-	public function getLengthcm(){
+	public function getLengthcm():?float
+	{
 		$this->lengthcm = $this->length/10;
 		return $this->lengthcm;
 	}
@@ -322,7 +335,8 @@ class Positions extends AppEntity{
 		*
 		* @return Positions
 		*/
-	public function setQuantity($quantity){
+	public function setQuantity(int $quantity)
+	{
 		$this->quantity = $quantity;
 
 		return $this;
@@ -333,7 +347,8 @@ class Positions extends AppEntity{
 		*
 		* @return integer
 		*/
-	public function getQuantity(){
+	public function getQuantity():?int
+	{
 		return $this->quantity;
 	}
 
@@ -344,9 +359,9 @@ class Positions extends AppEntity{
 		*
 		* @return Positions
 		*/
-	public function setArea($area){
+	public function setArea(float $area)
+	{
 		$this->area = $area;
-
 		return $this;
 	}
 
@@ -355,7 +370,8 @@ class Positions extends AppEntity{
 		*
 		* @return float
 		*/
-	public function getArea(){
+	public function getArea():?float
+	{
 		return $this->area;
 	}
 
@@ -366,9 +382,9 @@ class Positions extends AppEntity{
 		*
 		* @return Positions
 		*/
-	public function setValue($value){
+	public function setValue(float $value)
+	{
 		$this->value = $value;
-
 		return $this;
 	}
 
@@ -377,7 +393,8 @@ class Positions extends AppEntity{
 		*
 		* @return float
 		*/
-	public function getValue(){
+	public function getValue():?float
+	{
 		return $this->value;
 	}
 
@@ -388,9 +405,9 @@ class Positions extends AppEntity{
 		*
 		* @return Positions
 		*/
-	public function setProgress($progress){
+	public function setProgress(int $progress)
+	{
 		$this->progress = $progress;
-
 		return $this;
 	}
 
@@ -399,18 +416,19 @@ class Positions extends AppEntity{
 		*
 		* @return integer
 		*/
-	public function getProgress(){
+	public function getProgress():int
+	{
 		return $this->progress;
 	}
 
-    public function calcProgress(){
+    public function calcProgress():int
+	{
         $this->progress=0;
         // if($this->package){
         //     $this->progress=20;
         // }
         return $this->progress;
     }
-
     
     /**
         * Set trims
@@ -419,10 +437,9 @@ class Positions extends AppEntity{
         *
         * @return Positions
         */
-    public function setTrims($trims)
+    public function setTrims(?string $trims)
     {
         $this->trims = $trims;
-
         return $this;
     }
  
@@ -431,7 +448,7 @@ class Positions extends AppEntity{
         *
         * @return string
         */
-    public function getTrims()
+    public function getTrims():?string
     {
         return $this->trims;
     }
@@ -443,9 +460,9 @@ class Positions extends AppEntity{
 		*
 		* @return Positions
 		*/
-	public function setClientComment($clientComment){
+	public function setClientComment(?string $clientComment)
+	{
 		$this->clientComment = $clientComment;
-
 		return $this;
 	}
 
@@ -454,7 +471,8 @@ class Positions extends AppEntity{
 		*
 		* @return string
 		*/
-	public function getClientComment(){
+	public function getClientComment():?string
+	{
 		return $this->clientComment;
 	}
 
@@ -465,9 +483,9 @@ class Positions extends AppEntity{
 		*
 		* @return Positions
 		*/
-	public function setPositionComment($positionComment){
+	public function setPositionComment(?string $positionComment)
+	{
 		$this->positionComment = $positionComment;
-
 		return $this;
 	}
 
@@ -476,7 +494,8 @@ class Positions extends AppEntity{
 		*
 		* @return string
 		*/
-	public function getPositionComment(){
+	public function getPositionComment():?string
+	{
 		return $this->positionComment;
 	}
 
@@ -487,9 +506,8 @@ class Positions extends AppEntity{
 		*
 		* @return Positions
 		*/
-	public function setProdComment($prodComment){
+	public function setProdComment(?string $prodComment){
 		$this->prodComment = $prodComment;
-
 		return $this;
 	}
 
@@ -498,7 +516,8 @@ class Positions extends AppEntity{
 		*
 		* @return string
 		*/
-	public function getProdComment(){
+	public function getProdComment():?string
+	{
 		return $this->prodComment;
 	}
 
@@ -509,8 +528,8 @@ class Positions extends AppEntity{
 		*
 		* @return Positions
 		*/
-	public function setClientInfo($clientInfo){
-		$this->clientInfo = is_array($clientInfo) ?  json_encode($clientInfo) : $clientInfo;
+	public function setClientInfo(?string $clientInfo){
+		$this->clientInfo = $clientInfo;
 		return $this;
 	}
 
@@ -519,8 +538,8 @@ class Positions extends AppEntity{
 		*
 		* @return string
 		*/
-	public function getClientInfo($decode=false){
-		
+	public function getClientInfo(bool $decode=false)
+	{	
 		return $decode && Utils::is_JSON_string($this->clientInfo) ? json_decode($this->clientInfo, true) : $this->clientInfo;
 	}
 
@@ -534,7 +553,6 @@ class Positions extends AppEntity{
 	public function addProduct(\AppBundle\Entity\Products $product){
 		$product->setPosition($this);
 		$this->products[] = $product;
-
 		return $this;
 	}
 
@@ -571,8 +589,9 @@ class Positions extends AppEntity{
 		* @return Positions
 		*/
 	public function setOrder(\AppBundle\Entity\Orders $order = null){
-		$this->order = $order;
-
+		// if(is_null($this->order)){
+			$this->order = $order;
+		// }
 		return $this;
 	}
 
@@ -593,8 +612,9 @@ class Positions extends AppEntity{
 		* @return Positions
 		*/
 	public function setModel(\AppBundle\Entity\Models $model = null){
-		$this->model = $model;
-
+		if($model){
+			$this->model = $model;
+		}
 		return $this;
 	}
 
@@ -615,8 +635,9 @@ class Positions extends AppEntity{
 		* @return Positions
 		*/
 	public function setSize(\AppBundle\Entity\Sizes $size = null){
-		$this->size = $size;
-
+		if($size){
+			$this->size = $size;
+		}
 		return $this;
 	}
 
@@ -637,8 +658,9 @@ class Positions extends AppEntity{
 		* @return Positions
 		*/
 	public function setColor(\AppBundle\Entity\Colors $color = null){
-		$this->color = $color;
-
+		if($color){
+			$this->color = $color;
+		}
 		return $this;
 	}
 
@@ -659,7 +681,8 @@ class Positions extends AppEntity{
 		* @return Positions
 		*/
 	public function addUpload(\AppBundle\Entity\Uploads $upload){
-        $this->uploads->add($uploads);
+        $upload->setFolder(static::en);
+		$this->uploads->add($upload);
 		return $this;
 	}
 
@@ -680,6 +703,8 @@ class Positions extends AppEntity{
 	public function getUploads(){
 		return $this->uploads;
 	}
+
+// </editor-fold>
 
 
     // public function checkUpdates(){

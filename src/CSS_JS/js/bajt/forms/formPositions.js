@@ -412,8 +412,8 @@
             }
         },
         numerate: function(positions, pOptions) {
-            for (var i = 0; i < positions.length; i++) {
-                positions[i].setNr(i + 1);
+            for (var i = 0; i < positions.rows.length; i++) {
+                positions.rows[i].setNr(i + 1);
             }
         },
         new: function(positions, pOptions, values, options) {
@@ -719,7 +719,7 @@
                 return _pUtils.numerate.call(this, this._positions, this.options.positionsOptions);
             },
             setDefaultPositions: function(fieldName) {
-                return _pUtils.setDefault.call(this, this._positions, this.options.positionsOptions);
+                return _pUtils.setDefault.call(this, this._positions, this.options.positionsOptions, fieldName);
             },
             summary: function(options) {
                 console.log('extFormPositions.summary');

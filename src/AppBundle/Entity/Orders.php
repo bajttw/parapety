@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Utils\Utils;
-
+use \DateTime;
 /**
  * Orders
  */
@@ -227,12 +227,8 @@ class Orders extends AppEntity
     {
         $fields = [];
         switch ($type) {
-            case 'create':
-            case 'update':
-                $fields = ['number', 'created', 'client.name'];
-            break;
-            case 'remove':
             default:
+                $fields = ['number', 'created', 'client.name'];
         }
         return array_replace( parent::getMessageDataFields($type), $fields );
     }
@@ -257,10 +253,11 @@ class Orders extends AppEntity
         return $mmArea;
     }
 
-    public function calcArea()
+    public function calcArea():float
     {
         $mmArea = $this->mmCalcArea();
         $this->area = $mmArea / 1000000;
+        return $this->area;
     }
 
     public function summary()
@@ -419,7 +416,6 @@ class Orders extends AppEntity
 // </editor-fold>
 
 //  <editor-fold defaultstate="collapsed" desc="Variables extra">
-    private $oldPositions;
 
 // </editor-fold>
 
@@ -453,10 +449,11 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setCreated($created)
+    public function setCreated(?DateTime $created)
     {
-        $this->created = $created;
-
+        if( is_null($this->created)){
+            $this->created = $created;
+        }
         return $this;
     }
 
@@ -465,17 +462,17 @@ class Orders extends AppEntity
      *
      * @return \DateTime
      */
-    public function getCreated()
+    public function getCreated():?DateTime
     {
         return $this->created;
     }
 
-    public function getShowCreated($options = [])
+    public function getShowCreated(array $options = []):string
     {
         return $this->getTimeField($this->created, $options);
     }
 
-    public function getStrCreated()
+    public function getStrCreated():string
     {
         return $this->getShowCreated(['strDate' => 'time']);
     }
@@ -487,13 +484,9 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setApproved($approved = null)
+    public function setApproved(?DateTime $approved = null)
     {
-        if (!$this->approved) {
-            $this->approved = $approved;
-        } elseif (!$approved) {
-            $this->approved = null;
-        }
+        $this->approved = $approved;
         return $this;
     }
 
@@ -502,34 +495,20 @@ class Orders extends AppEntity
      *
      * @return \DateTime
      */
-    public function getApproved()
+    public function getApproved():?DateTime
     {
         return $this->approved;
     }
 
-    public function getShowApproved($options = [])
+    public function getShowApproved(array $options = []):string
     {
         return $this->getTimeField($this->approved, $options);
     }
 
-    public function getStrApproved()
+    public function getStrApproved():string
     {
         return $this->getShowApproved(['strDate' => 'time']);
     }
-
-    public function approve()
-    {
-        switch ($this->status) {
-            case '1':
-                $this->setApproved(null);
-            break;
-            case '2':
-                $this->setApproved(new \DateTime());
-            break;
-        }
-    }
-
-
 
     /**
      * Set term
@@ -538,7 +517,7 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setTerm($term)
+    public function setTerm(?DateTime $term)
     {
         $this->term = $term;
         return $this;
@@ -549,22 +528,22 @@ class Orders extends AppEntity
      *
      * @return \DateTime
      */
-    public function getTerm()
+    public function getTerm():?DateTime
     {
         return $this->term;
     }
 
-    public function getShowTerm($options = [])
+    public function getShowTerm(array $options = []):string
     {
         return $this->getTimeField($this->term, $options);
     }
 
-    public function getStrTerm()
+    public function getStrTerm():string
     {
         return $this->getShowTerm(['strDate' => 'time']);
     }
 
-    public function genTerm($days = 0)
+    public function genTerm($days = 0)//do kontrolera w newEntity
     {
         $terms = [['v' => 1, 'n' => 21], ['v' => 2, 'n' => 14], ['v' => 3, 'n' => 21]];
         $add = 0;
@@ -591,10 +570,11 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setNumber($number)
+    public function setNumber(?string $number)
     {
-        $this->number = $number;
-
+        if(is_null($this->number)){
+            $this->number = $number;
+        }
         return $this;
     }
 
@@ -603,9 +583,14 @@ class Orders extends AppEntity
      *
      * @return string
      */
-    public function getNumber()
+    public function getNumber():?string
     {
         return $this->number;
+    }
+
+    public function getNr()
+    {
+        return $this->intNr ?? intval($this->number);
     }
 
     /**
@@ -615,10 +600,9 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setClientNumber($clientNumber)
+    public function setClientNumber(?string $clientNumber)
     {
         $this->clientNumber = $clientNumber;
-
         return $this;
     }
 
@@ -627,7 +611,7 @@ class Orders extends AppEntity
      *
      * @return string
      */
-    public function getClientNumber()
+    public function getClientNumber():?string
     {
         return $this->clientNumber;
     }
@@ -639,10 +623,9 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setQuantity($quantity)
+    public function setQuantity(int $quantity)
     {
         $this->quantity = $quantity;
-
         return $this;
     }
 
@@ -651,7 +634,7 @@ class Orders extends AppEntity
      *
      * @return integer
      */
-    public function getQuantity()
+    public function getQuantity():int
     {
         return $this->quantity;
     }
@@ -663,10 +646,9 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setArea($area)
+    public function setArea(float $area)
     {
         $this->area = $area;
-
         return $this;
     }
 
@@ -675,12 +657,12 @@ class Orders extends AppEntity
      *
      * @return float
      */
-    public function getArea()
+    public function getArea():?float
     {
         return $this->area;
     }
 
-    public function getShowArea()
+    public function getShowArea():float
     {
         return round($this->area, 3);
     }
@@ -692,10 +674,9 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setValue($value)
+    public function setValue(float $value)
     {
         $this->value = $value;
-
         return $this;
     }
 
@@ -704,7 +685,7 @@ class Orders extends AppEntity
      *
      * @return float
      */
-    public function getValue()
+    public function getValue():?float
     {
         return $this->value;
     }
@@ -716,7 +697,7 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setStatus($status = null)
+    public function setStatus(?int $status = null)
     {
         $setStatus = false;
         switch ($status) {
@@ -755,7 +736,7 @@ class Orders extends AppEntity
      *
      * @return integer
      */
-    public function getStatus()
+    public function getStatus():int
     {
         return $this->status;
     }
@@ -767,18 +748,9 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setProgress($progress)
+    public function setProgress(int $progress)
     {
-        $this->progress = intval($progress);
-        // if($this->progress!== $progress){
-        //     $oldProgress=$this->progress;
-        //     $this->progress = $progress;
-        //     if($oldProgress == null || $oldProgress == 0 ){
-        //         $this->setStatus(4);
-        //     }elseif($progress==0){
-        //         $this->setStatus(3);
-        //     }
-        // }
+        $this->progress = $progress;
         return $this;
     }
 
@@ -787,19 +759,19 @@ class Orders extends AppEntity
      *
      * @return integer
      */
-    public function getProgress()
+    public function getProgress():int
     {
         return $this->progress;
     }
 
-    public function calcProgress()
+    public function calcProgress():int
     {
         $progress = 0;
         foreach ($this->getPositions() as $position) {
             $progress += $position->getProgress();
         }
-        $this->setProgress($progress / $this->getPositions()->count());
-        return $this->progress;
+        $this->setProgress(intval($progress / $this->getPositions()->count()));
+        return $this->getProgress();
     }
 
     /**
@@ -809,26 +781,18 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setTrims($trims)
+    public function setTrims(?string $trims)
     {
         $this->trims = $trims;
-
         return $this;
     }
-
-    // public function initTrims($controller, $trims)
-    // {
-    //     $this->trims = $trims;
-
-    //     return $this;
-    // }
 
     /**
      * Get trims
      *
      * @return string
      */
-    public function getTrims()
+    public function getTrims():?string
     {
         return $this->trims;
     }
@@ -840,10 +804,9 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setExpress($express)
+    public function setExpress(int $express)
     {
         $this->express = $express;
-
         return $this;
     }
 
@@ -852,7 +815,7 @@ class Orders extends AppEntity
      *
      * @return integer
      */
-    public function getExpress()
+    public function getExpress():int
     {
         return $this->express;
     }
@@ -864,10 +827,9 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setClientComment($clientComment)
+    public function setClientComment(?string $clientComment)
     {
         $this->clientComment = $clientComment;
-
         return $this;
     }
 
@@ -876,7 +838,7 @@ class Orders extends AppEntity
      *
      * @return string
      */
-    public function getClientComment()
+    public function getClientComment():?string
     {
         return $this->clientComment;
     }
@@ -888,10 +850,11 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setOrderComment($orderComment)
+    public function setOrderComment(?string $orderComment)
     {
-        $this->orderComment = $orderComment;
-
+        if($this->status < 2){
+            $this->orderComment = $orderComment;
+        }
         return $this;
     }
 
@@ -900,7 +863,7 @@ class Orders extends AppEntity
      *
      * @return string
      */
-    public function getOrderComment()
+    public function getOrderComment():?string
     {
         return $this->orderComment;
     }
@@ -912,7 +875,7 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setProdComment($prodComment)
+    public function setProdComment(?string $prodComment)
     {
         $this->prodComment = $prodComment;
 
@@ -924,7 +887,7 @@ class Orders extends AppEntity
      *
      * @return string
      */
-    public function getProdComment()
+    public function getProdComment():?string
     {
         return $this->prodComment;
     }
@@ -936,10 +899,9 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setClientOrderId($clientOrderId)
+    public function setClientOrderId(?int $clientOrderId)
     {
         $this->clientOrderId = $clientOrderId;
-
         return $this;
     }
 
@@ -948,7 +910,7 @@ class Orders extends AppEntity
      *
      * @return integer
      */
-    public function getClientOrderId()
+    public function getClientOrderId():?int
     {
         return $this->clientOrderId;
     }
@@ -960,9 +922,9 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    public function setClientInfo($clientInfo)
+    public function setClientInfo(?string $clientInfo)
     {
-        $this->clientInfo = is_array($clientInfo) ? json_encode($clientInfo) : $clientInfo;
+        $this->clientInfo = $clientInfo;
         return $this;
     }
 
@@ -971,90 +933,9 @@ class Orders extends AppEntity
      *
      * @return string
      */
-    public function getClientInfo()
+    public function getClientInfo():?string
     {
         return $this->clientInfo;
-    }
-
-    /**
-     * Add position
-     *
-     * @param \AppBundle\Entity\Positions $position
-     *
-     * @return Orders
-     */
-    public function addPosition(\AppBundle\Entity\Positions $position)
-    {
-        $position->setOrder($this);
-        $position->setNr($this->positions->count() + 1);
-        $this->positions->add($position);
-        return $this;
-    }
-
-    /**
-     * Remove position
-     *
-     * @param \AppBundle\Entity\Positions $position
-     */
-    public function removePosition(\AppBundle\Entity\Positions $position)
-    {
-        $this->positions->removeElement($position);
-    }
-
-    /**
-     * Get positions
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPositions()
-    {
-        return $this->positions;
-    }
-
-    public function preUpdate(){
-        $this->preUpdateChilds($this->positions);
-        $this->saveFieldsValues(['positions', 'uploads']);
-        return $this;
-    }
-
-    // public function postUpdate($em){
-    //     $this->_checkElements('uploads', $em);
-    //     $this->checkUploads();
-    //     $this->_checkElements('positions', $em);
-    //     $this->postUpdateChilds($this->positions, $em);
-    //     return $this;
-    // }
-
-
-    // public function saveOldPositions()
-    // {
-    //     $this->oldPositions = new ArrayCollection();
-    //     foreach ($this->positions as $position) {
-    //         $position->saveOldUploads();
-    //         $this->oldPositions->add($position);
-    //     }
-    //     return $this->oldPositions;
-    // }
-
-    // public function checkPositions($entityManager)
-    // {
-    //     foreach ($this->oldPositions as $position) {
-    //         if (false === $this->positions->contains($position)) {
-    //             $entityManager->remove($position);
-    //         }
-    //     }
-    //     foreach ($this->positions as $position) {
-    //         $position->checkUpdates($entityManager);
-    //     }
-    // }
-
-    public function getPositionsDataId()
-    {
-        $result = [];
-        foreach ($this->positions as $position) {
-            $result[] = $position->getDataId();
-        }
-        return $result;
     }
 
     /**
@@ -1067,7 +948,6 @@ class Orders extends AppEntity
     public function setClient(\AppBundle\Entity\Clients $client = null)
     {
         $this->client = $client;
-
         return $this;
     }
 
@@ -1091,7 +971,6 @@ class Orders extends AppEntity
     public function setModel(\AppBundle\Entity\Models $model = null)
     {
         $this->model = $model;
-
         return $this;
     }
 
@@ -1127,7 +1006,6 @@ class Orders extends AppEntity
     public function setSize(\AppBundle\Entity\Sizes $size = null)
     {
         $this->size = $size;
-
         return $this;
     }
 
@@ -1137,7 +1015,8 @@ class Orders extends AppEntity
      *
      * @return Orders
      */
-    // public function initSize($controller, $size)
+
+    // public function initSize($size)
     // {
     //     $this->size = $controller->getFromBase($size, static::$shortNames['childs']['size']);
     //     return $this;
@@ -1187,6 +1066,117 @@ class Orders extends AppEntity
     public function getColor()
     {
         return $this->color;
+    }
+
+    /**
+     * Add position
+     *
+     * @param \AppBundle\Entity\Positions $position
+     *
+     * @return Orders
+     */
+    public function addPosition(\AppBundle\Entity\Positions $position)
+    {
+        $position->setOrder($this);
+        $position->setNr($this->positions->count() + 1);
+        $this->positions->add($position);
+        return $this;
+    }
+
+    /**
+     * Remove position
+     *
+     * @param \AppBundle\Entity\Positions $position
+     */
+    public function removePosition(\AppBundle\Entity\Positions $position)
+    {
+        $position->setOrder(null);
+        $this->positions->removeElement($position);
+    }
+
+    /**
+     * Get positions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPositions()
+    {
+        return $this->positions;
+    }
+
+    public function getPositionsDataId():array
+    {
+        $result = [];
+        foreach ($this->positions as $position) {
+            $result[] = $position->getDataId();
+        }
+        return $result;
+    }
+
+    /**
+     * Add upload
+     *
+     * @param \AppBundle\Entity\Uploads $upload
+     *
+     * @return Orders
+     */
+	public function addUpload(\AppBundle\Entity\Uploads $upload){
+        $upload->setFolder(static::en);
+		$this->uploads->add($upload);
+		return $this;
+	}
+
+    /**
+     * Remove upload
+     *
+     * @param \AppBundle\Entity\Uploads $upload
+     */
+    public function removeUpload(\AppBundle\Entity\Uploads $upload)
+    {
+        $this->uploads->removeElement($upload);
+    }
+
+    /**
+     * Get uploads
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUploads()
+    {
+        return $this->uploads;
+    }
+
+    /**
+     * Add note
+     *
+     * @param \AppBundle\Entity\Notes $note
+     *
+     * @return Orders
+     */
+    public function addNote(\AppBundle\Entity\Notes $note)
+    {
+    	$this->notes->add($note);
+        return $this;
+    }
+
+    /**
+     * Remove note
+     *
+     * @param \AppBundle\Entity\Notes $note
+     */
+    public function removeNote(\AppBundle\Entity\Notes $note)
+    {
+        $this->notes->removeElement($note);
+    }
+
+    /**
+     * Get notes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotes()
+    {
+        return $this->notes;
     }
 
     /**
@@ -1281,75 +1271,25 @@ class Orders extends AppEntity
         return $this->invoice;
     }
 
-    /**
-     * Add upload
-     *
-     * @param \AppBundle\Entity\Uploads $upload
-     *
-     * @return Orders
-     */
-    public function addUpload(\AppBundle\Entity\Uploads $upload)
-    {
-        $this->uploads[] = $upload;
-
-        return $this;
-    }
-
-    /**
-     * Remove upload
-     *
-     * @param \AppBundle\Entity\Uploads $upload
-     */
-    public function removeUpload(\AppBundle\Entity\Uploads $upload)
-    {
-        $this->uploads->removeElement($upload);
-    }
-
-    /**
-     * Get uploads
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUploads()
-    {
-        return $this->uploads;
-    }
-
-    /**
-     * Add note
-     *
-     * @param \AppBundle\Entity\Notes $note
-     *
-     * @return Orders
-     */
-    public function addNote(\AppBundle\Entity\Notes $note)
-    {
-        $this->notes[] = $note;
-
-        return $this;
-    }
-
-    /**
-     * Remove note
-     *
-     * @param \AppBundle\Entity\Notes $note
-     */
-    public function removeNote(\AppBundle\Entity\Notes $note)
-    {
-        $this->notes->removeElement($note);
-    }
-
-    /**
-     * Get notes
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getNotes()
-    {
-        return $this->notes;
-    }
 
 // </editor-fold>
+
+public function preUpdate(){
+    // $this->preUpdateChilds($this->positions);
+    // $this->saveFieldsValues(['positions', 'uploads', 'notes']);
+    return $this;
+}
+    public function approve()
+    {
+        switch ($this->status) {
+            case '1':
+                $this->setApproved(null);
+            break;
+            case '2':
+                $this->setApproved(new \DateTime());
+            break;
+        }
+    }
 
     public function getSuccessData(?string $type=null):array
     {
@@ -1448,11 +1388,6 @@ class Orders extends AppEntity
         return $max;
     }
 
-    public function getNr()
-    {
-        return $this->intNr ? $this->intNr : intval($this->number);
-    }
-
     /**
      * Generate products
      *
@@ -1516,3 +1451,34 @@ class Orders extends AppEntity
 
 
 }
+    // public function postUpdate($em){
+    //     $this->_checkElements('uploads', $em);
+    //     $this->checkUploads();
+    //     $this->_checkElements('positions', $em);
+    //     $this->postUpdateChilds($this->positions, $em);
+    //     return $this;
+    // }
+
+
+    // public function saveOldPositions()
+    // {
+    //     $this->oldPositions = new ArrayCollection();
+    //     foreach ($this->positions as $position) {
+    //         $position->saveOldUploads();
+    //         $this->oldPositions->add($position);
+    //     }
+    //     return $this->oldPositions;
+    // }
+
+    // public function checkPositions($entityManager)
+    // {
+    //     foreach ($this->oldPositions as $position) {
+    //         if (false === $this->positions->contains($position)) {
+    //             $entityManager->remove($position);
+    //         }
+    //     }
+    //     foreach ($this->positions as $position) {
+    //         $position->checkUpdates($entityManager);
+    //     }
+    // }
+

@@ -120,6 +120,7 @@ AppBundle\Entity\Orders:
         positions:
             targetEntity: Positions
             mappedBy: order
+            orphanRemoval: true
             cascade: [ "persist" ]
     manyToOne:
         client:

@@ -11,7 +11,7 @@ class ParametersWithUpload extends Parameters
     const ec='ParametersWithUpload';  
     const idPrototype = '__pid__';
     
- //  <editor-fold defaultstate="collapsed" desc="Fields utils">    
+//  <editor-fold defaultstate="collapsed" desc="Fields utils">    
     public static $dicNames=[
         'id' => 'v',
         'name' => 'n',
@@ -89,18 +89,18 @@ class ParametersWithUpload extends Parameters
         return array_replace(parent::getSuccessFields($type), $fields);
     }      
 
- // </editor-fold>       
+// </editor-fold>       
     
- //  <editor-fold defaultstate="collapsed" desc="Variables">   
+//  <editor-fold defaultstate="collapsed" desc="Variables">   
 
     /**
 		* @var \AppBundle\Entity\Uploads
 		*/
     protected $upload;
 
- // </editor-fold>       
+// </editor-fold>       
 
- // <editor-fold defaultstate="collapsed" desc="Fields functions"> 
+// <editor-fold defaultstate="collapsed" desc="Fields functions"> 
 
     /**
 		* Set upload

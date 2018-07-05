@@ -385,10 +385,11 @@ class OrdersController extends AppController
     //     $this->entity->saveOldPositions();
     // }
 
-    // protected function customUpdateAction(&$dataReturn){
-    //     $this->entity->checkPositions($this->getEntityManager());
-    //     return $dataReturn;
-    // }
+    protected function customUpdateAction(array &$dataReturn):void
+    {
+        // $this->entity->checkPositions($this->getEntityManager());
+        $ll=$dataReturn;
+    }
 
     protected function setCustomFormOptions()
     {
@@ -516,7 +517,8 @@ class OrdersController extends AppController
             'table' => $this->genDT('index', static::ec, [
                 'select' => [
                     'options' => [
-                        'style' => 'multi'
+                        'style' => 'multi',
+                        'selector' => 'td'
                     ],
                     'column' => true
                 ]

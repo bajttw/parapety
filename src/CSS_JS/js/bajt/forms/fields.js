@@ -1004,6 +1004,9 @@
                     case 'ajson':
                         this.element.val(d.valueStr);
                         break;
+                    case 'float':
+                        this.element.val(d.value);                       
+                    break;
                     default:
                         switch (this.element.getFieldType()) {
                             case 'select-one':

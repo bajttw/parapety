@@ -287,7 +287,7 @@
                     this.sum._area = fl.value() * fw.value() * this.sum.quantity;
                     this.sum.area = this.sum._area / dividend;
                 }
-                this._sumVal(this.sum.area);
+                this._sumVal();
                 return this.getSummary();
             },
             getDictionary: function(name) {
@@ -494,7 +494,7 @@
                     actions: ['add', 'import']
                 },
                 copyTextarea: '#orders_exp_copy',
-                summaryField: 'area',
+                summaryField: ['quantity', 'area'],
                 statusButtons: {
                     prev: {
                         2: {

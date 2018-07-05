@@ -23,7 +23,7 @@ class TransHelper
 
     public function genTranslateText(?string $str, string $type, ?string $entityName=null): string
     {
-        if(is_null($str)){
+        if(empty($str) ){
             return '';
         }
         $en=is_null($entityName) ? $this->en : strtolower($entityName); 
@@ -103,7 +103,7 @@ class TransHelper
 
     public function trans($str, array $include=[]):string
     {
-        if(is_null($str) || $str == ''){
+        if(empty($str)){
             return '';
         }
         if (is_array($str)) {

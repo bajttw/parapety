@@ -1,6 +1,8 @@
 AppBundle\Entity\Positions:
     type: entity
     repositoryClass: AppBundle\Repository\PositionsRepository
+    entityListeners:
+        AppBundle\EntityListener\PositionsListener: ~
     table: Positions
     indexes:
     id:

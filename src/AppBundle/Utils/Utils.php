@@ -1,11 +1,12 @@
 <?php
 
 namespace AppBundle\Utils;
+use \DateTime;
 
 class Utils
 {
 
-    public static function toFloat($value)
+    public static function toFloat(?string $value):float
     {
         if (is_string($value)) {
             $value = floatval(str_replace(',', '.', $value));
@@ -15,7 +16,7 @@ class Utils
         return $value;
     }
 
-    public static function dateTimeStr($date, $showTime = false)
+    public static function dateTimeStr(?DateTime $date, bool $showTime = false):string
     {
         if ($date) {
             $format = "Y-m-d";
@@ -23,9 +24,8 @@ class Utils
                 $format .= " H:i";
             }
             return $date->format($format);
-        } else {
-            return $date;
-        }
+        } 
+        return '';
     }
 
     public static function deep_array_key_exists($keys, array $array, string $separator = '-'):bool

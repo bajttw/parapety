@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use AppBundle\Utils\Utils;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class AppEntity
 {
@@ -41,6 +42,8 @@ class AppEntity
 
     protected $oldValues=[];
 
+    protected $removedChilds;
+
     protected $old;
 
     private function initOld():void
@@ -50,6 +53,18 @@ class AppEntity
         }
     }
     
+    protected function removeChild(string $name, $child):void
+    {
+        if(is_null($this->removedChilds)){
+            $this->removedChilds=new \stdClass();
+        }
+        if( !is_array($this->removedChilds->$name) ){
+            $this->removedChilds->$name=[];
+        }
+        $this->removedChilds->$name[]=$child;
+    }
+
+
     public function getOld()
     {
         $this->initOld();
@@ -79,7 +94,7 @@ class AppEntity
         if (method_exists($this, $fn)) {
             $this->initOld();
             $old=$this->$fn();
-            if($old instanceof ArrayCollection){
+            if($old instanceof Collection){
                 $this->oldValues[$name] = $this->_cloneElements($old);
                 $this->old->$name=$this->oldValues[$name];
             }else{

@@ -1230,7 +1230,7 @@ class AppController extends Controller
     {
         Utils::deep_array_value_set('type', $msg, 'info');
         if ($translate) {
-            $label = Utils::deep_array_value('label', $msg, '');
+            $label = Utils::deep_array_value('label', $msg);
             $msg['label'] = $this->trans($this->getTransHelper()->labelText($label, $entityName));
             $msg['title'] = $this->trans($this->getTransHelper()->titleText(Utils::deep_array_value('title', $msg), $entityName));
             $message=Utils::deep_array_value('message', $msg, $label);

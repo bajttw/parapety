@@ -206,7 +206,7 @@ class Clients extends AppEntity
 
     public function getData(array $options=[]):array
     {
-        return parent::getData($jsonEncode, array_replace([ 
+        return parent::getData(array_replace([ 
                 'shortNames' => 'dic'
             ],
             $options
