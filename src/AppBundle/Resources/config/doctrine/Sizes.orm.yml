@@ -1,6 +1,8 @@
 AppBundle\Entity\Sizes:
     type: entity
     repositoryClass: AppBundle\Repository\SizesRepository
+    entityListeners:
+        AppBundle\EntityListener\SizesListener: ~
     table: Sizes
     id:
         id:
@@ -30,10 +32,3 @@ AppBundle\Entity\Sizes:
             type: boolean
             options:
                 default: true
-    # oneToMany:
-    #     priceListItems:
-    #         targetEntity: PriceListItems
-    #         mappedBy: size
-    #         cascade: [ "persist", "merge", "refresh" ]
-    # lifecycleCallbacks: 
-    #     preUpdate: [ preUpdateSize ]

@@ -16,8 +16,7 @@ class Orders extends AppEntity
     const ec = 'Orders';
     const idPrototype = '__oid__';
 
-    const numerate = false;
- //  <editor-fold defaultstate="collapsed" desc="Fields utils">
+//  <editor-fold defaultstate="collapsed" desc="Fields utils">
 
     public static $shortNames = [
         'id' => 'id',
@@ -57,7 +56,7 @@ class Orders extends AppEntity
         ]
     ];
 
-    public static function getFields($type = null)
+    public static function getFields(?string $type = null):array
     {
         switch ($type) {
             case '':
@@ -208,7 +207,7 @@ class Orders extends AppEntity
         return $fields;
     }
 
-    public function getSuccessFields($type)
+    public function getSuccessFields(?string $type=null):array
     {
         $fields = [];
         switch ($type) {
@@ -221,23 +220,30 @@ class Orders extends AppEntity
             case 'remove':
             default:
         }
-        return $fields;
+        return array_replace(parent::getSuccessFields($type), $fields);
     }
 
-    public function getMessageDataFields($type)
+    public function getMessageDataFields(?string $type=null):array
     {
         $fields = [];
         switch ($type) {
             case 'create':
             case 'update':
-                $fields = ['number', 'created'];
+                $fields = ['number', 'created', 'client.name'];
             break;
             case 'remove':
             default:
         }
-        return $fields;
+        return array_replace( parent::getMessageDataFields($type), $fields );
     }
 
+    public function getDeleteFields(?string $type=null):array
+    {
+        return array_replace(
+            parent::getDeleteFields($type), 
+            ['client.code', 'client.name','number', 'created']
+        );
+    }
 
 // </editor-fold>
 
@@ -422,10 +428,10 @@ class Orders extends AppEntity
      */
     public function __construct($options = [])
     {
+        parent::__construct($options);
         $this->positions = new ArrayCollection();
         $this->uploads = new ArrayCollection();
         $this->notes = new ArrayCollection();
-        parent::__construct($options);
     }
 
 // <editor-fold defaultstate="collapsed" desc="Fields functions">
@@ -435,7 +441,7 @@ class Orders extends AppEntity
      *
      * @return integer
      */
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }
@@ -466,7 +472,7 @@ class Orders extends AppEntity
 
     public function getShowCreated($options = [])
     {
-        return parent::getTimeField($this->created, $options);
+        return $this->getTimeField($this->created, $options);
     }
 
     public function getStrCreated()
@@ -503,7 +509,7 @@ class Orders extends AppEntity
 
     public function getShowApproved($options = [])
     {
-        return parent::getTimeField($this->approved, $options);
+        return $this->getTimeField($this->approved, $options);
     }
 
     public function getStrApproved()
@@ -550,7 +556,7 @@ class Orders extends AppEntity
 
     public function getShowTerm($options = [])
     {
-        return parent::getTimeField($this->term, $options);
+        return $this->getTimeField($this->term, $options);
     }
 
     public function getStrTerm()
@@ -1011,13 +1017,13 @@ class Orders extends AppEntity
         return $this;
     }
 
-    public function postUpdate($em){
-        $this->_checkElements('uploads', $em);
-        $this->checkUploads();
-        $this->_checkElements('positions', $em);
-        $this->postUpdateChilds($this->positions, $em);
-        return $this;
-    }
+    // public function postUpdate($em){
+    //     $this->_checkElements('uploads', $em);
+    //     $this->checkUploads();
+    //     $this->_checkElements('positions', $em);
+    //     $this->postUpdateChilds($this->positions, $em);
+    //     return $this;
+    // }
 
 
     // public function saveOldPositions()
@@ -1345,7 +1351,7 @@ class Orders extends AppEntity
 
 // </editor-fold>
 
-    public function getSuccessData($type)
+    public function getSuccessData(?string $type=null):array
     {
         $data = parent::getSuccessData($type);
         switch ($type) {
@@ -1356,16 +1362,6 @@ class Orders extends AppEntity
             case 'removed':
             default:
         }
-        return $data;
-    }
-
-    public function getDataDelete()
-    {
-        $data = array_replace_recursive(
-            parent::getDataDelete(),
-            $this->getFieldsStr(['number', 'created'])
-        );
-        $data['client'] = $this->getClient()->getName();
         return $data;
     }
 

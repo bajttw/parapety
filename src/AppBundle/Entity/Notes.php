@@ -81,8 +81,8 @@ class Notes extends AppEntity
      */
     public function __construct($options = [])
     {
-        $this->uploads = new ArrayCollection();
         parent::__construct($options);
+        $this->uploads = new ArrayCollection();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Fields functions">
@@ -91,7 +91,7 @@ class Notes extends AppEntity
      *
      * @return integer
      */
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }

@@ -514,7 +514,6 @@ class OrdersController extends AppController
                 $this->genFilterbar()
             ],
             'table' => $this->genDT('index', static::ec, [
-                'actions' => 'index',
                 'select' => [
                     'options' => [
                         'style' => 'multi'
@@ -524,20 +523,21 @@ class OrdersController extends AppController
             ])
         ])
             ->addEntityModal()
-            ->addTableExportModal( static::ec, [
-                'title' => $this->getTransHelper()->modalTitle('generate', 'Productions'),
-                'columns' => static::$importFields,
-                'd' => [
-                    'options' => [
-                        'dataTableName' => static::en,
-                        'importFields' => static::$importFields,
-                        'ajax' => [
-                            'type' => 'POST',
-                            'url' => $this->getRouteHelper()->getEmployeeUrl('generate', 'Productions')
-                        ]
-                    ]
-                ]
-            ] );
+            // ->addTableExportModal( static::ec, [
+            //     'title' => $this->getTransHelper()->modalTitle('generate', 'Productions'),
+            //     'columns' => static::$importFields,
+            //     'd' => [
+            //         'options' => [
+            //             'dataTableName' => static::en,
+            //             'importFields' => static::$importFields,
+            //             'ajax' => [
+            //                 'type' => 'POST',
+            //                 'url' => $this->getRouteHelper()->getEmployeeUrl('generate', 'Productions')
+            //             ]
+            //         ]
+            //     ]
+            // ] );
+            ;
         // ->generateEntityFilters();
         return $this->renderSystem();
     }
@@ -579,7 +579,7 @@ class OrdersController extends AppController
         $entities = $this->getEntiesFromBase($request, 'getEntities');
         $results = [];
         foreach ($entities as $entity) {
-            $results[] = $entity->getShowData(false, ['type' => 'orders_package']);
+            $results[] = $entity->getShowData(['type' => 'orders_package']);
         }
         //        if (count($this->entityActions) >0){
         //            $this->addEntitiesActions($entities, $this->entityActions);

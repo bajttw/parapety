@@ -85,5 +85,4 @@ class ActionsGenerator extends ClientElementsGenerator
         }
         return $actions;
     }
-
 }

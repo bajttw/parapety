@@ -43,7 +43,7 @@ class Positions extends AppEntity{
 		]
 	];
 	
-	public static function getFields($type = null)
+	public static function getFields(?string $type = null):array
     {
         switch ($type) {
             case 'productions_orders':
@@ -197,7 +197,7 @@ class Positions extends AppEntity{
 		*
 		* @return integer
 		*/
-	public function getId():int{
+	public function getId():?int{
 		return $this->id;
 	}
 
@@ -701,9 +701,9 @@ class Positions extends AppEntity{
         $this->calcArea();
 	}
 
-	public function validate($options=[] ){
+	protected function validate(array $options=[] ):array
+	{
 		$validate=parent::validate($options);
-
 		return $validate;
 	}
 

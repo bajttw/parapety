@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
 		* Defectives
@@ -60,10 +61,11 @@ class Defectives extends AppEntity{
     /**
 		* Constructor
 		*/
-    public function __construct()
+    public function __construct(array $options=[])
     {
-        $this->uploads = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->notes = new \Doctrine\Common\Collections\ArrayCollection();
+      parent::__construct($options);
+      $this->uploads = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     /**
@@ -71,7 +73,7 @@ class Defectives extends AppEntity{
 		*
 		* @return integer
 		*/
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }

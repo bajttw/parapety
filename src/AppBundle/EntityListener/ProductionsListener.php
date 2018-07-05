@@ -2,7 +2,6 @@
 
 namespace AppBundle\EntityListener;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use AppBundle\Utils\Utils;
 use AppBundle\Entity\Productions;

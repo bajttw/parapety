@@ -59,6 +59,6 @@ AppBundle\Entity\Deliveries:
             cascade: [ "persist" ]
                 
     lifecycleCallbacks:
-        prePersist: [ prePersistDeliveries ]
-        preUpdate: [ preUpdateDeliveries ]       
-        preRemove: [ preRemoveDeliveries ]
+        # prePersist: [ prePersistDeliveries ]
+        # preUpdate: [ preUpdateDeliveries ]       
+        # preRemove: [ preRemoveDeliveries ]

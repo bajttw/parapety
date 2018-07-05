@@ -276,7 +276,7 @@ var DT = {
             return isSet(data) ? data : '';
         },
         active: function(data, type, full, meta) {
-            return B.html.get('icon', { icon: data ? 'check_box' : 'check_box_outline_box' });
+            return B.html.get('icon', { icon: data ? 'check_box' : 'check_box_outline_blank' });
         },
         netto: function(data, type, full, meta) {
             return (

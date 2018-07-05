@@ -1,7 +1,8 @@
 <?php
 
 namespace AppBundle\Entity;
-
+use \AppBundle\Entity\PriceListItems;
+use \AppBundle\Entity\PriceLists;
 /**
  * Prices
  */
@@ -22,9 +23,6 @@ class Prices extends AppEntity
             'priceListItem' => 'PriceListItems'
         ]
     ];
-// </editor-fold>
-
-//  <editor-fold defaultstate="collapsed" desc="Utilities">
 // </editor-fold>
 
 //  <editor-fold defaultstate="collapsed" desc="Variables">
@@ -59,7 +57,7 @@ class Prices extends AppEntity
      *
      * @return int
      */
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }
@@ -71,7 +69,7 @@ class Prices extends AppEntity
      *
      * @return Prices
      */
-    public function setValue($value = null)
+    public function setValue(float $value = null)
     {
         $this->value = $value;
 
@@ -83,7 +81,7 @@ class Prices extends AppEntity
      *
      * @return float|null
      */
-    public function getValue()
+    public function getValue():?float
     {
         return $this->value;
     }
@@ -107,7 +105,7 @@ class Prices extends AppEntity
      *
      * @return \AppBundle\Entity\PriceLists|null
      */
-    public function getPriceList()
+    public function getPriceList():?PriceLists
     {
         return $this->priceList;
     }
@@ -131,7 +129,7 @@ class Prices extends AppEntity
      *
      * @return \AppBundle\Entity\PriceListItems|null
      */
-    public function getPriceListItem()
+    public function getPriceListItem():?PriceListItems
     {
         return $this->priceListItem;
     }

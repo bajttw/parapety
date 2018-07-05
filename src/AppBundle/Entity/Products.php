@@ -30,7 +30,7 @@ class Products extends AppEntity
 
     ];
 
-    public static function getFields($type = null)
+    public static function getFields(?string $type = null):array
     {
         switch ($type) {
             default:
@@ -120,7 +120,7 @@ class Products extends AppEntity
      *
      * @return integer
      */
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }

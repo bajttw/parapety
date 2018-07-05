@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use AppBundle\Entity\Trims;
+
 class TrimsType extends AbstractType
 {
     /**
@@ -15,17 +17,41 @@ class TrimsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('sequence', null, ['label' => 'trims.label.sequence'])
-            ->add('name', null, ['label' => 'trims.label.name'])
-            ->add('symbol', null, ['label' => 'trims.label.symbol'])
-            ->add('description', null, ['label' => 'trims.label.description'])
+            ->add('sequence', null, [
+                'label' => 'trims.label.sequence',
+                'attr' => [
+                    'title' => 'trims.title.sequence'
+                ]
+            ])
+            ->add('name', null, [
+                'label' => 'trims.label.name',
+                'attr' => [
+                    'title' => 'trims.title.name'
+                ]
+            ])
+            ->add('symbol', null, [
+                'label' => 'trims.label.symbol',
+                'attr' => [
+                    'title' => 'trims.title.symbol'
+                ]
+            ])
+            ->add('description', null, [
+                'label' => 'trims.label.description',
+                'attr' => [
+                    'title' => 'trims.title.description'
+                ]
+            ])
             ->add('active', SwitchType::class, [
                 'label' => 'trims.label.active',
+                'attr' => [
+                    'title' => 'trims.title.active'
+                ],
                 'entity_name' => 'trims'
             ])
             ->add('upload', UploadType::class, [
                 'label' => 'trims.label.upload',
                 'attr'=> [
+                    'title' => 'trims.title.upload',
                     'preview' => true,
                     'data-options' => json_encode([
                         'show' => true,
@@ -56,10 +82,10 @@ class TrimsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Trims',
+            'data_class' => Trims::class,
             'form_admin' => false,            
             'em' => null,
-            'entities_settings' =>null,
+            'entities_settings' => [],
             'translator' =>null
         ]);
     }

@@ -26,7 +26,7 @@ class Settings extends AppEntity
         ],
     ];
 
-    public static function getFields($type = null)
+    public static function getFields(?string $type = null):array
     {
         switch ($type) {
             case '':
@@ -53,7 +53,7 @@ class Settings extends AppEntity
         return $fields;
     }
 
-    public function getSuccessFields($type)
+    public function getSuccessFields(?string $type=null):array
     {
         $fields = [];
         switch ($type) {
@@ -65,8 +65,17 @@ class Settings extends AppEntity
             case 'remove':
             default:
         }
-        return $fields;
+        return array_replace(parent::getSuccessFields($type), $fields);
     }
+
+    public function getDeleteFields(?string $type=null):array
+    {
+        return array_replace(
+            parent::getDeleteFields($type), 
+            ['name', 'client.name']
+        );
+    }
+
 
     // </editor-fold>
 
@@ -96,20 +105,8 @@ class Settings extends AppEntity
         return $asArray ? $data : \json_encode($data);
     }
 
-    public function getDataDelete()
-    {
-        $data = [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-            'client' => $this->client ? $this->client->getName() : '',
-            'value' => $this->getValue(),
-            'description' => $this->getDescription(),
-        ];
-        return $data;
-    }
-
     // <editor-fold defaultstate="collapsed" desc="Fields functions">
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }

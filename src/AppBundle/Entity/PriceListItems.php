@@ -36,7 +36,7 @@ class PriceListItems extends AppEntity
         ]
     ];
 
-    public static function getFields($type = null)
+    public static function getFields(?string $type = null):array
     {
         switch ($type) {
             case "uniques":
@@ -94,7 +94,7 @@ class PriceListItems extends AppEntity
         return $fields;
     }
 
-    public function getSuccessFields($type)
+    public function getSuccessFields(?string $type=null):array
     {
         $fields = [];
         switch ($type) {
@@ -108,7 +108,7 @@ class PriceListItems extends AppEntity
             case 'remove':
             default:
         }
-        return $fields;
+        return array_replace(parent::getSuccessFields($type), $fields);
     }
 // </editor-fold>
 
@@ -165,7 +165,7 @@ class PriceListItems extends AppEntity
      *
      * @return int
      */
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }

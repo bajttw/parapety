@@ -2,20 +2,14 @@
 
 namespace AppBundle\EntityListener;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use AppBundle\Entity\Orders;
 use Symfony\Component\DependencyInjection\ContainerInterface ;
 /**
  * Orders Listener
  */
-class OrdersListener
+class OrdersListener extends EntityWithChildsListener
 {
-    private $eh;
-    public function __construct(ContainerInterface $seviceContainer)
-    {
-        $this->eh=$seviceContainer->get('helper.entity');
-    }
 
     public function prePersist(Orders $order, LifecycleEventArgs $event):void
     {
@@ -25,5 +19,6 @@ class OrdersListener
     public function postPersist(Orders $order, LifecycleEventArgs $event):void
     {
         $this->eh->saveNumber($order::ec, $order->getIntNr()+1, $order->getClient()->getId());
+        parent::postPersist($order, $event);
     }
 }

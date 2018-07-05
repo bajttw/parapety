@@ -1,6 +1,8 @@
 AppBundle\Entity\Colors:
     type: entity
     repositoryClass: AppBundle\Repository\ColorsRepository
+    entityListeners:
+        AppBundle\EntityListener\ColorsListener: ~
     table: Colors
     id:
         id:
@@ -38,10 +40,3 @@ AppBundle\Entity\Colors:
                 name: uploads_id
                 referencedColumnName: id   
             cascade: [ "persist" ]
-    # oneToMany:
-    #     priceListItems:
-    #         targetEntity: PriceListItems
-    #         mappedBy: color
-    #         cascade: [ "persist", "merge", "refresh" ]
-    # lifecycleCallbacks:
-    #     preUpdate: [ preUpdateColor ]

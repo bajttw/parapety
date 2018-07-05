@@ -35,7 +35,7 @@ class Users extends BaseUser
         ],
     ];
 
-    public static function getFields($type = null)
+    public static function getFields(?string $type = null):array
     {
         switch ($type) {
             case '':
@@ -57,7 +57,7 @@ class Users extends BaseUser
         return null;
     }
 
-    public static function getChildShortNames($name)
+    public static function getChildShortNames(string $name):?array
     {
         if ($ec = self::getChildEntityClass($name)) {
             return $ec::$shortNames;
@@ -81,161 +81,28 @@ class Users extends BaseUser
 
 // </editor-fold>
 
-    private function toShowData($field, $options = [])
-    {
-        $val = null;
-        Utils::deep_array_value_set('shortNames', $options, true);
-        if (Utils::is_sequential_array($field) || $field instanceof \Traversable) {
-            $val = [];
-            foreach ($field as $f) {
-                array_push($val, $this->toShowData($f, $options));
-            }
-        } elseif (gettype($field) == 'object') {
-            if ($field instanceof \DateTime) {
-                $val = self::getTimeField($field, $options);
-            } else {
-                if (method_exists($field, 'getShowData')) {
-                    $val = $field->getShowData(false, $options);
-                } elseif (method_exists($field, 'getId')) {
-                    $val = $field->getId();
-                }
-            }
-        } else {
-            $val = $field;
-        }
-        return $val;
-    }
 
-    public function getShowData($jsonEncode = false, $options = [])
-    {
-        $data = [];
-        if ($this->getId()) {
-            $en = Utils::deep_array_value('en', $options);
-            if (is_string($en)) {
-                $en = [$en];
-                $options['en'] = $en;
-            }
-            if (is_array($en)) {
-                if (in_array(static::en, $en)) {
-                    return $this->getId();
-                } else {
-                    array_push($options['en'], static::en);
-                }
-            } else {
-                $options['en'] = [static::en];
-            }
-            $type = Utils::deep_array_value('type', $options, '');
-            $typePrefix = join('_', array_diff($options['en'], [static::en]));
-            if ($typePrefix != '') {
-                $type = $type == '' ? $typePrefix : $typePrefix . '_' . $type;
-            }
-            $short = Utils::deep_array_value('shortNames', $options);
-            if ($short) {
-                $fnShortName = is_string($short) ? 'get' . ucfirst($short) . 'Name' : 'getShortName';
-            } else {
-                $fnShortName = false;
-            }
-            // Utils::deep_array_value_set('shortNames', $options, 'short');
-            // $fnShortName= is_string($options['shortNames']) ? 'get'.ucfirst($options['shortNames']).'Name' : false;
-            $fields = static::getFields($type);
-            foreach ($fields as $f) {
-                if (is_array($f)) {
-                    $name = $f['name'];
-                    // $jf=Utils::deep_array_value('joinField', $f);
-                    // if(\is_array($jf)){
-                    //     $name= array_key_exists('as', $jf) ? $jf['as'] : $name.'.'.$jf['name'];
-                    // }
-                } else {
-                    $name = $f;
-                }
-                $key = $fnShortName ? static::$fnShortName($name) : $name;
-                $fnShow = 'getShow' . ucfirst($name);
-                $fn = 'get' . ucfirst($name);
-                if (method_exists($this, $fnShow)) {
-                    $field = $this->$fnShow($options);
-                } elseif (method_exists($this, $fn)) {
-                    $field = $this->$fn($options);
-                } else {
-                    $field = null;
-                }
-                $data[$key] = $this->toShowData($field, $options);
-            }
-        }
-        return $jsonEncode ? json_encode($data) : $data;
-    }
 
-    public static function getTimeField($time, $options = [])
-    {
-        return Utils::dateTimeStr($time, Utils::deep_array_value('strDate', $options, 'date') == 'time');
-    }
 
-    public static function getFieldData($entity, $fieldName, $prefix = 'get')
-    {
-        $fn = $prefix . ucfirst($fieldName);
-        if (gettype($entity) == 'object' && method_exists($entity, $fn)) {
-            return $entity->$fn();
-        }
-        return null;
-    }
 
-    public function getStrField($fieldName)
-    {
-        $fields = explode('.', $fieldName);
-        $fieldName = array_pop($fields);
-        $entity = $this;
-        for ($i = 0, $count = count($fields); $i < $count; $i++) {
-            $entity = self::getFieldData($entity, $fields[$i]);
-        }
-        if (is_null($field = self::getFieldData($entity, $fieldName, 'getStr'))) {
-            $field = self::getFieldData($entity, $fieldName);
-        }
-        return $this->toStrData($field);
-    }
 
-    public function getFieldsStr($fields)
-    {
-        $fieldsStr = [];
-        foreach ($fields as $name) {
-            $fieldsStr[$name] = $this->getStrField($name);
-        }
-        return $fieldsStr;
-    }
-
-    public function toStrData($field)
-    {
-        if (is_string($field)) {
-            return $field;
-        }
-        $val = '';
-        if (Utils::is_sequential_array($field) || $field instanceof \Traversable) {
-            $val = json_encode($field);
-        } elseif (gettype($field) == 'object') {
-            if ($field instanceof \DateTime) {
-                $val = self::getTimeField($field);
-            } else {
-                if (method_exists($field, '__toString')) {
-                    $val = $field->__toString();
-                } elseif (method_exists($field, 'getId')) {
-                    $val = $field->getId();
-                }
-            }
-        } else {
-            $val = (string) $field;
-        }
-        return $val;
-    }
-
-    public function getSuccessFields($type)
+    public function getSuccessFields(?string $type=null):array
     {
         return [];
     }
 
-    public function getMessageDataFields($type)
+    public function getMessageDataFields(?string $type=null):array
     {
         return [];
     }
 
-    public function getMessageData($type, $dataReturn=[]){
+    public function getDeleteFields(?string $type=null):array
+    {
+        return ['id', 'usernameCanonical'];
+    }
+
+
+    public function getMessageData(?string $type=null, array $dataReturn=[]):array{
         $data=[];
         foreach($this->getMessageDataFields($type) as $f){
             $data[]=$this->getStrField($f);
@@ -244,7 +111,7 @@ class Users extends BaseUser
     }
 
 
-    public function getSuccessData($type)
+    public function getSuccessData(?string $type=null):array
     {
         $data = [
             "fields" => [],
@@ -260,7 +127,7 @@ class Users extends BaseUser
         return $data;
     }
 
-    public function getDataDelete()
+    public function getDataDelete():array
     {
         $data = [
             'id' => $this->getId(),
@@ -281,14 +148,6 @@ class Users extends BaseUser
             }
         }
         return $msg;
-    }
-
-    public function preUpdate(){
-        return $this;
-    }
-
-    public function postUpdate($em){
-        return $this;
     }
 
 //  <editor-fold defaultstate="collapsed" desc="Variables">
@@ -326,6 +185,7 @@ class Users extends BaseUser
 
     public function __construct($options = [])
     {
+        parent::__construct();
         $this->userGroups = new ArrayCollection();
         $this->clients = new ArrayCollection();
         $this->settings = new ArrayCollection();
@@ -340,10 +200,9 @@ class Users extends BaseUser
                 }
             }
         }
-        parent::__construct();
     }
 
-    public function __toString()
+    public function __toString():string
     {
         return $this->id;
     }
@@ -353,7 +212,7 @@ class Users extends BaseUser
      *
      * @return integer
      */
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }

@@ -3,10 +3,14 @@
 namespace AppBundle\Entity;
 
 //use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\UploadedFile as UploadedFile ;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
 use AppBundle\Utils\Utils;
-use AppBundle\Utils\UploadHandler as UploadHandler;
+
+use AppBundle\Helpers\EntityHelper;
+use AppBundle\Helpers\FileUploader;
+
+// use AppBundle\Utils\UploadHandler as UploadHandler;
 
 /**
  * Uploads
@@ -16,8 +20,8 @@ class Uploads extends AppEntity
     const en = 'uploads';
     const ec = 'Uploads';
     const idPrototype = '__uid__';
-
-    public static $types=['tmp', 'colors', 'models', 'trims', 'clients', 'orders', 'positions'];
+    
+    // public $types=['tmp', 'colors', 'models', 'trims', 'clients', 'orders', 'positions'];
 
 // <editor-fold defaultstate="collapsed" desc="Fields utils">
     public static $dicNames = [
@@ -31,13 +35,12 @@ class Uploads extends AppEntity
         'name' => 'n',
         'original' => 'o',
         'type' => 't',
-        'uploadType' => 'ut',
-        'path' => 'p',
-        'url' => 'url',
         'size' => 's',
+        'folder' => 'p',
+        'url' => 'url'
     ];
 
-    public static function getFields($type = null)
+    public static function getFields(?string $type = null):array
     {
         switch ($type) {
             case '':
@@ -55,48 +58,50 @@ class Uploads extends AppEntity
     private $id;
     private $name;
     private $original;
-    private $path;
-    private $url;
-    private $size;
     private $type;
-    private $uploadType = 0;
+    private $size;
+    private $folder;
+    private $uploadFolder;
+    private $url;
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Variables extra">
-    private $old = array('name' => '', 'file' => '', 'thumbnail' => '');
+    // private $old = array('name' => '', 'file' => '', 'thumbnail' => '');
 // </editor-fold>
 
 //  <editor-fold defaultstate="collapsed" desc="Data functions">
-    public function __toString()
+    public function getFileUrl()
+    {
+        return $this->getUrl().'/'. $this->getName();
+    }
+
+    public function __toString():string
     {
         return $this->getFileUrl();
     }
 
-    public function getData(bool $jsonEncode=true, array $options=[])
+    public function getData(array $options=[]):array
     {
         $data = [
             'id' => $this->getId(),
-            'path' => $this->getPath(),
-            'uploadType' => $this->getUploadType(),
-            'type' => $this->getType(),
-            'url' => $this->getUrl(),
-            'fullUrl' => $this->getFullUrl(),
             'name' => $this->getName(),
             'original' => $this->getOriginal(),
             'size' => $this->getSizeStr(),
+            'type' => $this->getType(),
+            'folder' => $this->getFolder(),
+            'url' => $this->getUrl()
         ];
-        return $jsonEncode ? json_encode($data) : $data;
+        return $data;
     }
 
-    public function setData($data)
+    public function setData(?array $data=null)
     {
-        if (!is_array($data)) {
-            return null;
-        }
-
-        foreach ($data as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this->$key = $value;
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $fnSet = 'set' . ucfirst($key);
+                if (method_exists($this, $fnSet)) {
+                    $this->$fnSet($value);
+                }
             }
         }
         return $this;
@@ -104,18 +109,14 @@ class Uploads extends AppEntity
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Fields functions">
-    public function setId($id)
-    {
-        // $this->id=($id);
-    }
-
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }
 
     public function setName(string $name)
     {
+        $this->saveFieldValue('name');
         $this->name = $name;
         return $this;
     }
@@ -125,59 +126,54 @@ class Uploads extends AppEntity
         return $this->name;
     }
 
-    public function setOriginal($original)
+    public function setOriginal(string $original)
     {
         $this->original = $original;
         return $this;
     }
 
-    public function getOriginal()
+    public function getOriginal():?string
     {
         return $this->original;
     }
 
-    public function setType($type)
+    public function setType(string $type)
     {
         $this->type = $type;
         return $this;
     }
 
-    public function getType()
+    public function getType():string
     {
         return $this->type;
     }
 
-    public function setUploadType($uploadType)
-    {
-        $this->uploadType = $uploadType;
-        return $this;
-    }
 
-    public function getUploadType()
+    public function setFolder(?string $folder)
     {
-        return $this->uploadType;
-    }
-
-    public function changeUploadType($newUploadType)
-    {
-        if ($this->uploadType != $newUploadType) {
-            $this->moveFile(self::$types[$this->uploadType], self::$types[$newUploadType]);
-            $this->uploadType = $newUploadType;
+        if($folder){
+            $this->folder = $folder;
         }
-    }
-
-    public function setPath($path)
-    {
-        $this->path = $path;
         return $this;
     }
 
-    public function getPath()
+    public function getFolder():?string
     {
-        return $this->path;
+        return $this->folder;
     }
 
-    public function setUrl($url)
+    public function setUploadFolder(?string $uploadFolder)
+    {
+        $this->uploadFolder = $uploadFolder;
+        return $this;
+    }
+
+    public function getUploadFolder():?string
+    {
+        return $this->uploadFolder;
+    }
+
+    public function setUrl(string $url)
     {
         $this->url = $url;
         return $this;
@@ -188,82 +184,117 @@ class Uploads extends AppEntity
         return $this->url;
     }
 
-    public function getFullUrl()
-    {
-        return UploadHandler::getFullUrl() . $this->url;
-    }
-
     public function setSize($size)
     {
         $this->size = $size;
         return $this;
     }
-    public function getSize()
+    
+    public function getSize():?int
     {
         return $this->size;
     }
+
     public function getSizeStr()
     {
-        $s = $this->size;
-        return ($s >= 1024) ? round($s / 1024, 1) . ' MB' : round($s, 1) . ' KB';
+        $units=['B', 'kB', 'MB', 'GB'];
+        $calc=$this->size;
+        $d=1024;
+        $i=0;
+        while($i < 4 && $calc > $d){
+            $calc= $calc/$d;
+            $i++;
+        }
+        return sprintf('%.2f'.$units[$i], $calc );
     }
+
+
 // </editor-fold>
 
-    public function setFile($uploadedFile)
-    {
-        $this->setPath($uploadedFile->path);
-        $this->url = str_replace($uploadedFile->name, "", $uploadedFile->url);
-        $this->original = $uploadedFile->original;
-        $this->name = $uploadedFile->name;
-        $this->size = $uploadedFile->size;
-        $this->type = $uploadedFile->type;
-    }
+// public function changeUploadType($newUploadType)
+    // {
+    //     if ($this->uploadType != $newUploadType) {
+    //         $this->moveFile(self::$types[$this->uploadType], self::$types[$newUploadType]);
+    //         $this->uploadType = $newUploadType;
+    //     }
+    // }
 
-    public function getFilePath($subdir = '')
-    {
-        if ($this->name != null) {
-            $filepath = $this->getPath() . ($subdir == '' ? '' : $subdir . DIRECTORY_SEPARATOR) . $this->getName();
-            return file_exists($filepath) ? $filepath : null;
-        }
-        return null;
-    }
+    // public function setFile(array $uploaded)
+    // {
+    //     $this->setName($uploaded['name']);
+    //     $this->setOriginal($uploaded['original']);
+    //     $this->setSize($uploaded['size']);
+    //     $this->setType($uploaded['type']);
+    //     $this->setPath($uploaded['path']);
+    //     $this->setUrl($uploaded['fullUrl']);
+    //     return $this;
+    // }
 
-    public function getFileUrl($subdir = '')
-    {
-        return $this->getFullUrl() . ($subdir == '' ? '' : $subdir . DIRECTORY_SEPARATOR) . $this->getName();
-    }
-    public function getThumbnailPath()
-    {
-        return $this->getFilePath('thumbnail');
-    }
-    public function getThumbnailUrl()
-    {
-        return $this->getFileUrl('thumbnail');
-    }
+    // public function setFile($uploadedFile)
+    // {
+    //     $this->setPath($uploadedFile->path);
+    //     $this->url = str_replace($uploadedFile->name, "", $uploadedFile->url);
+    //     $this->original = $uploadedFile->original;
+    //     $this->name = $uploadedFile->name;
+    //     $this->size = $uploadedFile->size;
+    //     $this->type = $uploadedFile->type;
+    // }
 
-    private function moveFile($oldFolder, $newFolder)
-    {
-        if ($filepath = $this->getFilePath()) {
-            $newPath = str_replace($oldFolder, $newFolder, $this->path);
-            $file = new File($filepath);
-            $file->move($newPath);
-            if ($thumbpath = $this->getThumbnailPath()) {
-                $thumb = new File($thumbpath);
-                $thumb->move($newPath . 'thumbnail' . DIRECTORY_SEPARATOR);
-            }
-            $this->path = $newPath;
-            $this->url = str_replace($oldFolder, $newFolder, $this->url);
-            $this->url = str_replace($this->name, "", $this->url);
-        }
-    }
-    public function removeUpload()
-    {
-        if ($file = $this->getFilePath()) {
-            unlink($file);
-        }
-        if ($thumbnail = $this->getThumbnailPath()) {
-            unlink($thumbnail);
-        }
-    }
+    // public function getFilePath($subdir = '')
+    // {
+    //     if ($this->name != null) {
+    //         $filepath = $this->getPath() . ($subdir == '' ? '' : $subdir . DIRECTORY_SEPARATOR) . $this->getName();
+    //         return file_exists($filepath) ? $filepath : null;
+    //     }
+    //     return null;
+    // }
+
+    // public function getFilePath(string $subdir = ''):?string
+    // {
+    //     if ($this->name != null) {
+    //         $filepath = $this->getPath() . ($subdir == '' ? '' : $subdir . DIRECTORY_SEPARATOR) . $this->getName();
+    //         return file_exists($filepath) ? $filepath : null;
+    //     }
+    //     return null;
+    // }
+
+    // public function getFileUrl($subdir = '')
+    // {
+    //     return $this->getFullUrl() . ($subdir == '' ? '' : $subdir . DIRECTORY_SEPARATOR) . $this->getName();
+    // }
+    // public function getThumbnailPath()
+    // {
+    //     return $this->getFilePath('thumbnail');
+    // }
+    // public function getThumbnailUrl()
+    // {
+    //     return $this->getFileUrl('thumbnail');
+    // }
+
+    // private function moveFile($oldFolder, $newFolder)
+    // {
+    //     if ($filepath = $this->getFilePath()) {
+    //         $newPath = str_replace($oldFolder, $newFolder, $this->path);
+    //         $file = new File($filepath);
+    //         $file->move($newPath);
+    //         if ($thumbpath = $this->getThumbnailPath()) {
+    //             $thumb = new File($thumbpath);
+    //             $thumb->move($newPath . 'thumbnail' . DIRECTORY_SEPARATOR);
+    //         }
+    //         $this->path = $newPath;
+    //         $this->url = str_replace($oldFolder, $newFolder, $this->url);
+    //         $this->url = str_replace($this->name, "", $this->url);
+    //     }
+    // }
+
+    // public function removeUpload()
+    // {
+    //     if ($file = $this->getFilePath()) {
+    //         unlink($file);
+    //     }
+    //     // if ($thumbnail = $this->getThumbnailPath()) {
+    //     //     unlink($thumbnail);
+    //     // }
+    // }
 
 }

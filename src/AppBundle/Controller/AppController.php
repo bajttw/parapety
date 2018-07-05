@@ -481,15 +481,7 @@ class AppController extends Controller
             ],
             'entity_name' => static::en
         ];
-        if (method_exists($this->entity, 'getDataDelete')) {
-            $renderOptions['entity'] = $this->entity->getDataDelete();
-        }
-        else {
-            $renderOptions['entity'] = ['id' => $this->entity->getId()];
-            if (method_exists($this->entity, 'getName')) {
-                $renderOptions['entity']['name'] = $this->entity->getName();
-            }
-        }
+        $renderOptions['entity'] = $this->entity->getDataDelete();
         $this->setRenderOptions($renderOptions);
         $this->formSystem = $this->createForm($this->getEntityHelper()->getFormNamespace('Delete'), $this->formData, $this->formOptions);
         return $this;
@@ -762,7 +754,7 @@ class AppController extends Controller
         $entities = $this->getEntiesFromBase($request, 'getEntities');
         $results = [];
         foreach ($entities as $entity) {
-            $results[] = $entity->getShowData(false, [ 
+            $results[] = $entity->getShowData([ 
                 'type' => 'details',
                 'shortNames' => true
             ]);
@@ -788,7 +780,7 @@ class AppController extends Controller
         $this->setTemplate('show')
             ->setRenderOptions([
             'title' => $this->getTransHelper()->titleText('show'),
-            'entity' => $this->entity->getShowData(false, ['shortNames' => false])
+            'entity' => $this->entity->getShowData(['shortNames' => false])
         ]);
         return $this->renderSystem();
     }
@@ -821,9 +813,9 @@ class AppController extends Controller
             ->createCreateForm()
             ->formSystem->handleRequest($request);
         if ($this->formSystem->isValid()) {
-            if (property_exists($this->entity, 'upload')) {
-                $this->entity->checkUpload();
-            }
+            // if (property_exists($this->entity, 'upload')) {
+            //     $this->entity->checkUpload();
+            // }
             if (method_exists($this, 'customCreateAction')) {
                 $this->customCreateAction($dataReturn);
             }
@@ -911,7 +903,7 @@ class AppController extends Controller
         $this->formSystem->handleRequest($request);
         if ($this->formSystem->isValid()) {
             // $this->entity->postUpdate($this->getEntityManager());
-            // $this->customUpdateAction($dataReturn);
+            $this->customUpdateAction($dataReturn);
             return $this->responseSave('update', $dataReturn);
         }
         return $this->errorsJsonResponse('update', $dataReturn);
@@ -947,10 +939,8 @@ class AppController extends Controller
             $this->formSystem->handleRequest($request);
             if ($this->formSystem->isValid()) {
                 if ($this->formData->confirm) {
-                    $dataReturn=$this->entity->remove();
-                    if (method_exists($this, 'customRemoveAction')) {
-                        $this->customRemoveAction($dataReturn);
-                    }
+                    $dataReturn=$this->entity->getSuccessData('remove');
+                    $this->customRemoveAction($dataReturn);
                     return $this->responseSave('remove', $dataReturn, 'remove');
                 }else{
                     $dataReturn['errors']['childs'][]=$this->errorMessage(['message' => 'not_confirmed']);
@@ -960,6 +950,10 @@ class AppController extends Controller
             $dataReturn['errors']['childs'][]=$this->errorMessage(['message' => 'not_found']);
         }
         return $this->errorsJsonResponse('remove', $dataReturn);
+    }
+
+    protected function customRemoveAction(array &$dataReturn):void
+    {       
     }
 
 // </editor-fold>

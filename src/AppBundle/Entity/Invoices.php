@@ -30,7 +30,7 @@ class Invoices extends AppEntity
         ]
     ];
 
-    public static function getFields($type = null)
+    public static function getFields(?string $type = null):array
     {
         switch ($type) {
             case 'list':
@@ -62,7 +62,7 @@ class Invoices extends AppEntity
         return $fields;
     }
 
-    public function getSuccessFields($type)
+    public function getSuccessFields(?string $type=null):array
     {
         $fields = [];
         switch ($type) {
@@ -73,9 +73,17 @@ class Invoices extends AppEntity
             case 'remove':
             default:
         }
-        return $fields;
+        return array_replace(parent::getSuccessFields($type), $fields);
     }
-              
+
+    public function getDeleteFields(?string $type=null):array
+    {
+        return array_replace(
+            parent::getDeleteFields($type), 
+            [ 'created' ]
+        );
+    }
+
               
 // </editor-fold>
 
@@ -129,9 +137,9 @@ class Invoices extends AppEntity
      */
     public function __construct($options = [])
     {
+        parent::__construct($options);       
         $this->orders = new ArrayCollection();
         $this->invoiceItems = new ArrayCollection();
-        parent::__construct($options);       
     }
 
     // <editor-fold defaultstate="collapsed" desc="Fields functions">
@@ -141,7 +149,7 @@ class Invoices extends AppEntity
      *
      * @return int
      */
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }

@@ -111,14 +111,14 @@
             {% if  btn.label|default('') is empty %}
                 {% set btn = btn|set_label(btn.action, btn_en|default(en) ) %}
             {% endif %}
-            {% set attr = attr|set_title('btn.'~btn.action, btn_en|default(en|default(''))) %}
+            {% set attr = attr|set_title('btn.' ~ btn.action, btn_en|default(en|default(''))) %}
             {% set data_opt = data_opt|set_array_value( 'action', btn.action ) %}
         {% endif %}
         {% if btn.size|default(false) %}
-            {% set attr=attr|add_class('btn-'~btn.size) %}
+            {% set attr = attr|add_class('btn-' ~ btn.size) %}
         {% endif %}
         {% if  btn.modal is defined %}
-            {% set data_opt=data_opt|merge( { 'toggle' : 'modal', 'target' : "#"~( btn.modal is empty or btn.modal=='1' ? 'my' : btn.modal)~"_modal" } ) %} 
+            {% set data_opt = data_opt|merge( { 'toggle' : 'modal', 'target' : "#"~( btn.modal is empty or btn.modal=='1' ? 'my' : btn.modal)~"_modal" } ) %} 
         {% endif %}
         {% if  attr.href is defined %}
             <a {{ block('attributes') }} {{ block('data_options') }} >
@@ -567,9 +567,12 @@
                         rozmiar
                     </div>
                     <div class="col-2">
-                        {% set btn={
+                        {% set btn = {
+                            icon: 'check',
                             size: 'sm',
-                            attr: { class: 'btn-process fa' }
+                            attr: {
+                                class: 'btn-process'
+                            }
                         } %}
                         {{ block('button') }}
                     </div>
@@ -685,7 +688,7 @@
     {% endblock upload_desc %}    
 
     {% block upload_show %}
-        {% set url = upl.url|default(false) ? upl.fullUrl ~ upl.name : '' %}
+        {% set url = upl.url|default(false) ? upl.url ~ upl.name : '' %}
         {% set attr = { class: "flex-on flex-wrap upload-show" }|add_class( uplRow|default(false) ? 'row-details' : 'form-control' ) %}
         <div {{ block('attributes') }} >
             <div class="flex-on flex-wrap col-12 p-0">
@@ -713,7 +716,7 @@
 
 
     {%- block upload_detail -%}
-        {% set url = upl.url|default(false) ? upl.fullUrl ~ upl.name : '' %}
+        {% set url = upl.url|default(false) ? upl.url ~ upl.name : '' %}
         <div class="flex-on flex-wrap col-12 p-0">
             <div class="" data-name="preview" {{ preview|default(false) ? '' : 'style="display: none;"' }} >
                 <div class="upload-preview center-block" >
@@ -738,11 +741,11 @@
                         {% set attr = {} %}
                         <span {{ block('attributes') }} data-name="{{ name }}" >
                             {% if name == 'originals' %}
-                                isUpload ? '<a href="' ~ upl.fullUrl ~ upl.name ~'" target="_blank">' ~ upl.original ~ '</a>' : upl[name]|default(' - ')
+                                isUpload ? '<a href="' ~ upl.url ~ upl.name ~ '" target="_blank">' ~ upl.original ~ '</a>' : upl[name]|default(' - ')
                             {% else %}
                                 
                             {% endif %}
-                            content: isUpload and name=='original' ? '<a href="' ~ upl.fullUrl ~ upl.name ~'" target="_blank">' ~ upl.original ~ '</a>' : upl[name]|default(' - ')
+                            content: isUpload and name=='original' ? '<a href="' ~ upl.url ~ upl.name ~'" target="_blank">' ~ upl.original ~ '</a>' : upl[name]|default(' - ')
                         </span>   
                     {% endfor %}
                 </div>
@@ -1140,7 +1143,7 @@
                         {% for key, value in entity %}
                             <tr>   
                                 <th>
-                                     {{ key|gen_label(en) }} 
+                                    {{ key|gen_label(en) }} 
                                 </th>
                                 <td>
                                     {{ value }}

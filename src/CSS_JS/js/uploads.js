@@ -87,9 +87,9 @@ $('#fileupload')
                 actions: '.actions',
                 deleteBtn: '[data-action=upload_delete]',
                 processBtn: '.btn-process',
-                descSignal: '[data-name=desc][data-signal]',
+                descSignal: '[data-name="file.desc"][data-signal]',
                 descContainer: '.info',
-                desc: '[data-name=desc]:not([data-signal])',
+                desc: '[data-name="file.desc"]:not([data-signal])',
                 descBtn: '[data-action=change]',
                 process: '.upload-process',
                 status: '.upload-status',
@@ -98,8 +98,8 @@ $('#fileupload')
                 preview: '[data-name=preview]',
                 processName: '[data-name=fname]',
                 processSize: '[data-name=fsize]',
-                name: '[data-name=original]',
-                size: '[data-name=size]',
+                name: '[data-name="file.original"]',
+                size: '[data-name="file.size"]',
                 message: '[data-name=message]',
                 error: '[data-name=error]'
 
@@ -176,7 +176,15 @@ $('#fileupload')
                 }
             };
             this.$processBtn
-                .removeClassSearch('btn-')
+                .removeClass(function(){
+                    var classes=[];
+                    for(var i in btnOptions){
+                        if(i !== type){
+                            classes.push(btnOptions[i].addClass);
+                        }
+                    }
+                    return classes.join();
+                })
                 .attr('title', btnOptions[type].title)
                 .addClass(btnOptions[type].addClass)
                 .changeIcon(btnOptions[type].icon);
@@ -245,10 +253,14 @@ $('#fileupload')
             if (Bajt.json.is(data)) {
                 data = JSON.parse(data);
             }
-            if (Bajt.obj.is(data) && data.fullUrl) {
-                this.data = data;
-                this.element.data('fileData', data);
-                return data;
+            if (Bajt.obj.is(data) && data.url) {
+                if(Bajt.obj.is(this.data)){
+                    $.extend(this.data, data);
+                }else{
+                    this.data= data;
+                }
+                this.element.data('fileData', this.data);
+                return this.data;
             }
             this.data = null;
             this.element.data('fileData', null);
@@ -288,11 +300,11 @@ $('#fileupload')
                     }
                 };
             // console.log(file);
-            this.$size.html(file.size || '');
+            this.$size.html(this._sizeStr(file.size));
             this.$desc.html(file.desc || '');
             this.$descSignal.data('value', file.desc || '').attr('title', file.desc || 'brak uwag');
-            if (file.fullUrl) {
-                var url = file.fullUrl + file.name;
+            if (file.url) {
+                var url = file.url + file.name;
                 showPreview(url);
                 this.$name.html('<a href="' + url + '" target="_blank" >' + file.original + '</a>');
                 this.status('loaded');
@@ -307,10 +319,17 @@ $('#fileupload')
         },
 
         _sizeStr: function (size) {
-            if (typeof size === 'number') {
-                size = (size >= 1048576) ? (size / 1048576).toFixed(1) + ' MB' : (size / 1024).toFixed(1) + ' KB';
+            var calc=Number(size),
+                i=0,
+                units=['B', 'kB', 'MB', 'GB'];
+            if(isNaN(calc)){
+                return size;
             }
-            return size;
+            while( i < units.length && calc > 1024 ){
+                calc = calc/1024;           
+                i++;
+            }
+            return Bajt.str.fixed(calc, 2) + units[i];
         },
         _showProcessInfo: function (type, info) {
             var that = this,
@@ -568,7 +587,7 @@ $('#fileupload')
             if (!Bajt.obj.is$(this.$btnAdd)) {
                 this.$btnAdd = $(o.templates.btnAdd);
                 this.$btnAdd
-                    .changeIcon(o.single ? 'paperclip' : 'plus')
+                    .changeIcon(o.single ? 'attach_file' : 'add_circle_outline')
                     .addClass('ml-2')
                     .insertAfter(this.$container.find('label'));
             }

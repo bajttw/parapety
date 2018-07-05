@@ -25,7 +25,7 @@ class FiltersGenerator extends ElementsGenerator{
         ],
         'client' => [
             'name' => 'client',
-            'source' => [
+            'dataSource' => [
                 'type' => 'entity',
                 'query' => 'Clients',
             ],
@@ -33,6 +33,7 @@ class FiltersGenerator extends ElementsGenerator{
                 'multiple' => 'multiple'
             ],
             'd' => [
+                'widget' => 'multiselect'
             ]
         ],
         'hidden' => [
@@ -42,14 +43,13 @@ class FiltersGenerator extends ElementsGenerator{
             ],
             'client' => [
                 'name' => 'client',
-                'source' => [
+                'valueSource' => [
                     'type' => 'options',
                     'query' => 'client'
                 ]
             ]   
         ]
     ];
-
 
     public function __construct(EntityHelper $entityHelper, SettingsHelper $settingsHelper, TransHelper $transHelper){
         $this->eh=$entityHelper;

@@ -68,9 +68,9 @@ class ClientsGroups extends AppEntity
      */
     public function __construct($options=[])
     {
+        parent::__construct($options);
         $this->clients = new ArrayCollection();
         $this->priceLists = new ArrayCollection();
-        parent::__construct($options);
     }
 
  // <editor-fold defaultstate="collapsed" desc="Fields functions"> 
@@ -79,7 +79,7 @@ class ClientsGroups extends AppEntity
      *
      * @return int
      */
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }

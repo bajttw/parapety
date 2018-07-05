@@ -118,7 +118,7 @@ class AppExtension extends \Twig_Extension
         return Utils::addClass($attr, $class, $keys_str);
     }
 
-    public function genLabel($label, $entityName = null, $translate = true)
+    public function genLabel(string $label, ?string $entityName = null, bool $translate = true):string
     {
         $label = Utils::gen_trans_text($label, 'label', $entityName);
         return $translate ? $this->translator->trans($label) : $label;

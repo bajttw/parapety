@@ -29,9 +29,14 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
-    AppBundle\Helpers\:
-        resource: '../../src/AppBundle/Helpers'
+    AppBundle\Helpers\FileUploader:
         public: true
+        autowire: false
+        arguments: ['@router', '@AppBundle\Helpers\EntityHelper', '%kernel.project_dir%', '%uploads_directory%' ]
+
+    # AppBundle\Helpers\:
+    #     resource: '../../src/AppBundle/Helpers'
+    #     public: true
 
     AppBundle\EntityListener\:
         resource: '../../src/AppBundle/EntityListener'
@@ -75,6 +80,7 @@ services:
         alias: AppBundle\Helpers\TemplateHelper
         public: true
 
+
     generator.filters: 
         alias: AppBundle\Helpers\FiltersGenerator
         public: true
@@ -99,7 +105,7 @@ services:
         alias: AppBundle\Helpers\ModalsGenerator
         public: true
     
- 
+    
  
  
         # helper.settings: 

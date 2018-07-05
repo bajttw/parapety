@@ -1,6 +1,8 @@
 AppBundle\Entity\Trims:
     type: entity
     repositoryClass: AppBundle\Repository\TrimsRepository
+    entityListeners:
+        AppBundle\EntityListener\TrimsListener: ~
     table: Trims
     id:
         id:

@@ -294,6 +294,7 @@ class AppRepository extends EntityRepository
         }
         return $joinedAlias;
     }
+
     protected function expBetween($fname, $value, $not = false)
     {
         if (!is_array($value)) {
@@ -504,10 +505,10 @@ class AppRepository extends EntityRepository
         return $this;
     }
 
-    protected function selectFrom($entity = null, $group=true )
+    protected function selectFrom(?string $entity = null, bool $group=true )
     {
         $this->em = $this->getEntityManager();
-        $this->qb = $this->getEntityManager()->createQueryBuilder();
+        $this->qb = $this->em->createQueryBuilder();
         $this->qb
             ->select($this->query)
             ->from($entity ? $entity : $this->_entityName, 'e')
@@ -522,6 +523,7 @@ class AppRepository extends EntityRepository
         }
         return $this;
     }
+
 
     protected function getResult($asArray = null)
     {
@@ -693,4 +695,25 @@ class AppRepository extends EntityRepository
     public function getUniques($options=[]){
         return [];
     }    
+
+    public function updateEntities(array $values, array $options=[]){
+        $this->init();
+        $this->getOptions($options);
+        $this->em = $this->getEntityManager();
+        $this->qb = $this->em->createQueryBuilder();
+        $this->qb->update($this->_entityName, 'e');
+        foreach($values as $name => $value ){
+            $this->qb->set('e.'.$name, $value);
+        }
+        if (is_array($this->toJoin)) {
+            foreach ($this->toJoin as $name) {
+                $this->addJoin($name);
+            }
+        }
+        $this->addFilters();
+        $query = $this->qb->getQuery();
+        $query->execute();
+    }
+
+
 }

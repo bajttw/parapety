@@ -313,7 +313,7 @@ colors:
     filters:
       active: Aktywny
     modal:
-      color: Wybór koloru parapetu
+      colors: Wybór koloru parapetu
     active: Status aktywności
     delete: Usuń
     description: Opis
@@ -693,7 +693,7 @@ models:
     filters:
       active: Status
     modal:
-      model: Wybór modelu parapetu
+      models: Wybór modelu parapetu
     active: Status
     delete: Usuń
     description: Opis
@@ -1818,7 +1818,7 @@ sizes:
     filters:
       active: Status
     modal:
-      size: Wybór grubości parapetu
+      sizes: Wybór grubości parapetu
     active: Status
     delete: Usuń
     description: Opis

@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AppBundle\Entity\Sizes;
 
 class SizesType extends AbstractType
 {
@@ -16,37 +17,40 @@ class SizesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(
-                'sequence', 
-                null, 
-                [
-                    'label' => 'sizes.label.sequence'
+            ->add('sequence', null, [
+                'label' => 'sizes.label.sequence',
+                'attr' => [
+                    'title' => 'sizes.title.sequence'
                 ]
-            )
-            ->add(
-                'name', 
-                null, 
-                [
-                    'label' => "sizes.label.name"
+            ])
+            ->add('name', null, [
+                'label' => 'sizes.label.name',
+                'attr' => [
+                    'title' => 'sizes.title.name'
                 ]
-            )
-            ->add(
-                'symbol', 
-                null, 
-                [
-                    'label' => "sizes.label.symbol"
+            ])
+            ->add('symbol', null, [
+                'label' => 'sizes.label.symbol',
+                'attr' => [
+                    'title' => 'sizes.title.symbol'
                 ]
-            )
-            ->add(
-                'description', 
-                null, 
-                [
-                    'label' => "sizes.label.description"
+            ])
+            ->add('description', null, [
+                'label' => 'sizes.label.description',
+                'attr' => [
+                    'title' => 'sizes.title.description'
                 ]
-            )
+            ])
+            ->add('active', SwitchType::class, [
+                'label' => 'sizes.label.active',
+                'attr' => [
+                    'title' => 'sizes.title.active'
+                ],
+                'entity_name' => 'sizes'
+            ])
             ->add('active', SwitchType::class, [
                 'label' => "sizes.label.active",
-                'entity_name' => 'sizes',
+                'entity_name' => 'sizes'
             ])
                 
        ;
@@ -68,11 +72,11 @@ class SizesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Sizes',
+            'data_class' => Sizes::class,
             'form_admin' => false,            
             'em' => null,
-            'translator' => null,
-            'entities_settings' => null
+            'entities_settings' => [],
+            'translator' => null
         ));
     }
 

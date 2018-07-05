@@ -1,6 +1,8 @@
 AppBundle\Entity\Uploads:
     type: entity
     table: Uploads
+    entityListeners:
+        AppBundle\EntityListener\UploadsListener: ~
     id:
         id:
             type: integer
@@ -20,25 +22,19 @@ AppBundle\Entity\Uploads:
             type: string
             nullable: true
             length: 20
-        uploadType:
-            type: smallint
-            column: upload_type
-            options:
-                unsigned: true
-                default: 0
-        path:
-            type: string
-            length: 250
-        url:
-            type: string
-            length: 250
         size:
             type: integer
             options:
                 unsigned: true
+        folder:
+            type: string
+            length: 25
+        url:
+            type: string
+            length: 100
     lifecycleCallbacks: 
            # prePersist: [preUpload]
        # preUpdate: [preUpload]
        # postPersist: [upload]
        # postUpdate: [upload]
-        postRemove: [removeUpload]
+        # postRemove: [removeUpload]

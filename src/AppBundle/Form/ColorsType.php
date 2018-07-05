@@ -7,6 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use AppBundle\Entity\Colors;
+
 class ColorsType extends AbstractType
 {
     /**
@@ -15,17 +18,41 @@ class ColorsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('sequence', null, ['label' => 'colors.label.sequence'])
-            ->add('name', null, ['label' => 'colors.label.name'])
-            ->add('symbol', null, ['label' => 'colors.label.symbol'])
-            ->add('description', null, ['label' => 'colors.label.description'])
+            ->add('sequence', null, [
+                'label' => 'colors.label.sequence',
+                'attr' => [
+                    'title' => 'colors.title.sequence'
+                ]
+            ])
+            ->add('name', null, [
+                'label' => 'colors.label.name',
+                'attr' => [
+                    'title' => 'colors.title.name'
+                ]
+            ])
+            ->add('symbol', null, [
+                'label' => 'colors.label.symbol',
+                'attr' => [
+                    'title' => 'colors.title.symbol'
+                ]
+            ])
+            ->add('description', null, [
+                'label' => 'colors.label.description',
+                'attr' => [
+                    'title' => 'colors.title.description'
+                ]
+            ])
             ->add('active', SwitchType::class, [
                 'label' => 'colors.label.active',
+                'attr' => [
+                    'title' => 'colors.title.active'
+                ],
                 'entity_name' => 'colors'
             ])
             ->add('upload', UploadType::class, [
                 'label' => 'colors.label.upload',
                 'attr'=> [
+                    'title' => 'colors.title.upload',
                     'preview' => true,
                     'data-options' => json_encode([
                         'disp' => true,
@@ -56,10 +83,10 @@ class ColorsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Colors',
+            'data_class' => Colors::class,
             'form_admin' => false,            
             'em' => null,
-            'entities_settings' =>null,
+            'entities_settings' => [],
             'translator' =>null
         ]);
     }

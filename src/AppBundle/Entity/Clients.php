@@ -47,7 +47,7 @@ class Clients extends AppEntity
 
     ];
 
-    public static function getFields($type = null) {
+    public static function getFields(?string $type = null):array {
         switch($type){
             case 'serviceorders':
                 $fields=[ 'id', 'code', 'name', 'street', 'zipCode', 'city', 'tel', 'mobile' ];
@@ -188,6 +188,7 @@ class Clients extends AppEntity
      */
     public function __construct($options=[])
     {
+        parent::__construct($options);
         $this->clientGroups = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->settings = new ArrayCollection();
@@ -196,15 +197,14 @@ class Clients extends AppEntity
         $this->deliveries = new ArrayCollection();
         $this->invoices = new ArrayCollection();
         $this->notes = new ArrayCollection();
-        parent::__construct($options);
     }
 
-    public function __toString()
+    public function __toString():string
     {
         return $this->getName();
     }
 
-    public function getData(bool $jsonEncode=true, array $options=[])
+    public function getData(array $options=[]):array
     {
         return parent::getData($jsonEncode, array_replace([ 
                 'shortNames' => 'dic'
@@ -219,7 +219,7 @@ class Clients extends AppEntity
      *
      * @return integer
      */
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }
@@ -862,7 +862,7 @@ class Clients extends AppEntity
     //     return $this->clientNrOrderOpt;
     // }
 
-    // public static function getFields($type = null)
+    // public static function getFields(?string $type = null):array
     // {
     //     switch ($type) {
     //         case 'orders' :

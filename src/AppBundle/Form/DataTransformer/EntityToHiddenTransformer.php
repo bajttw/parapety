@@ -22,22 +22,18 @@ class EntityToHiddenTransformer implements DataTransformerInterface
         if (null === $entity) {
             return;
         }
-        return $entity->getData(true, $this->options);
+        return $entity->getDataJSON($this->options);
     }
 
     public function reverseTransform($data)
     {
         $entityData = json_decode($data, true);
-        $nameSpace = $this->entityClass;
+        $entityClass = $this->entityClass;
         $entity = null;
         if ($entityData != null) {
-//            $id=$entityData['id'];
-            $id = array_key_exists('id', $entityData) ? $entityData['id'] : $entityData['v'];
-            if ($id != null) {
-                $entity = $this->objectManager->getRepository($nameSpace)->find($id);
-            } else {
-                $entity = new $nameSpace();
-            }
+            $id = $entityData['id'] ?? $entityData['v'] ?? null;
+            $entity = is_null($id) ? new $entityClass()  
+                :$this->objectManager->getRepository($entityClass)->find($id);
             $entity->setData($entityData);
         }
         return $entity;

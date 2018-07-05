@@ -22,13 +22,15 @@ class ColorsController extends AppController
     }
  
 
-    protected function postUpdateAction(&$dataReturn){
-        if($this->entity->checkFieldChange('active') === true){
-            $iController=self::getEntityController('PriceListItems');
-            $iController::updateActive($this->getEntityManager(), null, $this->entity );
-        }
-        return $dataReturn;
-    }
+    
+
+    // protected function postUpdateAction(&$dataReturn){
+    //     if($this->entity->checkFieldChange('active') === true){
+    //         $iController=self::getEntityController('PriceListItems');
+    //         $iController::updateActive($this->getEntityManager(), null, $this->entity );
+    //     }
+    //     return $dataReturn;
+    // }
 
  // </editor-fold>   
   

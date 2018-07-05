@@ -38,7 +38,7 @@ class PriceLists extends AppEntity
     ];
 
     
-    public function getSuccessFields($type)
+    public function getSuccessFields(?string $type=null):array
     {
         $fields = [];
         switch ($type) {
@@ -49,10 +49,10 @@ class PriceLists extends AppEntity
             case 'remove':
             default:
         }
-        return $fields;
+        return array_replace(parent::getSuccessFields($type), $fields);
     }
 
-    public function getMessageDataFields($type)
+    public function getMessageDataFields(?string $type=null):array
     {
         $fields = [];
         switch ($type) {
@@ -63,8 +63,18 @@ class PriceLists extends AppEntity
             case 'remove':
             default:
         }
-        return $fields;
+        return array_replace( parent::getMessageDataFields($type), $fields );
     }
+
+    public function getDeleteFields(?string $type=null):array
+    {
+        return array_replace(
+            parent::getDeleteFields($type), 
+            ['title', 'start']
+        );
+    }
+
+
 // </editor-fold>
 
 //  <editor-fold defaultstate="collapsed" desc="Utilities">
@@ -126,11 +136,11 @@ class PriceLists extends AppEntity
      */
     public function __construct($options = [])
     {
+        parent::__construct($options);       
         $this->prices = new ArrayCollection();
         $this->clients = new ArrayCollection();
         $this->clientsGroups = new ArrayCollection();
         $this->notes = new ArrayCollection();
-        parent::__construct($options);       
     }
 
 // <editor-fold defaultstate="collapsed" desc="Fields functions">
@@ -139,7 +149,7 @@ class PriceLists extends AppEntity
      *
      * @return int
      */
-    public function getId():int
+    public function getId():?int
     {
         return $this->id;
     }
@@ -389,14 +399,6 @@ class PriceLists extends AppEntity
         return $this->notes;
     }
 // </editor-fold>
-
-    public function getDataDelete()
-    {
-        $data = parent::getDataDelete();
-        $data['title']=$this->getTitle();
-        $data['start']=$this->toStrData($this->getStart());
-        return $data;
-    }
     /**
      * @ORM\PrePersist
      */

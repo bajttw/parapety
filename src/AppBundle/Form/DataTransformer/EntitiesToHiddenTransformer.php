@@ -25,7 +25,7 @@ class EntitiesToHiddenTransformer implements DataTransformerInterface
         }
         $entitiesData = new ArrayCollection();
         foreach ($entities as $entity) {
-            $entitiesData[] = $entity->getData(true, $this->options);
+            $entitiesData[] = $entity->getDataJSON($this->options);
         }
         return $entitiesData;
     }

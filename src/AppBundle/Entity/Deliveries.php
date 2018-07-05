@@ -29,7 +29,7 @@ class Deliveries extends AppEntity{
 		]
 	];
 
-    public static function getFields($type = null)
+    public static function getFields(?string $type = null):array
     {
         switch ($type) {
             case '':
@@ -63,7 +63,7 @@ class Deliveries extends AppEntity{
         return $fields;
     }
 
-    public function getSuccessFields($type)
+    public function getSuccessFields(?string $type=null):array
     {
         $fields = [];
         switch ($type) {
@@ -76,8 +76,27 @@ class Deliveries extends AppEntity{
             case 'remove':
             default:
         }
-        return $fields;
-    }    
+        return array_replace(parent::getSuccessFields($type), $fields);
+	}    
+	
+	public function getMessageDataFields(?string $type=null):array
+    {
+        $fields = [];
+        switch ($type) {
+            default:
+                $fields = ['number', 'generated', 'client.name'];
+        }
+        return array_replace( parent::getMessageDataFields($type), $fields );
+	}
+	
+	public function getDeleteFields(?string $type=null):array
+    {
+        return array_replace(
+            parent::getDeleteFields($type), 
+            ['client.code', 'client.name','number', 'generated']
+        );
+    }
+
 // </editor-fold>     
 
 //  <editor-fold defaultstate="collapsed" desc="Utilities">
@@ -141,10 +160,10 @@ class Deliveries extends AppEntity{
 		* Constructor
 		*/
 	public function __construct($options=[]){
+        parent::__construct($options);
         $this->orders = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->notes = new ArrayCollection();
-        parent::__construct($options);
 	}
 
  // <editor-fold defaultstate="collapsed" desc="Fields functions"> 
@@ -153,7 +172,7 @@ class Deliveries extends AppEntity{
 		*
 		* @return integer
 		*/
-	public function getId():int{
+	public function getId():?int{
 		return $this->id;
 	}
 
@@ -404,7 +423,7 @@ class Deliveries extends AppEntity{
 
 
 
-	public function getSuccessData($type){
+	public function getSuccessData(?string $type=null):array{
 		$data= parent::getSuccessData($type);
 		switch($type){
 			case 'created':
@@ -416,13 +435,7 @@ class Deliveries extends AppEntity{
 		return $data;
 	}
 
-	public function getDataDelete(){
-		$data=array_replace_recursive(
-			parent::getDataDelete(),
-			$this->getFieldsStr(['client.code', 'client.name','number', 'generated'])
-		);
-		return $data;
-	}	
+
 
 	/**
 		* @ORM\PrePersist

@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AppBundle\Entity\Uploads;
 
 class UploadsType extends AbstractType
 {
@@ -33,7 +34,7 @@ class UploadsType extends AbstractType
             'en' => 'uploads',
             'entry_type' => EntityHiddenType::class,
             'entry_options' => [
-                'entity_class' => "AppBundle\\Entity\\Uploads",
+                'entity_class' => Uploads::class,
             ],
             'form_admin' => false,
             'allow_add' => true,

@@ -120,11 +120,9 @@ class EntityHelper{
     {
         return $this->getRepository($entityClassName)->getCount();
     }
+// </editor-fold>  
 
-
-
-
- //<editor-fold defaultstate="collapsed" desc="EntitySettings">
+//<editor-fold defaultstate="collapsed" desc="EntitySettings">
     private function genSettings(string $entityClassName):void
     {
         $en=$this->getEntityName($entityClassName);
@@ -212,9 +210,9 @@ class EntityHelper{
             $this->sh->saveSettingForClient($clientId, $nrName, $nr);
         }
     }
+// </editor-fold>  
 
-
- //<editor-fold defaultstate="collapsed" desc="Custom functions">
+//<editor-fold defaultstate="collapsed" desc="Custom functions">
     private function customPriceListItemsSettings():void
     {
         $this->addDics($this->entitiesSettings['PriceListItems'], [ 'Colors', 'Sizes']);
@@ -242,9 +240,9 @@ class EntityHelper{
         }          
     }
 
- // </editor-fold>  
- //<editor-fold defaultstate="collapsed" desc="Predefined elements">
+// </editor-fold>  
 
+//<editor-fold defaultstate="collapsed" desc="Predefined elements">
 
     public function getElements(string $elementsType, ?string $entityClassName= null):?array
     {
